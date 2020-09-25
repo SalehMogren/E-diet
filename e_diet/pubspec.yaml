@@ -49,6 +49,7 @@ flutter:
   assets:
     - assets/google_logo.png
     - undraw_breakfast_psiw.svg
+    - assets/profile.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
