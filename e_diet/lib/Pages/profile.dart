@@ -17,21 +17,43 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                height: 350,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                    colors: [
+                      Color(0xFF3594DD),
+                      Color(0xFF4563DB),
+                      Color(0xFF5036D5),
+                      Color(0xFF5B16D0),
+                    ],
+                  ),
+                ),
+                height: 627,
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.symmetric(horizontal: 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ListTile(
                       leading: Icon(
                         Icons.lock_outline,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
-                      title: Text("Change Password"),
-                      trailing: Icon(Icons.keyboard_arrow_right),
+                      title: Text(
+                        "Change Password",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
                       onTap: () {
                         //open change password
+                        print('pass');
                       },
                     ),
                     SizedBox(
@@ -40,11 +62,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: Icon(
                         Icons.date_range,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
-                      title: Text("view information"),
-                      trailing: Icon(Icons.keyboard_arrow_right),
+                      title: Text(
+                        "view information",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
                       onTap: () {
+                        print('object');
                         //open change language
                       },
                     ),
@@ -54,12 +85,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: Icon(
                         Icons.fastfood,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
-                      title: Text("Change diet"),
-                      trailing: Icon(Icons.keyboard_arrow_right),
+                      title: Text(
+                        "Change diet",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
                       onTap: () {
                         //open change location
+                        print('object');
                       },
                     ),
                     SizedBox(
@@ -68,25 +106,30 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: Icon(
                         Icons.exit_to_app,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
-                      title: Text("LogOut"),
-                      trailing: Icon(Icons.keyboard_arrow_right),
+                      title: Text(
+                        "LogOut",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
                       onTap: () {
                         //open change location
+                        print('object');
                       },
+                    ),
+                    SizedBox(
+                      height: 40,
                     ),
                   ],
                 ),
               ),
             ],
-          ),
-          CustomPaint(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
-            painter: HeaderCurved(),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     print('object');
                   }),
             ),
-          )
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -182,32 +225,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-}
-
-class HeaderCurved extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var rect = Offset.zero & size;
-
-    Paint paint = Paint();
-    paint.shader = LinearGradient(
-      begin: Alignment.topRight,
-      end: Alignment.bottomLeft,
-      colors: [
-        Color(0xFF3594DD),
-        Color(0xFF5B16D0),
-        Color(0xFF4563DB),
-        Color(0xFF5036D5),
-      ],
-    ).createShader(rect);
-    Path path = Path()
-      ..relativeLineTo(0, 150)
-      ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
-      ..relativeLineTo(0, -150)
-      ..close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
