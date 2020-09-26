@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Widgets/Background.dart';
 import 'Widgets/Buttons.dart';
 import 'Widgets/InputFeiled.dart';
+import '../profile.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -77,6 +78,11 @@ class Login extends StatelessWidget {
                         color: Color.fromRGBO(49, 39, 79, 1),
                         width: size.width * 0.5,
                         press: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => new ProfilePage(),
+                              ));
                           print("login");
                         },
                       ),
