@@ -1,9 +1,10 @@
 import 'package:e_diet/Model/UserM.dart';
-import 'package:e_diet/Pages/Auth.dart';
+import 'package:e_diet/Model/Auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Pages/Welcome.dart';
+import 'Model/router.dart' as router;
+import 'Model/routing_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +19,9 @@ class MyApp extends StatelessWidget {
     return StreamProvider<UserModle>.value(
       value: AuthService().user,
       child: MaterialApp(
+        onGenerateRoute: router.generateRoute,
+        initialRoute: WelcomeViewRoute,
         debugShowCheckedModeBanner: false,
-        home: WelcomePage(),
       ),
     );
   }

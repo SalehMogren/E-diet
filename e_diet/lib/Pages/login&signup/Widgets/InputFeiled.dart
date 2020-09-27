@@ -22,7 +22,7 @@ class RoundedInputField extends StatelessWidget {
   final IconData icon;
   final ValueChanged<String> onChanged;
 
-  final Function onSubmitted;
+  final Function onSubmitted, validator;
 
   final TextInputType keyboardType;
 
@@ -33,13 +33,14 @@ class RoundedInputField extends StatelessWidget {
     this.onChanged,
     this.onSubmitted,
     this.keyboardType,
+    this.validator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return TextField(
-      onSubmitted: onSubmitted,
+    return TextFormField(
+      validator: validator,
       onChanged: onChanged,
       cursorColor: Colors.orange,
       keyboardType: keyboardType,
@@ -53,6 +54,47 @@ class RoundedInputField extends StatelessWidget {
           color: Color(0xFF5B16D0),
           size: 28,
         ),
+      ),
+    );
+  }
+}
+
+class RoundedPasswordField extends StatelessWidget {
+  final ValueChanged<String> onChanged;
+
+  final Function onSubmitted, validator;
+  final String hintText;
+
+  final Color color, txtColor, cursorColor;
+  const RoundedPasswordField({
+    Key key,
+    this.onChanged,
+    this.color,
+    this.txtColor,
+    this.cursorColor,
+    this.onSubmitted,
+    this.validator,
+    this.hintText,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: validator,
+      obscureText: true,
+      onChanged: onChanged,
+      cursorColor: cursorColor,
+      decoration: InputDecoration(
+        hintText: hintText,
+        icon: Icon(
+          Icons.lock,
+          color: color,
+        ),
+        suffixIcon: Icon(
+          Icons.visibility,
+          color: color,
+        ),
+        border: InputBorder.none,
       ),
     );
   }

@@ -1,9 +1,10 @@
-import 'package:e_diet/Pages/Auth.dart';
+import 'package:e_diet/Model/Auth.dart';
+import 'package:e_diet/Widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/Background.dart';
 import 'Widgets/Buttons.dart';
 import 'Widgets/InputFeiled.dart';
-import '../profile.dart';
+import '../../Model/routing_constants.dart';
 
 class SignUpContactInfo extends StatefulWidget {
   @override
@@ -18,109 +19,123 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
   String password2 = '';
   final _formKey = GlobalKey<FormState>();
   String error = '';
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: Background(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(10),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Sign Up",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      color: Colors.white),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                    hintText: "Name",
-                  ),
-                ),
-                TextFormField(
-                  validator: (value) => value.isEmpty ? 'Enter an email' : null,
-                  onChanged: (value) {
-                    setState(() => email = value);
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Email",
-                  ),
-                ),
-                TextFormField(
-                  validator: (value) => value.length < 6
-                      ? 'Enter a password 6+ chars long'
-                      : null,
-                  onChanged: (value) {
-                    setState(() => password = value);
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                  ),
-                  obscureText: true,
-                ),
-                TextFormField(
-                  onChanged: (value) {
-                    setState(() => password2 = value);
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                  ),
-                  obscureText: true,
-                ),
-                // Divider(
-                //   endIndent: size.width * .0,
-                //   indent: size.width * .0,
-                //   thickness: 1,
-                //   color: Colors.white,
-                // ),
-                RoundedButton(
-                  color: Color.fromRGBO(49, 39, 79, 1),
-                  width: size.width * 0.5,
-                  text: 'Sign Up',
-                  press: () async {
-                    if (_formKey.currentState.validate()) {
-                      dynamic result = await _auth.registerWithEmailAndPassword(
-                          email, password);
-                      if (result == null) {
-                        setState(() {
-                          error = 'Please supply a valid email';
-                        });
-                      }
-                    }
-                    /*
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpDietInfo(),
-                        ));
+    return loading
+        ? Loading()
+        : Scaffold(
+            body: Background(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(10),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFieldContainer(
+                        child: RoundedInputField(
+                          onChanged: (value) {},
+                          hintText: "Name",
+                          icon: Icons.person,
+                        ),
+                      ),
+                      TextFieldContainer(
+                        child: RoundedInputField(
+                          validator: (value) =>
+                              value.isEmpty ? 'Enter an email' : null,
+                          onChanged: (value) {
+                            setState(() => email = value);
+                          },
+                          hintText: "Email",
+                          icon: Icons.email,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                      ),
+                      TextFieldContainer(
+                        child: RoundedPasswordField(
+                          validator: (value) => value.length < 6
+                              ? 'Enter a password 6+ chars long'
+                              : null,
+                          onChanged: (value) {
+                            setState(() => password = value);
+                          },
+                          hintText: "Password",
+                          color: Color(0xFF5B16D0),
+                        ),
+                      ),
+                      TextFieldContainer(
+                        child: RoundedPasswordField(
+                          onChanged: (value) {
+                            setState(() => password2 = value);
+                          },
+                          hintText: "Confirm Password",
+                          color: Color(0xFF5B16D0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          error,
+                          style: TextStyle(color: Colors.red, fontSize: 14.0),
+                        ),
+                      ),
+                      RoundedButton(
+                        color: Color.fromRGBO(49, 39, 79, 1),
+                        width: size.width * 0.5,
+                        text: 'Sign Up',
+                        press: () async {
+                          if (_formKey.currentState.validate()) {
+                            setState(() => loading = true);
+                            dynamic result = await _auth
+                                .registerWithEmailAndPassword(email, password);
+                            if (result == null) {
+                              setState(() {
+                                error = 'Please supply a valid email';
+                                loading = false;
+                              });
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignUpDietInfo(),
+                                  ));
+                            }
+                          }
+                          /*
+                   
                         */
-                  },
+                        },
+                      ),
+                      SizedBox(height: 12.0),
+                      RoundButtonGoogle(
+                        textColor: Color(0xFF3594DD),
+                        width: size.width * 0.5,
+                        color: Colors.white,
+                        text: "Google",
+                        press: () {
+                          print("Google");
+                        },
+                      )
+                    ],
+                  ),
                 ),
-                SizedBox(height: 12.0),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
-                ),
-                RoundButtonGoogle(
-                  text: "Signup With Google",
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }
 
@@ -190,11 +205,7 @@ class SignUpDietInfo extends StatelessWidget {
                   text: "Submit",
                   color: Color.fromRGBO(49, 39, 79, 1),
                   press: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfilePage(),
-                        ));
+                    Navigator.pushNamed(context, ProfilePageRoute);
                   },
                 ),
               ]),

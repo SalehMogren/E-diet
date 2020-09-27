@@ -1,4 +1,5 @@
-import 'package:e_diet/Pages/Auth.dart';
+import 'package:e_diet/Model/Auth.dart';
+import 'package:e_diet/Model/routing_constants.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -123,6 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       onTap: () async {
                         await _auth.signOut();
+                        Navigator.popAndPushNamed(context, WelcomeViewRoute);
                       },
                     ),
                     SizedBox(
