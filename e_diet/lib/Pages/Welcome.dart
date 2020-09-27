@@ -1,4 +1,7 @@
+import 'package:e_diet/Model/UserM.dart';
+import 'package:e_diet/Pages/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'login&signup/Widgets/Background.dart';
 import 'login&signup/login.dart';
 import 'login&signup/signup.dart';
@@ -8,6 +11,12 @@ import 'package:e_diet/Pages/login&signup/Widgets/Buttons.dart';
 class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModle>(context);
+
+    if (user != null) {
+      return ProfilePage();
+    }
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(

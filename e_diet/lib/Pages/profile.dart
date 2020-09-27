@@ -1,3 +1,4 @@
+import 'package:e_diet/Pages/Auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -6,6 +7,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final AuthService _auth = AuthService();
+
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -118,9 +121,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
                       ),
-                      onTap: () {
-                        //open change location
-                        print('object');
+                      onTap: () async {
+                        await _auth.signOut();
                       },
                     ),
                     SizedBox(

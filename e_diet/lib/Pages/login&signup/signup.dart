@@ -1,10 +1,24 @@
+import 'package:e_diet/Pages/Auth.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/Background.dart';
 import 'Widgets/Buttons.dart';
 import 'Widgets/InputFeiled.dart';
 import '../profile.dart';
 
-class SignUpContactInfo extends StatelessWidget {
+class SignUpContactInfo extends StatefulWidget {
+  @override
+  _SignUpContactInfoState createState() => _SignUpContactInfoState();
+}
+
+class _SignUpContactInfoState extends State<SignUpContactInfo> {
+  final AuthService _auth = AuthService();
+  //text field state
+  String email = '';
+  String password = '';
+  String password2 = '';
+  final _formKey = GlobalKey<FormState>();
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -13,69 +27,96 @@ class SignUpContactInfo extends StatelessWidget {
       body: Background(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Sign Up",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.white),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFieldContainer(
-                child: RoundedInputField(
-                  hintText: "Name",
-                  icon: Icons.person,
-                  onChanged: (value) {},
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Sign Up",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Colors.white),
                 ),
-              ),
-              TextFieldContainer(
-                child: RoundedInputField(
-                  hintText: "Email",
-                  icon: Icons.email,
-                  onChanged: (value) {},
+                SizedBox(
+                  height: 20,
                 ),
-              ),
-              TextFieldContainer(
-                child: RoundedInputField(
-                  hintText: "Password",
-                  icon: Icons.lock,
+                TextFormField(
                   onChanged: (value) {},
+                  decoration: InputDecoration(
+                    hintText: "Name",
+                  ),
                 ),
-              ),
-              TextFieldContainer(
-                child: RoundedInputField(
-                  hintText: "Confirm Password",
-                  icon: Icons.lock,
-                  onChanged: (value) {},
+                TextFormField(
+                  validator: (value) => value.isEmpty ? 'Enter an email' : null,
+                  onChanged: (value) {
+                    setState(() => email = value);
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Email",
+                  ),
                 ),
-              ),
-              // Divider(
-              //   endIndent: size.width * .0,
-              //   indent: size.width * .0,
-              //   thickness: 1,
-              //   color: Colors.white,
-              // ),
-              RoundedButton(
-                color: Color.fromRGBO(49, 39, 79, 1),
-                width: size.width * 0.5,
-                text: 'Sign Up',
-                press: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignUpDietInfo(),
-                      ));
-                },
-              ),
-              RoundButtonGoogle(
-                text: "Signup With Google",
-              )
-            ],
+                TextFormField(
+                  validator: (value) => value.length < 6
+                      ? 'Enter a password 6+ chars long'
+                      : null,
+                  onChanged: (value) {
+                    setState(() => password = value);
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                  ),
+                  obscureText: true,
+                ),
+                TextFormField(
+                  onChanged: (value) {
+                    setState(() => password2 = value);
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                  ),
+                  obscureText: true,
+                ),
+                // Divider(
+                //   endIndent: size.width * .0,
+                //   indent: size.width * .0,
+                //   thickness: 1,
+                //   color: Colors.white,
+                // ),
+                RoundedButton(
+                  color: Color.fromRGBO(49, 39, 79, 1),
+                  width: size.width * 0.5,
+                  text: 'Sign Up',
+                  press: () async {
+                    if (_formKey.currentState.validate()) {
+                      dynamic result = await _auth.registerWithEmailAndPassword(
+                          email, password);
+                      if (result == null) {
+                        setState(() {
+                          error = 'Please supply a valid email';
+                        });
+                      }
+                    }
+                    /*
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpDietInfo(),
+                        ));
+                        */
+                  },
+                ),
+                SizedBox(height: 12.0),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                ),
+                RoundButtonGoogle(
+                  text: "Signup With Google",
+                )
+              ],
+            ),
           ),
         ),
       ),
