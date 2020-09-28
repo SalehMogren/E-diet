@@ -20,6 +20,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -65,6 +66,7 @@ class _LoginState extends State<Login> {
                                 children: <Widget>[
                                   TextFieldContainer(
                                     child: RoundedInputField(
+                                      txtColor: Colors.white,
                                       validator: (value) => value.isEmpty
                                           ? 'Enter an email'
                                           : null,
@@ -79,28 +81,26 @@ class _LoginState extends State<Login> {
                                   TextFieldContainer(
                                     child: RoundedPasswordField(
                                       validator: (value) => value.length < 6
-                                          ? 'Enter a password 6+ chars long'
+                                          ? 'Enter Password'
                                           : null,
                                       onChanged: (value) {
                                         setState(() => password = value);
                                       },
                                       hintText: "Password",
                                       color: Color(0xFF5B16D0),
+                                      txtColor: Colors.white,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Center(
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
                             child: Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                color: Colors.pink[200],
-                              ),
+                              error,
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 14.0),
                             ),
                           ),
                           SizedBox(
@@ -123,9 +123,9 @@ class _LoginState extends State<Login> {
                                           'Couldnn\'t sign in with provided credintials';
                                       loading = false;
                                     });
+                                  } else
                                     Navigator.pushNamed(
                                         context, ProfilePageRoute);
-                                  }
                                 }
                               },
                             ),
@@ -143,6 +143,14 @@ class _LoginState extends State<Login> {
                           ),
                           SizedBox(
                             height: 20.0,
+                          ),
+                          Center(
+                            child: Text(
+                              "Forgot Password?",
+                              style: TextStyle(
+                                color: Colors.pink[200],
+                              ),
+                            ),
                           ),
                         ],
                       ),

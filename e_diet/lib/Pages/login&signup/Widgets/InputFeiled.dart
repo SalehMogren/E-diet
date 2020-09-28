@@ -21,7 +21,7 @@ class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final ValueChanged<String> onChanged;
-
+  final Color iconColor, color, txtColor;
   final Function onSubmitted, validator;
 
   final TextInputType keyboardType;
@@ -34,12 +34,18 @@ class RoundedInputField extends StatelessWidget {
     this.onSubmitted,
     this.keyboardType,
     this.validator,
+    this.iconColor = const Color(0xFF5B16D0),
+    this.color,
+    this.txtColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return TextFormField(
+      style: TextStyle(
+        color: txtColor,
+      ),
       validator: validator,
       onChanged: onChanged,
       cursorColor: Colors.orange,
@@ -51,7 +57,7 @@ class RoundedInputField extends StatelessWidget {
         hintStyle: TextStyle(color: Colors.grey),
         icon: Icon(
           icon,
-          color: Color(0xFF5B16D0),
+          color: iconColor,
           size: 28,
         ),
       ),
@@ -80,6 +86,9 @@ class RoundedPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(
+        color: txtColor,
+      ),
       validator: validator,
       obscureText: true,
       onChanged: onChanged,
