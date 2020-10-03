@@ -37,34 +37,49 @@ class AuthService {
     }
   }
 
+  Future<void> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
-  Future googleSignIn() async {
-    // Step 1
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
-    // Step 2
-    if (googleUser != null) {
-      GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      // ignore: deprecated_member_use
-      AuthCredential credential = GoogleAuthProvider.getCredential(
-          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken
-      );
-
-      UserCredential result = await _auth.signInWithCredential(credential);
-      User user = result.user;
-      return _userFromFireBaseUser(user);
-    }
+    // Create a new credential
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    UserCredential result = await _auth.signInWithCredential(credential);
+    // ignore: deprecated_member_use
+    User user = _auth.currentUser;
+    print('user email = ${user.email}');
   }
+
+  // Future googleSignIn() async {
+  //   // Step 1
+  //   GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+
+  //   // Step 2
+  //   if (googleUser != null) {
+  //     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+  //     // ignore: deprecated_member_use
+  //     AuthCredential credential = GoogleAuthProvider.getCredential(
+  //         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken
+  //     );
+
+  //     UserCredential result = await _auth.signInWithCredential(credential);
+  //     User user = result.user;
+  //     return _userFromFireBaseUser(user);
+  //   }
+  // }
+
   // TO DO
   // void updateUserData(FirebaseUser user) async {
   //
   //
   // }
-
-
-
-
 
 // sign In
   Future signInWithEmailAndPassword(String email, String password) async {
@@ -96,8 +111,7 @@ class AuthService {
   //sign out
   Future signOut() async {
     try {
-
-          await _googleSignIn.disconnect();
+      await _googleSignIn.disconnect();
       return await _auth.signOut();
     } catch (error) {
       print(error.toString());

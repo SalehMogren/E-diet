@@ -138,8 +138,9 @@ class _LoginState extends State<Login> {
                               width: size.width * 0.5,
                               color: Colors.white,
                               text: "Google",
-                              press: () async=>_auth.googleSignIn().then((dynamic user) => print(user)).catchError((e)=>print(e))
-                              ,
+                              press: () async => await _auth
+                                  .signInWithGoogle()
+                                  .catchError((e) => print(e)),
                             ),
                           ),
                           SizedBox(
