@@ -1,9 +1,14 @@
 import 'package:e_diet/Model/UserM.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  // ignore: deprecated_member_use
+  // final Firestore _db = Firestore.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // create user obj based on firebaseuser(user)
 
@@ -31,6 +36,35 @@ class AuthService {
       return null;
     }
   }
+
+
+  Future googleSignIn() async {
+    // Step 1
+    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+
+    // Step 2
+    if (googleUser != null) {
+      GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // ignore: deprecated_member_use
+      AuthCredential credential = GoogleAuthProvider.getCredential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken
+      );
+
+      UserCredential result = await _auth.signInWithCredential(credential);
+      User user = result.user;
+      return _userFromFireBaseUser(user);
+    }
+  }
+  // TO DO
+  // void updateUserData(FirebaseUser user) async {
+  //
+  //
+  // }
+
+
+
+
 
 // sign In
   Future signInWithEmailAndPassword(String email, String password) async {
@@ -62,6 +96,8 @@ class AuthService {
   //sign out
   Future signOut() async {
     try {
+
+          await _googleSignIn.disconnect();
       return await _auth.signOut();
     } catch (error) {
       print(error.toString());
