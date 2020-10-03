@@ -1,6 +1,6 @@
 # e_diet
 
-A new Flutter project.
+Recreate 
 
 ## Getting Started
 

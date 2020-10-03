@@ -8,12 +8,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:37863832361:android:01043cfd6feedf5eb15538",
+        "mobilesdk_app_id": "1:37863832361:android:a3d9e3745637237ab15538",
         "android_client_info": {
           "package_name": "dev.swe438.eDiet"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "37863832361-fkjesk6p7lg018c5l697rl4i26g4a371.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.swe438.eDiet",
+            "certificate_hash": "d3a2e7bf791a243e81d6067f79e801cc71bfa8d4"
+          }
+        },
+        {
+          "client_id": "37863832361-efn4u3jsfobkh1p4he5h851vtkog61of.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.swe438.eDiet",
+            "certificate_hash": "d4b44f074b87de28320c67ef9e9afc42d3232864"
+          }
+        },
         {
           "client_id": "37863832361-l1g83kj2tp73bm7mhn5j1slito8emiej.apps.googleusercontent.com",
           "client_type": 3

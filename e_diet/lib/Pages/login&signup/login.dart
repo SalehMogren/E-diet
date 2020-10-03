@@ -1,5 +1,7 @@
 import 'package:e_diet/Model/Auth.dart';
+import 'package:e_diet/Model/UserM.dart';
 import 'package:e_diet/Widget/loading.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/Background.dart';
 import 'Widgets/Buttons.dart';
@@ -136,9 +138,9 @@ class _LoginState extends State<Login> {
                               width: size.width * 0.5,
                               color: Colors.white,
                               text: "Google",
-                              press: () {
-                                print("Google");
-                              },
+                              press: () async => await _auth
+                                  .signInWithGoogle()
+                                  .catchError((e) => print(e)),
                             ),
                           ),
                           SizedBox(
