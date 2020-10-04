@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "37863832361-fkjesk6p7lg018c5l697rl4i26g4a371.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.swe438.eDiet",
+            "certificate_hash": "d3a2e7bf791a243e81d6067f79e801cc71bfa8d4"
+          }
+        },
+        {
           "client_id": "37863832361-efn4u3jsfobkh1p4he5h851vtkog61of.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
