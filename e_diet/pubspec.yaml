@@ -54,7 +54,10 @@ flutter:
     - assets/google_logo.png
     - undraw_breakfast_psiw.svg
     - assets/profile.png
-
+    - gain_undraw.svg
+    - maintain_undraw.svg
+    - Lose_undraw.svg
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

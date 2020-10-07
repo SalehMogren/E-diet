@@ -17,6 +17,7 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
   String email = '';
   String password = '';
   String password2 = '';
+  String name = '';
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
@@ -32,6 +33,7 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(10),
                 child: Form(
+                  // ignore: deprecated_member_use
                   autovalidate: _autoValidate,
                   key: _formKey,
                   child: Column(
@@ -48,14 +50,19 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                         height: 20,
                       ),
                       TextFieldContainer(
+                        color: Colors.white,
                         child: RoundedInputField(
-                          onChanged: (value) {},
+                          validator: (value) =>
+                              value.length < 2 ? 'Enter your name' : null,
+                          onChanged: (value) {
+                            setState(() => name = value);
+                          },
                           hintText: "Name",
                           icon: Icons.person,
-                          txtColor: Colors.white,
                         ),
                       ),
                       TextFieldContainer(
+                        color: Colors.white,
                         child: RoundedInputField(
                           validator: validateEmail,
                           onChanged: (value) {
@@ -64,10 +71,10 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                           hintText: "Email",
                           icon: Icons.email,
                           keyboardType: TextInputType.emailAddress,
-                          txtColor: Colors.white,
                         ),
                       ),
                       TextFieldContainer(
+                        color: Colors.white,
                         child: RoundedPasswordField(
                           validator: (value) => value.length < 6
                               ? 'Enter a password 6+ chars long'
@@ -77,10 +84,10 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                           },
                           hintText: "Password",
                           color: Color(0xFF5B16D0),
-                          txtColor: Colors.white,
                         ),
                       ),
                       TextFieldContainer(
+                        color: Colors.white,
                         child: RoundedPasswordField(
                           onChanged: (value) {
                             setState(() => password2 = value);
@@ -90,7 +97,6 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                               : null,
                           hintText: "Confirm Password",
                           color: Color(0xFF5B16D0),
-                          txtColor: Colors.white,
                         ),
                       ),
                       Padding(
@@ -107,8 +113,9 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                         press: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password);
+                            dynamic result =
+                                await _auth.registerWithEmailAndPassword(
+                                    email, password, name);
                             if (result == null) {
                               setState(() {
                                 error = 'Please supply a valid email';
@@ -116,11 +123,8 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                                 _autoValidate = true;
                               });
                             } else
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SignUpDietInfo(),
-                                  ));
+                              Navigator.pushReplacementNamed(
+                                  context, HealthSetUpRoute);
                           }
                         },
                       ),
@@ -130,9 +134,14 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                         width: size.width * 0.5,
                         color: Colors.white,
                         text: "Google",
-                        press: () {
-                          print("Google");
-                        },
+                        press: () => _auth.signInWithGoogle().then((value) =>
+                            value
+                                ? Navigator.pushReplacementNamed(
+                                    context, HealthSetUpRoute)
+                                : Navigator.pushReplacementNamed(
+                                        context, ProfilePageRoute)
+                                    .catchError((onError) =>
+                                        print('Failed to Auth $onError'))),
                       )
                     ],
                   ),
@@ -153,79 +162,4 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
   }
 }
 
-class SignUpDietInfo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      body: Background(
-        child: Container(
-          height: size.height * .8,
-          width: size.width * .85,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
-          ),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Diet Info
-                Text(
-                  "Enter Your Health Info ",
-                  style: TextStyle(
-                    color: Colors.blue[300],
-                    fontSize: 20,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                // age
-                TextFieldContainer(
-                  child: RoundedInputField(
-                    hintText: "Age",
-                    icon: Icons.assignment_ind,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                // weight
-
-                TextFieldContainer(
-                  child: RoundedInputField(
-                    hintText: "Weight",
-                    icon: Icons.assignment,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                // height
-
-                TextFieldContainer(
-                  child: RoundedInputField(
-                    hintText: "Height",
-                    icon: Icons.accessibility,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-
-                // your goal
-                Text("YourGoal ?"),
-                SizedBox(
-                  height: 25,
-                ),
-                //submit button
-                RoundedButton(
-                  text: "Submit",
-                  color: Color.fromRGBO(49, 39, 79, 1),
-                  press: () {
-                    Navigator.pushNamed(context, ProfilePageRoute);
-                  },
-                ),
-              ]),
-        ),
-      ),
-    );
-  }
-}
 // TODO: implement goal set up page

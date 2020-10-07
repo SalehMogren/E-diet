@@ -1,7 +1,6 @@
 import 'package:e_diet/Model/Auth.dart';
-import 'package:e_diet/Model/UserM.dart';
+import 'package:e_diet/Pages/login&signup/healthSetUp.dart';
 import 'package:e_diet/Widget/loading.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/Background.dart';
 import 'Widgets/Buttons.dart';
@@ -67,8 +66,8 @@ class _LoginState extends State<Login> {
                               child: Column(
                                 children: <Widget>[
                                   TextFieldContainer(
+                                    color: Colors.white,
                                     child: RoundedInputField(
-                                      txtColor: Colors.white,
                                       validator: (value) => value.isEmpty
                                           ? 'Enter an email'
                                           : null,
@@ -81,6 +80,7 @@ class _LoginState extends State<Login> {
                                     ),
                                   ),
                                   TextFieldContainer(
+                                    color: Colors.white,
                                     child: RoundedPasswordField(
                                       validator: (value) => value.length < 6
                                           ? 'Enter Password'
@@ -90,7 +90,6 @@ class _LoginState extends State<Login> {
                                       },
                                       hintText: "Password",
                                       color: Color(0xFF5B16D0),
-                                      txtColor: Colors.white,
                                     ),
                                   ),
                                 ],
@@ -134,14 +133,19 @@ class _LoginState extends State<Login> {
                           ),
                           Center(
                             child: RoundButtonGoogle(
-                              textColor: Color(0xFF3594DD),
-                              width: size.width * 0.5,
-                              color: Colors.white,
-                              text: "Google",
-                              press: () async => await _auth
-                                  .signInWithGoogle()
-                                  .catchError((e) => print(e)),
-                            ),
+                                textColor: Color(0xFF3594DD),
+                                width: size.width * 0.5,
+                                color: Colors.white,
+                                text: "Google",
+                                press: () async => await _auth
+                                    .signInWithGoogle()
+                                    .then((value) => value
+                                        ? Navigator.pushReplacementNamed(
+                                            context, HealthSetUpRoute)
+                                        : Navigator.pushReplacementNamed(
+                                                context, ProfilePageRoute)
+                                            .catchError((onError) => print(
+                                                'Failed to Auth $onError')))),
                           ),
                           SizedBox(
                             height: 20.0,
