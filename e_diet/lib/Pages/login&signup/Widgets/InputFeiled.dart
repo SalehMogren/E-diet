@@ -2,16 +2,23 @@ import 'package:flutter/material.dart';
 
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
+
+  final Color color;
   const TextFieldContainer({
     Key key,
     this.child,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       padding: EdgeInsets.all(10.0),
+      margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        color: color,
+      ),
       child: child,
     );
   }
@@ -36,12 +43,11 @@ class RoundedInputField extends StatelessWidget {
     this.validator,
     this.iconColor = const Color(0xFF5B16D0),
     this.color,
-    this.txtColor,
+    this.txtColor = const Color(0xFF5B16D0),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return TextFormField(
       style: TextStyle(
         color: txtColor,
@@ -76,7 +82,7 @@ class RoundedPasswordField extends StatelessWidget {
     Key key,
     this.onChanged,
     this.color,
-    this.txtColor,
+    this.txtColor = const Color(0xFF5B16D0),
     this.cursorColor,
     this.onSubmitted,
     this.validator,

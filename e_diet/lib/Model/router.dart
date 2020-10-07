@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../Pages/Welcome.dart';
 import '../Pages/profile.dart';
+import '../Pages/login&signup/HealthSetUp.dart';
+import '../Pages/login&signup/goalSetup.dart';
 import 'routing_constants.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -11,6 +13,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => ProfilePage());
     case WelcomeViewRoute:
       return MaterialPageRoute(builder: (context) => WelcomePage());
+    case HealthSetUpRoute:
+      return MaterialPageRoute(builder: (context) => HealthSetUp());
+    case GoalSetUpRoute:
+      return MaterialPageRoute(builder: (context) => GoalSetup());
+
     default:
       return MaterialPageRoute(builder: (context) => ProfilePage());
   }

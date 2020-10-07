@@ -1,13 +1,12 @@
 import 'package:e_diet/Model/UserM.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+
+import 'DataBase.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // ignore: deprecated_member_use
-  // final Firestore _db = Firestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // create user obj based on firebaseuser(user)
@@ -25,6 +24,9 @@ class AuthService {
         .map(_userFromFireBaseUser);
   }
 
+  String userUid() {
+    return _userFromFireBaseUser(_auth.currentUser).uid;
+  }
 //sign in anon
 
   Future signInAo() async {
@@ -37,9 +39,10 @@ class AuthService {
     }
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<bool> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    bool newUser = false;
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     print("1");
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
@@ -56,36 +59,24 @@ class AuthService {
     UserCredential result = await _auth.signInWithCredential(credential);
 
     // ignore: deprecated_member_use
-    User user = _auth.currentUser;
+    User user = result.user;
+    // TODO: implement build
+
+    // Check user already exist ? linkGoogle Account to it : Create new user
+    getUserEmail(user)
+        .then((value) => () {
+              if (!value) {
+                addUser(user, user.displayName);
+                newUser = true;
+              }
+            })
+        .catchError((onError) => print('Failed to get user '));
+
     print('user email = ${user.email}');
+    return newUser;
   }
 
-  // Future googleSignIn() async {
-  //   // Step 1
-  //   GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-
-  //   // Step 2
-  //   if (googleUser != null) {
-  //     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-  //     // ignore: deprecated_member_use
-  //     AuthCredential credential = GoogleAuthProvider.getCredential(
-  //         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken
-  //     );
-
-  //     UserCredential result = await _auth.signInWithCredential(credential);
-  //     User user = result.user;
-  //     return _userFromFireBaseUser(user);
-  //   }
-  // }
-
-  // TO DO
-  // void updateUserData(FirebaseUser user) async {
-  //
-  //
-  // }
-
-// sign In
+  // sign In
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -100,11 +91,13 @@ class AuthService {
 
   //register
 
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String email, String password, String name) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
+      addUser(user, name);
       return _userFromFireBaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -115,6 +108,11 @@ class AuthService {
   //sign out
   Future signOut() async {
     try {
+      User user = _auth.currentUser;
+      print(user.providerData[0].providerId);
+      if (user.providerData[0].providerId == 'google.com') {
+        await _googleSignIn.disconnect();
+      }
       return await _auth.signOut();
     } catch (error) {
       print(error.toString());
@@ -122,3 +120,6 @@ class AuthService {
     }
   }
 }
+
+// add to profile page
+void linkGoogleAccount(User user) {}
