@@ -2,11 +2,12 @@ import 'package:e_diet/Model/UserM.dart';
 import 'package:e_diet/Pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'login&signup/Widgets/Background.dart';
-import 'login&signup/login.dart';
-import 'login&signup/signup.dart';
+import 'Widgets/Background.dart';
+import 'AccountSetUp/login.dart';
+import 'AccountSetUp/signup.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:e_diet/Pages/login&signup/Widgets/Buttons.dart';
+import 'Widgets/Buttons.dart';
+import '../Model/UI/Colors.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
@@ -40,7 +41,7 @@ class WelcomePage extends StatelessWidget {
                 height: 40,
               ),
               RoundedButton(
-                color: Color.fromRGBO(49, 39, 79, 1),
+                color: EDdarkPurple,
                 text: "Login",
                 width: size.width * .5,
                 press: () {
@@ -54,7 +55,7 @@ class WelcomePage extends StatelessWidget {
               RoundedButton(
                 color: Colors.white,
                 text: "SignUp",
-                textColor: Color.fromRGBO(49, 39, 79, 1),
+                textColor: EDdarkPurple,
                 width: size.width * .5,
                 press: () {
                   Navigator.push(

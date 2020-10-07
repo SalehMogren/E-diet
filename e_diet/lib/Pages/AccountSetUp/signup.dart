@@ -1,10 +1,11 @@
 import 'package:e_diet/Model/Auth.dart';
-import 'package:e_diet/Widget/loading.dart';
+import '../Widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'Widgets/Background.dart';
-import 'Widgets/Buttons.dart';
-import 'Widgets/InputFeiled.dart';
+import '../Widgets/Background.dart';
+import '../Widgets/Buttons.dart';
+import '../Widgets/InputFeiled.dart';
 import '../../Model/routing_constants.dart';
+import '../../Model/UI/Colors.dart';
 
 class SignUpContactInfo extends StatefulWidget {
   @override
@@ -83,7 +84,7 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                             setState(() => password = value);
                           },
                           hintText: "Password",
-                          color: Color(0xFF5B16D0),
+                          color: EDPurple0,
                         ),
                       ),
                       TextFieldContainer(
@@ -96,7 +97,7 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                               ? 'Passord\t Doesnt Match '
                               : null,
                           hintText: "Confirm Password",
-                          color: Color(0xFF5B16D0),
+                          color: EDPurple0,
                         ),
                       ),
                       Padding(
@@ -130,7 +131,7 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                       ),
                       SizedBox(height: 12.0),
                       RoundButtonGoogle(
-                        textColor: Color(0xFF3594DD),
+                        textColor: ELightBlue0,
                         width: size.width * 0.5,
                         color: Colors.white,
                         text: "Google",

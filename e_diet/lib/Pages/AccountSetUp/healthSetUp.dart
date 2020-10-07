@@ -2,9 +2,9 @@ import 'package:e_diet/Model/routing_constants.dart';
 import 'package:flutter/material.dart';
 import '../../Model/Auth.dart';
 import '../../Model/DataBase.dart';
-import 'Widgets/Background.dart';
-import 'Widgets/Buttons.dart';
-import 'Widgets/InputFeiled.dart';
+import '../Widgets/Background.dart';
+import '../Widgets/Buttons.dart';
+import '../Widgets/InputFeiled.dart';
 
 class HealthSetUp extends StatefulWidget {
   @override

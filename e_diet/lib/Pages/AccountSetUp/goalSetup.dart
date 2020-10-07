@@ -2,9 +2,10 @@ import 'package:e_diet/Model/Auth.dart';
 import 'package:e_diet/Model/DataBase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'Widgets/Background.dart';
-import 'Widgets/Buttons.dart';
+import '../Widgets/Background.dart';
+import '../Widgets/Buttons.dart';
 import '../../Model/routing_constants.dart';
+import '../../Model/UI/Colors.dart';
 
 class GoalSetup extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _GoalSetupState extends State<GoalSetup> {
   String error = '';
 
   int selectedIndex = -1;
-  Color activeColor = Color(0xFF5B16D0);
+  Color activeColor = EDPurple0;
   Color inactiveColor = Colors.grey[400];
 
   @override
