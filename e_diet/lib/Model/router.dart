@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../Pages/Welcome.dart';
 import '../Pages/profile.dart';
-import '../Pages/login&signup/HealthSetUp.dart';
-import '../Pages/login&signup/goalSetup.dart';
+import '../Pages/AccountSetUp/HealthSetUp.dart';
+import '../Pages/AccountSetUp/goalSetup.dart';
 import 'routing_constants.dart';
+import '../Pages/home/Profile/Profile.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   // Here we'll handle all the routing

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../Pages/login&signup/Widgets/Background.dart';
+import 'Background.dart';
 
 class Loading extends StatelessWidget {
   @override
