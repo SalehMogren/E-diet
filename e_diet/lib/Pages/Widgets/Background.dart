@@ -3,9 +3,14 @@ import '../../Model/UI/Colors.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
+  final Color color1, color2, color3, color4;
   const Background({
     Key key,
     @required this.child,
+    this.color1 = ELightBlue0,
+    this.color2 = ELightBlue1,
+    this.color3 = ELightPurple0,
+    this.color4 = EDPurple0,
   }) : super(key: key);
 
   @override
@@ -18,10 +23,10 @@ class Background extends StatelessWidget {
           end: Alignment.bottomCenter,
           stops: [0.1, 0.4, 0.7, 0.9],
           colors: [
-            ELightBlue0,
-            ELightBlue1,
-            ELightPurple0,
-            EDPurple0,
+            color1,
+            color2,
+            color3,
+            color4,
           ],
         ),
       ),

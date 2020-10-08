@@ -1,5 +1,5 @@
 import 'package:e_diet/Model/UserM.dart';
-import 'package:e_diet/Pages/profile.dart';
+import '../Pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Widgets/Background.dart';
@@ -15,7 +15,7 @@ class WelcomePage extends StatelessWidget {
     final user = Provider.of<UserModle>(context);
 
     if (user != null) {
-      return ProfilePage();
+      return AppHome();
     }
 
     Size size = MediaQuery.of(context).size;
