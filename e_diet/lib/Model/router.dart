@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import '../Pages/Welcome.dart';
-import '../Pages/profile.dart';
 import '../Pages/AccountSetUp/HealthSetUp.dart';
 import '../Pages/AccountSetUp/goalSetup.dart';
 import 'routing_constants.dart';
-import '../Pages/home/Profile/Profile.dart';
+import '../Pages/home.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   // Here we'll handle all the routing
 
   switch (settings.name) {
     case ProfilePageRoute:
-      return MaterialPageRoute(builder: (context) => ProfilePage());
+      return MaterialPageRoute(builder: (context) => AppHome());
     case WelcomeViewRoute:
       return MaterialPageRoute(builder: (context) => WelcomePage());
     case HealthSetUpRoute:
@@ -20,6 +19,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => GoalSetup());
 
     default:
-      return MaterialPageRoute(builder: (context) => ProfilePage());
+      return MaterialPageRoute(builder: (context) => AppHome());
   }
 }
