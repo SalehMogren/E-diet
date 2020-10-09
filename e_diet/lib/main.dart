@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Model/router.dart' as router;
 import 'Model/routing_constants.dart';
+import 'MealPreferred.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(Swipe());
 }
 
 class MyApp extends StatelessWidget {

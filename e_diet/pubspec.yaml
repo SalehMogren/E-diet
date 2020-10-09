@@ -33,6 +33,8 @@ dependencies:
   line_icons: ^0.2.0
   google_nav_bar: ^3.0.1
   font_awesome_flutter: ^8.10.0
+  flutter_tindercard: ^0.2.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
