@@ -9,7 +9,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   // Here we'll handle all the routing
 
   switch (settings.name) {
-    case ProfilePageRoute:
+    case AppHomePageRoute:
       return MaterialPageRoute(builder: (context) => AppHome());
     case WelcomeViewRoute:
       return MaterialPageRoute(builder: (context) => WelcomePage());

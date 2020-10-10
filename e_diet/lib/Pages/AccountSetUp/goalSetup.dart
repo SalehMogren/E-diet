@@ -1,7 +1,7 @@
-import 'package:e_diet/Model/Auth.dart';
-import 'package:e_diet/Model/DataBase.dart';
+import 'package:e_diet/Model/UserM.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../Widgets/Background.dart';
 import '../Widgets/Buttons.dart';
 import '../../Model/routing_constants.dart';
@@ -13,7 +13,6 @@ class GoalSetup extends StatefulWidget {
 }
 
 class _GoalSetupState extends State<GoalSetup> {
-  final AuthService _authService = AuthService();
   List<Goal> _goals = [
     Goal("Gain Weight", "assets/gain_undraw.svg"),
     Goal("Maintain Weight", "assets/maintain_undraw.svg"),
@@ -28,6 +27,7 @@ class _GoalSetupState extends State<GoalSetup> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final user = Provider.of<UserModle>(context);
 
     return Scaffold(
       body: Background(
@@ -35,60 +35,63 @@ class _GoalSetupState extends State<GoalSetup> {
         child: Container(
           height: size.height * .8,
           width: size.width * .85,
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.white,
           ),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Your Goal ?",
-                  style: TextStyle(fontSize: 28, color: Colors.blue[600]),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  width: size.width * 0.8,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: _goals
-                        .map((e) => outLinedRadionButton(
-                            e.text,
-                            e.svg,
-                            inactiveColor,
-                            size.width * 0.75,
-                            _goals.indexOf(e),
-                            size.height * 0.15))
-                        .toList(),
+          child: SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Your Goal ?",
+                    style: TextStyle(fontSize: 28, color: Colors.blue[600]),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    error,
-                    style: TextStyle(color: Colors.red, fontSize: 14.0),
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                RoundedButton(
-                  press: () async {
-                    if (selectedIndex != -1) {
-                      await setUserGoal(_authService.userUid(), selectedIndex);
-                      print('Selected Index is $selectedIndex');
-                      Navigator.pushReplacementNamed(context, ProfilePageRoute);
-                    } else
-                      setState(() {
-                        error = 'Please Select A Goal';
-                      });
-                  },
-                  text: "Next",
-                  width: size.width * .6,
-                  color: Color.fromRGBO(49, 39, 79, 1),
-                )
-              ]),
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    width: size.width * 0.8,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _goals
+                          .map((e) => outLinedRadionButton(
+                              e.text,
+                              e.svg,
+                              inactiveColor,
+                              size.width * 0.75,
+                              _goals.indexOf(e),
+                              size.height * 0.15))
+                          .toList(),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                    ),
+                  ),
+                  RoundedButton(
+                    press: () async {
+                      if (selectedIndex != -1) {
+                        await user.setUserGoal(user.uid, selectedIndex);
+                        print('Selected Index is $selectedIndex');
+                        Navigator.pushReplacementNamed(
+                            context, AppHomePageRoute);
+                      } else
+                        setState(() {
+                          error = 'Please Select A Goal';
+                        });
+                    },
+                    text: "Next",
+                    width: size.width * .6,
+                    color: Color.fromRGBO(49, 39, 79, 1),
+                  )
+                ]),
+          ),
         ),
       )),
     );
@@ -100,7 +103,6 @@ class _GoalSetupState extends State<GoalSetup> {
         padding: EdgeInsets.all(10.0),
         height: height,
         width: width,
-        margin: EdgeInsets.symmetric(vertical: 10),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: OutlineButton(

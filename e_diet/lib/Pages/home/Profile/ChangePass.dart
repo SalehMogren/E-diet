@@ -1,25 +1,22 @@
-import 'package:e_diet/Model/Auth.dart';
+import 'package:e_diet/Model/UI/Colors.dart';
+import 'package:e_diet/Model/routing_constants.dart';
 import 'package:e_diet/Model/validators.dart';
-import '../Widgets/loading.dart';
+import 'package:e_diet/Pages/Widgets/Background.dart';
+import 'package:e_diet/Pages/Widgets/Buttons.dart';
+import 'package:e_diet/Pages/Widgets/InputFeiled.dart';
+import 'package:e_diet/Pages/Widgets/loading.dart';
 import 'package:flutter/material.dart';
-import '../Widgets/Background.dart';
-import '../Widgets/Buttons.dart';
-import '../Widgets/InputFeiled.dart';
-import '../../Model/routing_constants.dart';
-import '../../Model/UI/Colors.dart';
+import '../../../Model/Auth.dart';
 
-class SignUpContactInfo extends StatefulWidget {
+class ChangePass extends StatefulWidget {
   @override
-  _SignUpContactInfoState createState() => _SignUpContactInfoState();
+  _ChangePassState createState() => _ChangePassState();
 }
 
-class _SignUpContactInfoState extends State<SignUpContactInfo> {
+class _ChangePassState extends State<ChangePass> {
   final AuthService _auth = AuthService();
-  //text field state
-  String email = '';
   String password = '';
   String password2 = '';
-  String name = '';
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
@@ -42,7 +39,7 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Sign Up",
+                        "Changeing The password will have to make to login back agian",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
@@ -53,36 +50,12 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                       ),
                       TextFieldContainer(
                         color: Colors.white,
-                        child: RoundedInputField(
-                          validator: (value) =>
-                              value.length < 2 ? 'Enter your name' : null,
-                          onChanged: (value) {
-                            setState(() => name = value);
-                          },
-                          hintText: "Name",
-                          icon: Icons.person,
-                        ),
-                      ),
-                      TextFieldContainer(
-                        color: Colors.white,
-                        child: RoundedInputField(
-                          validator: EmailValidator.validate,
-                          onChanged: (value) {
-                            setState(() => email = value);
-                          },
-                          hintText: "Email",
-                          icon: Icons.email,
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                      ),
-                      TextFieldContainer(
-                        color: Colors.white,
                         child: RoundedPasswordField(
                           validator: PasswordValidator.validate,
                           onChanged: (value) {
                             setState(() => password = value);
                           },
-                          hintText: "Password",
+                          hintText: "New Password",
                           color: EDPurple0,
                         ),
                       ),
@@ -95,7 +68,7 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                           validator: (value) => password2 != password
                               ? 'Passord\t Doesnt Match '
                               : null,
-                          hintText: "Confirm Password",
+                          hintText: "Confirm New Password",
                           color: EDPurple0,
                         ),
                       ),
@@ -107,42 +80,32 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                         ),
                       ),
                       RoundedButton(
-                        color: Color.fromRGBO(49, 39, 79, 1),
+                        color: EDdarkPurple,
                         width: size.width * 0.5,
-                        text: 'Sign Up',
+                        text: 'Change',
                         press: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result =
-                                await _auth.registerWithEmailAndPassword(
-                                    email, password, name);
+                            dynamic result = await _auth.changePass(password);
                             if (result == null) {
                               setState(() {
-                                error = 'Please supply a valid email';
+                                error = 'Please supply a valid Pass';
                                 loading = false;
                                 _autoValidate = true;
                               });
                             } else
-                              Navigator.pushReplacementNamed(
-                                  context, HealthSetUpRoute);
+                              Navigator.popAndPushNamed(
+                                  context, WelcomeViewRoute);
                           }
                         },
                       ),
-                      SizedBox(height: 12.0),
-                      RoundButtonGoogle(
-                        textColor: ELightBlue0,
+                      RoundedButton(
+                        text: 'Cancel',
+                        color: EDpinkAcc,
                         width: size.width * 0.5,
-                        color: Colors.white,
-                        text: "Google",
-                        press: () => _auth.signInWithGoogle().then((value) =>
-                            value
-                                ? Navigator.pushReplacementNamed(
-                                    context, HealthSetUpRoute)
-                                : Navigator.pushReplacementNamed(
-                                        context, AppHomePageRoute)
-                                    .catchError((onError) =>
-                                        print('Failed to Auth $onError'))),
-                      )
+                        press: () => Navigator.pop(context),
+                      ),
+                      SizedBox(height: 12.0),
                     ],
                   ),
                 ),

@@ -60,19 +60,19 @@ class AuthService {
 
     // ignore: deprecated_member_use
     User user = result.user;
-    // TODO: implement build
 
     // Check user already exist ? linkGoogle Account to it : Create new user
-    getUserEmail(user)
-        .then((value) => () {
+    await getUserEmail(user)
+        .then((value) => () async {
               if (!value) {
-                addUser(user, user.displayName);
+                await addUser(user, user.displayName);
                 newUser = true;
               }
             })
         .catchError((onError) => print('Failed to get user '));
 
     print('user email = ${user.email}');
+    print('Is New User : ? $newUser');
     return newUser;
   }
 
@@ -97,10 +97,25 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
+
+      // Add User To DB by Creating a new Document with uid
+
       addUser(user, name);
+
       return _userFromFireBaseUser(user);
     } catch (e) {
       print(e.toString());
+      return null;
+    }
+  }
+
+  Future changePass(String pass) async {
+    try {
+      await _auth.currentUser
+          .updatePassword(pass)
+          .then((value) => _userFromFireBaseUser(_auth.currentUser));
+    } catch (e) {
+      print('Error Happend When Changing The pass : $e');
       return null;
     }
   }

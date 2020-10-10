@@ -1,70 +1,68 @@
 import 'package:firebase_auth/firebase_auth.dart';
 // Import the firebase_core and cloud_firestore plugin
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final FirebaseFirestore _db = FirebaseFirestore.instance;
-CollectionReference users = _db.collection('users');
+// Use Constant Variables That Will Be Used Store In DB
+//To Prevent Errors Like Spelling Mistakes
+const String NameDB = 'name';
+const String EmailDB = 'email';
+const String PhotoUrlDB = 'photoUrl';
+const String AgeDB = 'age';
+const String WeightDB = 'weight';
+const String HeightDB = 'height';
+const String GoalDB = 'goal';
+const String GenderDB = 'gender';
 
-Future<void> addUser(User user, String name) {
+final FirebaseFirestore _db = FirebaseFirestore.instance;
+final CollectionReference users = _db.collection('users');
+
+// Add User To DB by Creating a new Document with uid
+Future<void> addUser(User user, String name) async {
   String userNmae = user.displayName == null ? name : user.displayName;
   return users
       .doc(user.uid)
-      .set({'name': userNmae, 'email': user.email, 'photoUrl': user.photoURL})
+      .set({
+        NameDB: userNmae,
+        EmailDB: user.email,
+        PhotoUrlDB: user.photoURL == null ? 'null' : user.photoURL
+      })
       .then((value) => print('User Added'))
       .catchError((onError) => print("Failed To Print $onError"));
 }
 
-Future<void> setUserHealth(
-    String uid, int age, int weight, int height, String gender) {
+//Add User Health Info In DB To The Doc Intiated With uid
+Future<void> setUserHealthDB(
+    String uid, int age, double weight, double height, String gender) {
   return users
       .doc(uid)
       .update({
-        'age': age,
-        'weight': weight,
-        'height': height,
-        'gender': gender,
+        AgeDB: age,
+        WeightDB: weight,
+        HeightDB: height,
+        GenderDB: gender,
       })
       .then((value) => print('User Health is Set'))
       .catchError((onError) => print('Failed to set user Health $onError'));
 }
 
-Future<void> setUserGoal(String uid, int goal) {
-  // 0 :  Gain
-  // 1 : Maintain
-  // 2 : Lose
-  String goalString = '';
-
-  switch (goal) {
-    case 0:
-      {
-        goalString = 'Gain';
-      }
-      break;
-    case 1:
-      {
-        goalString = 'Maintain';
-      }
-      break;
-    case 2:
-      {
-        goalString = 'Lose';
-      }
-      break;
-  }
+//Add User Goal Info In DB To The Doc Intiated With uid
+Future<void> setUserGoalDB(String uid, String goalString) {
   return users
       .doc(uid)
       .update({
-        'goal': goalString,
+        GoalDB: goalString,
       })
       .then((value) => print('User Set Goal Successfully'))
       .catchError((onError) => print('Failed To Set Goal $onError'));
 }
 
+//Serach UserEmail In DB
 Future<bool> getUserEmail(User user) async {
   bool found = false;
+  print('Called');
   await users
-      .where('email', isEqualTo: user.email)
+      .where(EmailDB, isEqualTo: user.email)
       .get()
       .then((value) => () {
             found = true;
@@ -76,4 +74,30 @@ Future<bool> getUserEmail(User user) async {
           });
 
   return found;
+}
+
+//Fetch User Data From DB through uid
+Future<Map<String, dynamic>> fetchUserInfoDB(String uid) async {
+  Map<String, dynamic> userInfo = new Map<String, dynamic>();
+  await users.doc(uid).get().then((value) {
+    userInfo.addAll({
+      NameDB: value[NameDB],
+      EmailDB: value[EmailDB],
+      AgeDB: value[AgeDB],
+      WeightDB: value[WeightDB],
+      HeightDB: value[HeightDB],
+      GoalDB: value[GoalDB],
+      GenderDB: value[GenderDB],
+      PhotoUrlDB: value[PhotoUrlDB],
+    });
+    print('User Data Has Been Fetched To Model');
+  }).catchError(
+      (onError) => print('Failed to Fetch User Data to model $onError'));
+
+  return userInfo.isEmpty ? null : userInfo;
+}
+
+Stream<DocumentSnapshot> getUserDoc(String uid) {
+  return users.doc(uid).snapshots().handleError(
+      (onError) => print('Failed To Get User Doc From DB : $onError'));
 }
