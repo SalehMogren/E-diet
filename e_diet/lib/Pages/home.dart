@@ -1,3 +1,4 @@
+import 'package:e_diet/Pages/home/Diary/Diary.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -15,13 +16,10 @@ class _AppHomeState extends State<AppHome> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     Text(
-      'Index 1: Likes',
+      ' Home',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Search',
-      style: optionStyle,
-    ),
+    Diary(),
     ProfilePageNew(),
   ];
 

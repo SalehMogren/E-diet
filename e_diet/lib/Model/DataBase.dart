@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 // Import the firebase_core and cloud_firestore plugin
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Use Constant Variables That Will Be Used Store In DB
@@ -58,21 +58,26 @@ Future<void> setUserGoalDB(String uid, String goalString) {
 }
 
 //Serach UserEmail In DB
-Future<bool> getUserEmail(User user) async {
+bool getUserEmail(User user)  {
   bool found = false;
   print('Called');
-  await users
-      .where(EmailDB, isEqualTo: user.email)
+   FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.uid)
       .get()
-      .then((value) => () {
-            found = true;
-            print("User Found");
-          })
-      .catchError((onError) => () {
-            found = false;
+      .then((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+
+      print('Document exists on the database');
+      found= true;
+    }
+    else {
+      print('Document Doesnt Exist ');
+      found= false;
+    }
+  }).catchError((onError) => () {
             print('Failed to find user $onError');
           });
-
   return found;
 }
 

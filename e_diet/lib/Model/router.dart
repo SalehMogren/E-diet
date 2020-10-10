@@ -1,3 +1,4 @@
+import 'package:e_diet/Pages/AccountSetUp/MealPreferred.dart';
 import 'package:flutter/material.dart';
 import '../Pages/Welcome.dart';
 import '../Pages/AccountSetUp/HealthSetUp.dart';
@@ -17,6 +18,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => HealthSetUp());
     case GoalSetUpRoute:
       return MaterialPageRoute(builder: (context) => GoalSetup());
+    case MealPrefSetUpRoute:
+      return MaterialPageRoute(builder: (context) => MealPreferredSetUp());
 
     default:
       return MaterialPageRoute(builder: (context) => AppHome());
