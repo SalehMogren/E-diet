@@ -10,17 +10,17 @@ class _SwipeState extends State<Swipe> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: testing(),
+      home: Preferred(),
     );
   }
 }
 
-class testing extends StatefulWidget {
+class Preferred extends StatefulWidget {
   @override
-  _testingState createState() => _testingState();
+  _PreferredState createState() => _PreferredState();
 }
 
-class _testingState extends State<testing> {
+class _PreferredState extends State<Preferred> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,128 +28,43 @@ class _testingState extends State<testing> {
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            Dismissible(
-              key: Key('Card'),
-              child: Container(
-                margin: EdgeInsets.only(top: 30, bottom: 0),
-                height: 400,
-                child: Card(
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  // color: Color.fromARGB(250, 112, 19, 179),
-                  child: Column(
-                    children: <Widget>[
-                      Hero(
-                        tag: "imageTag",
-                        child: Image.network(
-                          "https://www.tripsavvy.com/thmb/YGzlP0l5lE79cah0LdH8sSWe7EI=/650x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-535240938-591c2d7b3df78cf5fa4919b5.jpg",
-                          width: 320.0,
-                          height: 300.0,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: Text(
-                          '1',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.purple,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              onDismissed: (direction) {
+            DismissableCard(
+              '1',
+              "https://www.tripsavvy.com/thmb/LTudD1VFIPILWGW5MoCsgBmhOGs=/650x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/464741705-56a3c03d5f9b58b7d0d39809.jpg",
+              'card',
+              30,
+              (DismissDirection direction) {
                 if (direction == DismissDirection.startToEnd) {
-                  print('test');
+                  print('right');
+                } else {
+                  print('left');
                 }
               },
             ),
-            Dismissible(
-              key: Key('Card 1'),
-              child: Container(
-                margin: EdgeInsets.only(top: 20, bottom: 0),
-                height: 400,
-                child: Card(
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  // color: Color.fromARGB(250, 112, 19, 179),
-                  child: Column(
-                    children: <Widget>[
-                      Hero(
-                        tag: "imageTag",
-                        child: Image.network(
-                          "https://www.tripsavvy.com/thmb/YGzlP0l5lE79cah0LdH8sSWe7EI=/650x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-535240938-591c2d7b3df78cf5fa4919b5.jpg",
-                          width: 320.0,
-                          height: 300.0,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: Text(
-                          '2',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.purple,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              onDismissed: (direction) {
+            DismissableCard(
+              '2',
+              "https://www.tripsavvy.com/thmb/LTudD1VFIPILWGW5MoCsgBmhOGs=/650x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/464741705-56a3c03d5f9b58b7d0d39809.jpg",
+              'card 1',
+              20,
+              (DismissDirection direction) {
                 if (direction == DismissDirection.startToEnd) {
-                  print('test');
+                  print('right');
+                } else {
+                  print('left');
                 }
               },
             ),
-            Dismissible(
-              key: Key('Card 2'),
-              child: Container(
-                margin: EdgeInsets.only(top: 10, bottom: 0),
-                height: 400,
-                child: Card(
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  // color: Color.fromARGB(250, 112, 19, 179),
-                  child: Column(
-                    children: <Widget>[
-                      Hero(
-                        tag: "imageTag",
-                        child: Image.network(
-                          "https://www.tripsavvy.com/thmb/LTudD1VFIPILWGW5MoCsgBmhOGs=/650x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/464741705-56a3c03d5f9b58b7d0d39809.jpg",
-                          width: 320.0,
-                          height: 300.0,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: Text(
-                          '3',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.purple,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              onDismissed: (direction) {
-                if (direction == DismissDirection.startToEnd) {}
+            DismissableCard(
+              '3',
+              "https://www.tripsavvy.com/thmb/LTudD1VFIPILWGW5MoCsgBmhOGs=/650x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/464741705-56a3c03d5f9b58b7d0d39809.jpg",
+              'card 2',
+              10,
+              (DismissDirection direction) {
+                if (direction == DismissDirection.startToEnd) {
+                  print('right');
+                } else {
+                  print('left');
+                }
               },
             ),
             Container(
@@ -166,17 +81,50 @@ class _testingState extends State<testing> {
     );
   }
 
-  /*List<Widget> _generateCards() {
-    List<Widget> cardList = new List();
-    for (int x = 0; x < 5; x++) {
-      cardList.add(
-        Card(
-          
+  Widget DismissableCard(
+    String text,
+    String img,
+    String key,
+    double topS,
+    Function Rfunc,
+  ) {
+    return Dismissible(
+      key: Key('$key'),
+      child: Container(
+        margin: EdgeInsets.only(top: topS, bottom: 0),
+        height: 400,
+        child: Card(
+          elevation: 8.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          // color: Color.fromARGB(250, 112, 19, 179),
+          child: Column(
+            children: <Widget>[
+              Hero(
+                tag: "imageTag",
+                child: Image.network(
+                  "$img",
+                  width: 320.0,
+                  height: 300.0,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Text(
+                  '$text',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.purple,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      );
-
-    }
-    
+      ),
+      onDismissed: Rfunc,
+    );
   }
-  */
 }
