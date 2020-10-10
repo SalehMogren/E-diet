@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
                                     });
                                   } else
                                     Navigator.pushNamed(
-                                        context, ProfilePageRoute);
+                                        context, AppHomePageRoute);
                                 }
                               },
                             ),
@@ -143,7 +143,7 @@ class _LoginState extends State<Login> {
                                         ? Navigator.pushReplacementNamed(
                                             context, HealthSetUpRoute)
                                         : Navigator.pushReplacementNamed(
-                                                context, ProfilePageRoute)
+                                                context, AppHomePageRoute)
                                             .catchError((onError) => print(
                                                 'Failed to Auth $onError')))),
                           ),

@@ -1,7 +1,7 @@
+import 'package:e_diet/Model/UserM.dart';
 import 'package:e_diet/Model/routing_constants.dart';
 import 'package:flutter/material.dart';
-import '../../Model/Auth.dart';
-import '../../Model/DataBase.dart';
+import 'package:provider/provider.dart';
 import '../Widgets/Background.dart';
 import '../Widgets/Buttons.dart';
 import '../Widgets/InputFeiled.dart';
@@ -12,22 +12,21 @@ class HealthSetUp extends StatefulWidget {
 }
 
 class _HealthSetUpState extends State<HealthSetUp> {
-  final AuthService _auth = AuthService();
-
   final _formKey = GlobalKey<FormState>();
   String error = '';
 
   int age;
 
-  int weight;
+  double weight;
 
-  int height;
+  double height;
 
   String _gnder = ' ';
   Color activeColor = Color(0xFF5B16D0);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final user = Provider.of<UserModle>(context);
 
     return Scaffold(
       body: Background(
@@ -76,11 +75,11 @@ class _HealthSetUpState extends State<HealthSetUp> {
                     TextFieldContainer(
                       child: RoundedInputField(
                         validator: (value) =>
-                            value.length < 1 || int.parse(value) < 4
+                            value.length < 1 || double.parse(value) < 4
                                 ? 'Enter Valid Weight '
                                 : null,
                         onChanged: (value) {
-                          setState(() => weight = int.parse(value));
+                          setState(() => weight = double.parse(value));
                         },
                         hintText: "Weight in Kg",
                         icon: Icons.assignment,
@@ -93,11 +92,11 @@ class _HealthSetUpState extends State<HealthSetUp> {
                       child: RoundedInputField(
                         hintText: "Height in CM",
                         validator: (value) =>
-                            value.length < 1 || int.parse(value) < 4
+                            value.length < 1 || double.parse(value) < 4
                                 ? 'Enter Valid Height '
                                 : null,
                         onChanged: (value) {
-                          setState(() => height = int.parse(value));
+                          setState(() => height = double.parse(value));
                         },
                         icon: Icons.accessibility,
                         keyboardType: TextInputType.number,
@@ -167,8 +166,8 @@ class _HealthSetUpState extends State<HealthSetUp> {
                       press: () async {
                         if (_formKey.currentState.validate()) {
                           if (_gnder != ' ') {
-                            setUserHealth(
-                                _auth.userUid(), age, weight, height, _gnder);
+                            user.setUserHealth(
+                                user.uid, age, weight, height, _gnder);
                             Navigator.pushNamed(context, GoalSetUpRoute);
                           } else
                             setState(() {
