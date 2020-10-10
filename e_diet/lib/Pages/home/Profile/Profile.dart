@@ -16,9 +16,13 @@ class ProfilePageNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    UserModle testingUser = new UserModle(uid: 'testing');
+    testingUser.name = 'Test User';
+    testingUser.photoUrl = 'null';
     final user = Provider.of<UserModle>(context);
     return FutureBuilder<UserModle>(
         future: user.fetchData(),
+        initialData: testingUser,
         builder: (context, AsyncSnapshot<UserModle> snapshot) {
           if (snapshot == null || snapshot.hasError) {
             return Text('Something went wrong');
@@ -38,7 +42,7 @@ class ProfilePageNew extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      height: size.height * 0.06,
+                      height: size.height * 0.02,
                     ),
                     Card(
                       elevation: 10.0,
@@ -53,47 +57,49 @@ class ProfilePageNew extends StatelessWidget {
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 30),
+                                    vertical: 20, horizontal: 20),
                                 child: CircleAvatar(
-                                  maxRadius: 50,
-                                  backgroundImage:
-                                      snapshot.data.photoUrl == 'null'
-                                          ? AssetImage('assets/profile.png')
-                                          : snapshot.data.photoUrl,
+                                  foregroundColor: ELightBlue0,
+                                  radius: 40,
+                                  backgroundImage: snapshot.data.photoUrl ==
+                                          'null'
+                                      ? AssetImage('assets/profile.png')
+                                      : NetworkImage(snapshot.data.photoUrl),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 20, horizontal: 10),
                                 child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         snapshot.data.name,
+                                        overflow: TextOverflow.clip,
                                         style: TextStyle(
                                             color: EDwhite,
-                                            fontSize: 32,
+                                            fontSize: 26,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  100, 10, 0, 0),
-                                              child: IconButton(
-                                                  icon: Icon(
-                                                    Icons.edit,
-                                                    color: EDwhite,
-                                                  ),
-                                                  onPressed: () {}),
-                                            ),
-                                          ])
+                                      // Row(
+                                      //     mainAxisAlignment:
+                                      //         MainAxisAlignment.end,
+                                      //     crossAxisAlignment:
+                                      //         CrossAxisAlignment.end,
+                                      //     children: <Widget>[
+                                      //       Padding(
+                                      //         padding: EdgeInsets.fromLTRB(
+                                      //             100, 10, 0, 0),
+                                      //         child: IconButton(
+                                      //             icon: Icon(
+                                      //               Icons.edit,
+                                      //               color: EDwhite,
+                                      //             ),
+                                      //             onPressed: () {}),
+                                      //       ),
+                                      //     ])
                                     ]),
                               ),
                             ]),
@@ -112,6 +118,7 @@ class ProfilePageNew extends StatelessWidget {
                       width: size.width * 0.8,
                       press: () async {
                         await _auth.signOut();
+
                         Navigator.popAndPushNamed(context, WelcomeViewRoute);
                       },
                     ),

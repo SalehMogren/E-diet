@@ -53,7 +53,7 @@ class _GoalSetupState extends State<GoalSetup> {
                   ),
                   Container(
                     padding: EdgeInsets.all(10.0),
-                    width: size.width * 0.8,
+                    width: size.width * 0.9,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: _goals
@@ -61,7 +61,7 @@ class _GoalSetupState extends State<GoalSetup> {
                               e.text,
                               e.svg,
                               inactiveColor,
-                              size.width * 0.75,
+                              size.width * 0.8,
                               _goals.indexOf(e),
                               size.height * 0.15))
                           .toList(),
@@ -80,7 +80,7 @@ class _GoalSetupState extends State<GoalSetup> {
                         await user.setUserGoal(user.uid, selectedIndex);
                         print('Selected Index is $selectedIndex');
                         Navigator.pushReplacementNamed(
-                            context, AppHomePageRoute);
+                            context, MealPrefSetUpRoute);
                       } else
                         setState(() {
                           error = 'Please Select A Goal';
@@ -109,12 +109,12 @@ class _GoalSetupState extends State<GoalSetup> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
                 borderSide: BorderSide(
-                    width: 3,
+                    width: 4,
                     color:
                         selectedIndex == index ? activeColor : inactiveColor),
                 onPressed: () => changeIndex(index),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     SvgPicture.asset(
                       svg,
