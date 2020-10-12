@@ -62,16 +62,11 @@ class AuthService {
     User user = result.user;
 
     // Check user already exist ? linkGoogle Account to it : Create new user
-
-              if (!    getUserEmail(user)) {
-                 addUser(user, user.displayName);
-                newUser = true;
-              }
-
-
     print('user email = ${user.email}');
-    print('Is New User : ? $newUser');
-    return newUser;
+
+    return getUserEmail(user)
+        .then((value) => !value)
+        .catchError((onError) => print('Failed To find User $onError'));
   }
 
   // sign In
@@ -132,7 +127,8 @@ class AuthService {
       return null;
     }
   }
-  Future<bool> checkUserEmailInDB()async{
+
+  Future<bool> checkUserEmailInDB() async {
     return getUserEmail(_auth.currentUser);
   }
 }

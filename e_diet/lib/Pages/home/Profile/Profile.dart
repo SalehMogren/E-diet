@@ -116,8 +116,8 @@ class ProfilePageNew extends StatelessWidget {
                       color: EDpinkAcc,
                       text: 'Log out',
                       width: size.width * 0.8,
-                      press: () async {
-                        await _auth.signOut();
+                      press: () {
+                        _auth.signOut();
 
                         Navigator.popAndPushNamed(context, WelcomeViewRoute);
                       },
