@@ -58,27 +58,16 @@ Future<void> setUserGoalDB(String uid, String goalString) {
 }
 
 //Serach UserEmail In DB
-bool getUserEmail(User user)  {
+Future<bool> getUserEmail(User user) async {
   bool found = false;
   print('Called');
-   FirebaseFirestore.instance
-      .collection('users')
-      .doc(user.uid)
-      .get()
-      .then((DocumentSnapshot documentSnapshot) {
-    if (documentSnapshot.exists) {
-
-      print('Document exists on the database');
-      found= true;
-    }
-    else {
-      print('Document Doesnt Exist ');
-      found= false;
-    }
+  return users.where('email', isEqualTo: user.email).get().then((value) {
+    print('Document exists on the database');
+    return true;
   }).catchError((onError) => () {
-            print('Failed to find user $onError');
-          });
-  return found;
+        print('Failed to find user $onError');
+        return false;
+      });
 }
 
 //Fetch User Data From DB through uid
