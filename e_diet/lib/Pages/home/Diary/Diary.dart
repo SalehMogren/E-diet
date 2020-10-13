@@ -8,9 +8,12 @@ class Diary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-// child:     RoundedButton(text: 'Find Email',color: Colors.greenAccent,press: ()=>print(_auth.checkUserEmailInDB().then((value) => print(value))))
-//       ,
-      child: Text('Diary'),
+      child: RoundedButton(
+          text: 'Find Email',
+          color: Colors.greenAccent,
+          press: () =>
+              print(_auth.checkUserEmailInDB().then((value) => print(value)))),
+      // child: Text('Diary'),
     );
   }
 }

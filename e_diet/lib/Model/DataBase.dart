@@ -62,8 +62,14 @@ Future<bool> getUserEmail(User user) async {
   bool found = false;
   print('Called');
   return users.where('email', isEqualTo: user.email).get().then((value) {
-    print('Document exists on the database');
-    return true;
+    if (value.size > 0) {
+      print('Document exists on the database');
+      return true;
+    } else {
+      print('Document not exists on the database');
+
+      return false;
+    }
   }).catchError((onError) => () {
         print('Failed to find user $onError');
         return false;

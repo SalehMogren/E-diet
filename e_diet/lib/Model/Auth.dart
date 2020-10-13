@@ -41,7 +41,6 @@ class AuthService {
 
   Future<bool> signInWithGoogle() async {
     // Trigger the authentication flow
-    bool newUser = false;
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     print("1");
     // Obtain the auth details from the request
@@ -63,10 +62,15 @@ class AuthService {
 
     // Check user already exist ? linkGoogle Account to it : Create new user
     print('user email = ${user.email}');
-
-    return getUserEmail(user)
-        .then((value) => !value)
-        .catchError((onError) => print('Failed To find User $onError'));
+    // If user exist ? true : false;
+    return getUserEmail(user).then((value) async {
+      if (!value) {
+        print(!value);
+        await addUser(user, user.displayName);
+        return true;
+      } else
+        return false;
+    }).catchError((onError) => print('Failed To find User $onError'));
   }
 
   // sign In
