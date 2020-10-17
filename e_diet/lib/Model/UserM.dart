@@ -6,6 +6,8 @@ class UserModle {
   double _weight, _height;
   String _gender, _goal, photoUrl, name, email;
   Map<String, dynamic> _info = new Map<String, dynamic>();
+
+  String _activityLevel;
   UserModle({this.uid});
 
   int get age => _age;
@@ -54,6 +56,42 @@ class UserModle {
     await setUserHealthDB(uid, age, weight, height, gender)
         .then((value) => null)
         .catchError((onError) => print('$onError'));
+  }
+
+  setUserActivityLevel(String userUdi, int activityLevel) async {
+    // 0 :  Very Active
+    // 1 : Modrate
+    // 2 : Light
+    // 3 : Sedentarty
+    String activityLevelString = '';
+
+    switch (activityLevel) {
+      case 0:
+        {
+          activityLevelString = 'Very Active';
+        }
+        break;
+      case 1:
+        {
+          activityLevelString = 'Modrate';
+        }
+        break;
+      case 2:
+        {
+          activityLevelString = 'Light';
+        }
+        break;
+      case 3:
+        {
+          activityLevelString = 'Sedentarty';
+        }
+        break;
+    }
+    this._activityLevel = activityLevelString;
+
+    await setUserActivityLevelDB(uid, activityLevelString);
+    fetchUserInfo();
+    setInfo();
   }
 
   setUserGoal(String userUid, int goal) async {

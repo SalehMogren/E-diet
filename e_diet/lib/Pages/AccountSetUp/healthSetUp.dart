@@ -168,7 +168,8 @@ class _HealthSetUpState extends State<HealthSetUp> {
                           if (_gnder != ' ') {
                             user.setUserHealth(
                                 user.uid, age, weight, height, _gnder);
-                            Navigator.pushNamed(context, GoalSetUpRoute);
+                            Navigator.pushNamed(
+                                context, ActivityLevelSetUpRoute);
                           } else
                             setState(() {
                               error = "Select Gender";
