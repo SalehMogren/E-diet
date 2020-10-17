@@ -5,6 +5,7 @@ import '../Pages/AccountSetUp/HealthSetUp.dart';
 import '../Pages/AccountSetUp/goalSetup.dart';
 import 'routing_constants.dart';
 import '../Pages/home.dart';
+import '../Pages/AccountSetUp/activityLevel.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   // Here we'll handle all the routing
@@ -20,6 +21,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => GoalSetup());
     case MealPrefSetUpRoute:
       return MaterialPageRoute(builder: (context) => MealPreferredSetUp());
+    case ActivityLevelSetUpRoute:
+      return MaterialPageRoute(builder: (context) => ActivityLevelSetUp());
+    case EditActivityLevelSetUpRoute:
+      return MaterialPageRoute(
+          builder: (context) => ActivityLevelSetUp(edit: true));
 
     default:
       return MaterialPageRoute(builder: (context) => AppHome());

@@ -20,6 +20,103 @@ class ProfilePageNew extends StatelessWidget {
     testingUser.name = 'Test User';
     testingUser.photoUrl = 'null';
     final user = Provider.of<UserModle>(context);
+    List<Widget> accountSettings = [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 40, 0),
+        child: Text(
+          'Account Settings',
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
+      ),
+      _buildDivider(),
+      ListTile(
+        leading: Icon(
+          Icons.lock_outline,
+          color: Colors.purple[600],
+          size: 24,
+        ),
+        title: Text(
+          "Change Password",
+          style: TextStyle(fontSize: 18),
+        ),
+        trailing: Icon(Icons.keyboard_arrow_right),
+        onTap: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ChangePass())),
+      ),
+      ListTile(
+        leading: Icon(
+          Icons.person_outline_outlined,
+          color: Colors.purple[600],
+          size: 24,
+        ),
+        title: Text(
+          "Edit Profile Info",
+          style: TextStyle(fontSize: 18),
+        ),
+        trailing: Icon(Icons.keyboard_arrow_right),
+        onTap: () {
+          //open change password
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditProfile(),
+              ));
+        },
+      ),
+    ];
+    List<Widget> dietSettings = [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 40, 0),
+        child: Text(
+          'Diet Settings',
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
+      ),
+      _buildDivider(),
+      ListTile(
+        leading: Icon(
+          Icons.fastfood_outlined,
+          color: Colors.purple[600],
+          size: 24,
+        ),
+        title: Text(
+          "Change Diet",
+          style: TextStyle(fontSize: 18),
+        ),
+        trailing: Icon(Icons.keyboard_arrow_right),
+        //   onTap: () => Navigator.push(
+        //       context, MaterialPageRoute(builder: (context) => EditDiet())),
+      ),
+      ListTile(
+        leading: Icon(
+          Icons.sports,
+          color: Colors.purple[600],
+          size: 24,
+        ),
+        title: Text(
+          "Change Activity Level",
+          style: TextStyle(fontSize: 18),
+        ),
+        trailing: Icon(Icons.keyboard_arrow_right),
+        onTap: () => Navigator.pushNamed(context, EditActivityLevelSetUpRoute),
+      ),
+      ListTile(
+        leading: Icon(
+          Icons.flag,
+          color: Colors.purple[600],
+          size: 24,
+        ),
+        title: Text(
+          "Change Goal",
+          style: TextStyle(fontSize: 18),
+        ),
+        trailing: Icon(Icons.keyboard_arrow_right),
+        onTap: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => EditGoal())),
+      ),
+    ];
     return FutureBuilder<UserModle>(
         future: user.fetchData(),
         initialData: testingUser,
@@ -83,32 +180,17 @@ class ProfilePageNew extends StatelessWidget {
                                             fontSize: 26,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      // Row(
-                                      //     mainAxisAlignment:
-                                      //         MainAxisAlignment.end,
-                                      //     crossAxisAlignment:
-                                      //         CrossAxisAlignment.end,
-                                      //     children: <Widget>[
-                                      //       Padding(
-                                      //         padding: EdgeInsets.fromLTRB(
-                                      //             100, 10, 0, 0),
-                                      //         child: IconButton(
-                                      //             icon: Icon(
-                                      //               Icons.edit,
-                                      //               color: EDwhite,
-                                      //             ),
-                                      //             onPressed: () {}),
-                                      //       ),
-                                      //     ])
                                     ]),
                               ),
                             ]),
                       ),
                     ),
                     SizedBox(
-                      height: size.height * 0.05,
+                      height: size.height * 0.005,
                     ),
-                    settingsOption(context),
+                    settingsOption(context, accountSettings),
+
+                    settingsOption(context, dietSettings),
                     // SizedBox(
                     //   height: size.height * 0.04,
                     // ),
@@ -130,80 +212,14 @@ class ProfilePageNew extends StatelessWidget {
         });
   }
 
-  Widget settingsOption(BuildContext context) {
+  Widget settingsOption(BuildContext context, List<Widget> child) {
     return Card(
         elevation: 4.0,
-        margin: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 16.0),
+        margin: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 10.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Icon(
-                Icons.lock_outline,
-                color: Colors.purple[600],
-                size: 24,
-              ),
-              title: Text(
-                "Change Password",
-                style: TextStyle(fontSize: 18),
-              ),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ChangePass())),
-            ),
-            _buildDivider(),
-            ListTile(
-              leading: Icon(
-                Icons.person_outline_outlined,
-                color: Colors.purple[600],
-                size: 24,
-              ),
-              title: Text(
-                "Edit Profile Info",
-                style: TextStyle(fontSize: 18),
-              ),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {
-                //open change password
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditProfile(),
-                    ));
-              },
-            ),
-            _buildDivider(),
-            ListTile(
-              leading: Icon(
-                Icons.fastfood_outlined,
-                color: Colors.purple[600],
-                size: 24,
-              ),
-              title: Text(
-                "Change Diet",
-                style: TextStyle(fontSize: 18),
-              ),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              //   onTap: () => Navigator.push(
-              //       context, MaterialPageRoute(builder: (context) => EditDiet())),
-            ),
-            _buildDivider(),
-            ListTile(
-              leading: Icon(
-                Icons.flag,
-                color: Colors.purple[600],
-                size: 24,
-              ),
-              title: Text(
-                "Change Goal",
-                style: TextStyle(fontSize: 18),
-              ),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => EditGoal())),
-            ),
-          ],
+          children: child,
         ));
   }
 

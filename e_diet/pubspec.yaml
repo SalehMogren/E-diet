@@ -62,6 +62,11 @@ flutter:
     - gain_undraw.svg
     - maintain_undraw.svg
     - Lose_undraw.svg
+    - undraw_sedentary.svg
+    - undraw_light.svg
+    - undraw_modrate.svg
+    - undraw_veryActive.svg
+    
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

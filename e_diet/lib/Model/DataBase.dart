@@ -12,6 +12,7 @@ const String AgeDB = 'age';
 const String WeightDB = 'weight';
 const String HeightDB = 'height';
 const String GoalDB = 'goal';
+const String ActivityLevelDB = 'activityLevel';
 const String GenderDB = 'gender';
 
 final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -55,6 +56,16 @@ Future<void> setUserGoalDB(String uid, String goalString) {
       })
       .then((value) => print('User Set Goal Successfully'))
       .catchError((onError) => print('Failed To Set Goal $onError'));
+}
+
+Future<void> setUserActivityLevelDB(String uid, String activityLevelString) {
+  return users
+      .doc(uid)
+      .update({
+        ActivityLevelDB: activityLevelString,
+      })
+      .then((value) => print('User Set ActivityLevel Successfully'))
+      .catchError((onError) => print('Failed To Set ActivityLevel $onError'));
 }
 
 //Serach UserEmail In DB
