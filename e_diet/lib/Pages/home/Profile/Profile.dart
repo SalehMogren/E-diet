@@ -76,19 +76,17 @@ class ProfilePageNew extends StatelessWidget {
       ),
       _buildDivider(),
       ListTile(
-        leading: Icon(
-          Icons.fastfood_outlined,
-          color: Colors.purple[600],
-          size: 24,
-        ),
-        title: Text(
-          "Change Diet",
-          style: TextStyle(fontSize: 18),
-        ),
-        trailing: Icon(Icons.keyboard_arrow_right),
-        //   onTap: () => Navigator.push(
-        //       context, MaterialPageRoute(builder: (context) => EditDiet())),
-      ),
+          leading: Icon(
+            Icons.fastfood_outlined,
+            color: Colors.purple[600],
+            size: 24,
+          ),
+          title: Text(
+            "Change Diet",
+            style: TextStyle(fontSize: 18),
+          ),
+          trailing: Icon(Icons.keyboard_arrow_right),
+          onTap: () => Navigator.pushNamed(context, EditMealPrefSetUpRoute)),
       ListTile(
         leading: Icon(
           Icons.sports,

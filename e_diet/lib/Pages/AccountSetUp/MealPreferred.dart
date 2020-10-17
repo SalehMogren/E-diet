@@ -1,9 +1,13 @@
+import 'package:e_diet/Model/UI/Colors.dart';
 import 'package:e_diet/Model/routing_constants.dart';
 import 'package:e_diet/Pages/Widgets/Background.dart';
 import 'package:e_diet/Pages/Widgets/Buttons.dart';
 import 'package:flutter/material.dart';
 
 class MealPreferredSetUp extends StatefulWidget {
+  final bool edit;
+
+  const MealPreferredSetUp({Key key, this.edit = false}) : super(key: key);
   @override
   _MealPreferredSetUpState createState() => _MealPreferredSetUpState();
 }
@@ -19,6 +23,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             RoundedButton(
               text: 'Done',
               press: () {
+                // add method to sent user input to model
                 Navigator.popAndPushNamed(context, AppHomePageRoute);
               },
               color: Colors.greenAccent[400],
@@ -66,10 +71,25 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
               alignment: Alignment.topCenter,
               margin: EdgeInsets.only(top: 90),
               child: Text(
-                'Swipe Right If You Prefer This Meal, Left Otherwise',
+                widget.edit
+                    ? 'Update your meal prefrence '
+                    : 'Swipe Right If You Prefer This Meal, Left Otherwise',
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              margin: EdgeInsets.only(top: 50),
+              child: RoundedButton(
+                text: 'Cancel',
+                color: EDpinkAcc,
+                press: widget.edit
+                    ? () {
+                        Navigator.pop(context);
+                      }
+                    : null,
+              ),
+            )
           ],
         ),
       ),

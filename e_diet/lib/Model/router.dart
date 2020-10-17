@@ -21,6 +21,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => GoalSetup());
     case MealPrefSetUpRoute:
       return MaterialPageRoute(builder: (context) => MealPreferredSetUp());
+    case EditMealPrefSetUpRoute:
+      return MaterialPageRoute(
+          builder: (context) => MealPreferredSetUp(edit: true));
+
     case ActivityLevelSetUpRoute:
       return MaterialPageRoute(builder: (context) => ActivityLevelSetUp());
     case EditActivityLevelSetUpRoute:

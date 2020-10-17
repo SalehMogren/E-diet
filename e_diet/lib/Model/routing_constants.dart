@@ -6,3 +6,4 @@ const String ActivityLevelSetUpRoute = 'activityLevelSetUp';
 const String EditActivityLevelSetUpRoute = 'editActivityLevelSetUp';
 
 const String MealPrefSetUpRoute = 'mealPrefSetUp';
+const String EditMealPrefSetUpRoute = 'editMealPrefSetUp';
