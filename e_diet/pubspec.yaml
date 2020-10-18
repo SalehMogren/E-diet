@@ -34,8 +34,15 @@ dependencies:
   google_nav_bar: ^3.0.1
   font_awesome_flutter: ^8.10.0
   flutter_tindercard: ^0.2.0
+  flutter_launcher_icons: "^0.7.0"
 
-
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/appLogo/ediet App_iOS.png"
+  image_path_android: "assets/appLogo/ediet App_android.png"
+  adaptive_icon_background: "assets/appLogo/ic_launcher_background.png"
+  adaptive_icon_foreground: "assets/appLogo/ic_launcher_foreground.png"
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
