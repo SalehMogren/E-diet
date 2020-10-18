@@ -115,11 +115,12 @@ class DismissableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Dismissible(
       key: UniqueKey(),
       child: Container(
         margin: EdgeInsets.only(top: topS, bottom: 0),
-        height: 400,
+        height: size.height * .55,
         child: Card(
           elevation: 8.0,
           shape: RoundedRectangleBorder(
@@ -130,17 +131,23 @@ class DismissableCard extends StatelessWidget {
             children: <Widget>[
               Hero(
                 tag: "imageTag" + keyStr,
-                child: Image.network(
-                  "$img",
-                  width: 320.0,
-                  height: 300.0,
-                  fit: BoxFit.fill,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      img,
+                      width: size.width * .8,
+                      height: size.height * .4,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               Container(
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
-                  '$text',
+                  text,
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.purple,
