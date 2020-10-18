@@ -145,7 +145,7 @@ class ProfilePageNew extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20)),
                       color: EDdarkPurple.withOpacity(0.95),
                       child: Container(
-                        height: size.height * 0.2,
+                        height: size.height * 0.14,
                         child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
