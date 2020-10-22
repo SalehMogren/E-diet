@@ -1,3 +1,6 @@
+import 'package:e_diet/Model/ApiServices.dart';
+import 'package:e_diet/Model/meal_plan_model.dart';
+
 import 'DataBase.dart';
 
 class UserModle {
@@ -154,6 +157,8 @@ class UserModle {
           case GenderDB:
             this._gender = value;
             break;
+          case ActivityLevelDB:
+            this._activityLevel = value;
         }
       });
       // name = value[NameDB];
@@ -178,6 +183,13 @@ class UserModle {
       GoalDB: this._goal,
       GenderDB: this._gender,
       PhotoUrlDB: this.photoUrl,
+      ActivityLevelDB: this._activityLevel
     });
+  }
+
+  Future<MealPlan> fetchUserPlan() async {
+    return ApiService.instance
+        .generateMealPlan(diet: 'None', targetCalories: 2000)
+        .then((value) => null);
   }
 }

@@ -101,9 +101,10 @@ The child is a column widget that returns nutrient information in Rows
       onTap: () async {
         Recipe recipe =
             await ApiService.instance.fetchRecipe(meal.id.toString());
-        print(recipe.image.toString());
-        print(recipe.spoonacularSourceUrl.toString());
-        print(recipe.sourceName.toString());
+        print(widget.mealPlan.meals[0].recipe.calories.toString());
+        print(recipe.carbs.toString());
+        print(recipe.protein.toString());
+        print(recipe.fat.toString());
 
         Navigator.push(
             context,
@@ -122,6 +123,11 @@ The child is a column widget that returns nutrient information in Rows
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
               color: Colors.white,
+              image: DecorationImage(
+                image: NetworkImage(
+                    widget.mealPlan.meals[index].recipe.image.toString()),
+                fit: BoxFit.cover,
+              ),
               borderRadius: BorderRadius.circular(15),
               boxShadow: [
                 BoxShadow(
