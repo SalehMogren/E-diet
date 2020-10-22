@@ -73,7 +73,11 @@ flutter:
     - undraw_light.svg
     - undraw_modrate.svg
     - undraw_veryActive.svg
-    
+    - assets/fruit_granola.jpg
+    - assets/keto_snack.jpg
+    - assets/pesto_pasta.jpg
+    - assets/121711821-healthy-meal-fried-fish.jpg
+
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

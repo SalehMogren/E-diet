@@ -1,4 +1,5 @@
 import 'package:e_diet/Pages/home/Diary/Diary.dart';
+import 'package:e_diet/Pages/home/Diet/diet.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -15,10 +16,7 @@ class _AppHomeState extends State<AppHome> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      ' Home',
-      style: optionStyle,
-    ),
+    Diet(),
     Diary(),
     ProfilePageNew(),
   ];
