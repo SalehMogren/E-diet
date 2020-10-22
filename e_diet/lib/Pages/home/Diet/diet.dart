@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:e_diet/Pages/home/Diet/meal.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
+import 'package:e_diet/Pages/Widgets/Buttons.dart';
 
 class Diet extends StatelessWidget {
   @override
@@ -69,7 +70,7 @@ class Diet extends StatelessWidget {
                           children: <Widget>[
                             _IngredientProgress(
                               ingredient: "Protein",
-                              progress: 0.3,
+                              progress: 0.25,
                               progressColor: Colors.green,
                               leftAmount: 72,
                               width: width * 0.28,
@@ -79,7 +80,7 @@ class Diet extends StatelessWidget {
                             ),
                             _IngredientProgress(
                               ingredient: "Carbs",
-                              progress: 0.2,
+                              progress: 0.23,
                               progressColor: Colors.red,
                               leftAmount: 252,
                               width: width * 0.28,
@@ -458,38 +459,31 @@ class CustomDialog extends StatelessWidget {
                 Text(description, style: TextStyle(fontSize: 16)),
                 SizedBox(height: 24.0),
                 Text(
-                  "Protein:${carbs}",
+                  "Protein:${protein}",
                   style: TextStyle(
-                    fontSize: 24.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
                   "Carps:${carbs}",
                   style: TextStyle(
-                    fontSize: 24.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  "Fat:${carbs}",
+                  "Fat:${fat}",
                   style: TextStyle(
-                    fontSize: 24.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'Ate it',
-                      style: TextStyle(color: Colors.blueAccent),
-                    ),
-                  ),
-                )
+                RoundedButton(
+                  color: Colors.blue,
+                  text: "Ate it",
+                  press: () {},
+                ),
               ],
             )),
         Positioned(
