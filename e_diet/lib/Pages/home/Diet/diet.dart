@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:e_diet/Pages/home/Diet/meal.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
@@ -340,13 +341,26 @@ class _MealCard extends StatelessWidget {
                         color: Colors.blueGrey,
                       ),
                     ),
-                    Text(
-                      meal.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
+                    RaisedButton(
+                      child: Text(meal.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: Colors.black,
+                          )),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => CustomDialog(
+                                  image: meal.imagePath,
+                                  title: meal.name,
+                                  description:
+                                      "hjhbf dhjbhjh hbjbonj ibhhlihlhlhl higyohhbhlb gyogyohiohh ",
+                                  protein: meal.mealProtein,
+                                  carbs: meal.mealCarbs,
+                                  fat: meal.mealFat,
+                                ));
+                      },
                     ),
                     Text(
                       "${meal.kiloCaloriesBurnt} kcal",
@@ -384,6 +398,110 @@ class _MealCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title, description, buttonText, image, protein, carbs, fat;
+
+  CustomDialog(
+      {this.title,
+      this.description,
+      this.buttonText,
+      this.image,
+      this.carbs,
+      this.fat,
+      this.protein});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+            padding:
+                EdgeInsets.only(top: 160, bottom: 150, left: 30, right: 30),
+            margin: EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(17),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10.0,
+                    offset: Offset(0.0, 10.0),
+                  )
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(height: 24.0),
+                Text(description, style: TextStyle(fontSize: 16)),
+                SizedBox(height: 24.0),
+                Text(
+                  "Protein:${carbs}",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  "Carps:${carbs}",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  "Fat:${carbs}",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Ate it',
+                      style: TextStyle(color: Colors.blueAccent),
+                    ),
+                  ),
+                )
+              ],
+            )),
+        Positioned(
+            top: 0,
+            left: 16,
+            right: 16,
+            child: CircleAvatar(
+              backgroundColor: Colors.blueAccent,
+              radius: 80,
+              backgroundImage: AssetImage(image),
+            ))
+      ],
     );
   }
 }
