@@ -100,6 +100,7 @@ Future<Map<String, dynamic>> fetchUserInfoDB(String uid) async {
       GoalDB: value[GoalDB],
       GenderDB: value[GenderDB],
       PhotoUrlDB: value[PhotoUrlDB],
+      ActivityLevelDB: value[ActivityLevelDB],
     });
     print('User Data Has Been Fetched To Model');
   }).catchError(

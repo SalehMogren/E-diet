@@ -1,7 +1,11 @@
+import 'package:e_diet/Model/ApiServices.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
+import 'package:e_diet/Model/meal_plan_model.dart';
 import 'package:e_diet/Model/routing_constants.dart';
+import 'package:e_diet/Model/screen.dart';
 import 'package:e_diet/Pages/Widgets/Background.dart';
 import 'package:e_diet/Pages/Widgets/Buttons.dart';
+import 'package:e_diet/Pages/home.dart';
 import 'package:flutter/material.dart';
 
 class MealPreferredSetUp extends StatefulWidget {
@@ -11,6 +15,19 @@ class MealPreferredSetUp extends StatefulWidget {
   @override
   _MealPreferredSetUpState createState() => _MealPreferredSetUpState();
 }
+
+/*void _searchMealPlan() async {
+    MealPlan mealPlan = await ApiService.instance.generateMealPlan(
+      targetCalories: 2000,
+      diet: "None",
+    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => AppHome(mealPlan: mealPlan),
+        ));
+  }
+*/
 
 class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
   @override
@@ -22,9 +39,20 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
           children: <Widget>[
             RoundedButton(
               text: 'Done',
-              press: () {
+              press: () async {
                 // add method to sent user input to model
-                Navigator.popAndPushNamed(context, AppHomePageRoute);
+
+                //here we generate the plan and send it to the mealscreen
+                MealPlan mealPlan = await ApiService.instance.generateMealPlan(
+                  targetCalories: 2000,
+                  diet: "None",
+                );
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => MealsScreen(mealPlan: mealPlan),
+                    ));
               },
               color: Colors.greenAccent[400],
             ),

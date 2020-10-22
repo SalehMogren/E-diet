@@ -34,7 +34,13 @@ dependencies:
   google_nav_bar: ^3.0.1
   font_awesome_flutter: ^8.10.0
   flutter_tindercard: ^0.2.0
+
+  http: ^0.12.2
+  webview_flutter: ^1.0.3
+
+
   flutter_launcher_icons: "^0.7.0"
+
 
 flutter_icons:
   ios: true
