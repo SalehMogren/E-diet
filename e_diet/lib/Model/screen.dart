@@ -93,8 +93,7 @@ The child is a column widget that returns nutrient information in Rows
     //We return stack widget with center alignment
     return GestureDetector(
       //We wrap our stack with gesture detector to navigate to webview page
-
-      /*
+/*
       The async onTap function will fetch the recipe by id using the 
       fetchRecipe method.
       It will then navigate to RecipeScreen, while parsing in our mealType and recipe
@@ -102,6 +101,10 @@ The child is a column widget that returns nutrient information in Rows
       onTap: () async {
         Recipe recipe =
             await ApiService.instance.fetchRecipe(meal.id.toString());
+        print(recipe.image.toString());
+        print(recipe.spoonacularSourceUrl.toString());
+        print(recipe.sourceName.toString());
+
         Navigator.push(
             context,
             MaterialPageRoute(

@@ -26,7 +26,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
        * javascriptMode - set to unrestricted so as JS can load in the webview
        */
       body: WebView(
-        initialUrl: widget.recipe.sourceUrl,
+        initialUrl: widget.recipe.spoonacularSourceUrl,
         //JS unrestricted, so that JS can execute in the webview
         javascriptMode: JavascriptMode.unrestricted,
       ),

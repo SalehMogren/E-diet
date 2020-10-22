@@ -2,15 +2,17 @@
 in our webview
 */
 class Recipe {
-  final String sourceUrl;
+  final String spoonacularSourceUrl;
+  final String image;
+  final String sourceName;
 //has Equipment, Ingredients, Steps, e.t.c
-  Recipe({
-    this.sourceUrl,
-  });
+  Recipe({this.spoonacularSourceUrl, this.image, this.sourceName});
 //The spoonacularSourceURL displays the meals recipe in our webview
   factory Recipe.fromMap(Map<String, dynamic> map) {
     return Recipe(
-      sourceUrl: map['sourceUrl'],
+      spoonacularSourceUrl: map['spoonacularSourceUrl'],
+      image: map['image'],
+      sourceName: map['sourceName'],
     );
   }
 }
