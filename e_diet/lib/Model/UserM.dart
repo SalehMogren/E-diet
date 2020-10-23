@@ -50,6 +50,10 @@ class UserModle {
     if (mealPlan == null)
       await Future.delayed(Duration(seconds: 2), await fetchUserPlan());
 
+    if (nutrition == null)
+      nutrition =
+          new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+
     print('fetch data');
     return this;
   }

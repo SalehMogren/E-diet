@@ -69,9 +69,13 @@ class Diet extends StatelessWidget {
                           Row(
                             children: <Widget>[
                               _RadialProgress(
+                                calTxt: snapshot.data.nutrition.caloriesLeft
+                                    .toInt()
+                                    .toString(),
                                 width: width * 0.3,
                                 height: width * 0.28,
-                                progress: 0.7,
+                                progress: snapshot.data.nutrition.calories /
+                                    snapshot.data.nutrition.caloriesLeft,
                               ),
                               SizedBox(
                                 width: 30,
@@ -84,9 +88,12 @@ class Diet extends StatelessWidget {
                                 children: <Widget>[
                                   _IngredientProgress(
                                     ingredient: "Protein",
-                                    progress: 0.25,
+                                    progress: snapshot.data.nutrition.protein /
+                                        snapshot.data.nutrition.proteinLeft,
                                     progressColor: Colors.green,
-                                    leftAmount: 72,
+                                    leftAmount: snapshot
+                                        .data.nutrition.proteinLeft
+                                        .toInt(),
                                     width: width * 0.28,
                                   ),
                                   SizedBox(
@@ -94,9 +101,12 @@ class Diet extends StatelessWidget {
                                   ),
                                   _IngredientProgress(
                                     ingredient: "Carbs",
-                                    progress: 0.23,
+                                    progress: snapshot.data.nutrition.carbs /
+                                        snapshot.data.nutrition.carbsLeft,
                                     progressColor: Colors.red,
-                                    leftAmount: 252,
+                                    leftAmount: snapshot
+                                        .data.nutrition.carbsLeft
+                                        .toInt(),
                                     width: width * 0.28,
                                   ),
                                   SizedBox(
@@ -104,9 +114,11 @@ class Diet extends StatelessWidget {
                                   ),
                                   _IngredientProgress(
                                     ingredient: "Fat",
-                                    progress: 0.1,
+                                    progress: snapshot.data.nutrition.fat /
+                                        snapshot.data.nutrition.fatLeft,
                                     progressColor: Colors.yellow,
-                                    leftAmount: 61,
+                                    leftAmount:
+                                        snapshot.data.nutrition.fatLeft.toInt(),
                                     width: width * 0.28,
                                   ),
                                 ],
@@ -148,7 +160,12 @@ class Diet extends StatelessWidget {
                               padding: const EdgeInsets.all(14.0),
                               child: Row(
                                 children: snapshot.data.mealPlan.meals
-                                    .map((e) => _MealCard(meal: e))
+                                    .map((e) => _MealCard(
+                                          meal: e,
+                                          pressAte: () {
+                                            snapshot.data.nutrition.ate(e);
+                                          },
+                                        ))
                                     .toList(),
                               ),
                             ),
@@ -232,8 +249,9 @@ class _IngredientProgress extends StatelessWidget {
 
 class _RadialProgress extends StatelessWidget {
   final double height, width, progress;
-
-  const _RadialProgress({Key key, this.height, this.width, this.progress})
+  final String calTxt;
+  const _RadialProgress(
+      {Key key, this.height, this.width, this.progress, this.calTxt})
       : super(key: key);
 
   @override
@@ -251,7 +269,7 @@ class _RadialProgress extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "1731",
+                  text: calTxt,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
@@ -308,9 +326,11 @@ class _RadialPainter extends CustomPainter {
 }
 
 class _MealCard extends StatelessWidget {
+  final Function pressAte;
   final Meal meal;
 
-  const _MealCard({Key key, @required this.meal}) : super(key: key);
+  const _MealCard({Key key, @required this.meal, this.pressAte})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -319,6 +339,7 @@ class _MealCard extends StatelessWidget {
         showDialog(
             context: context,
             builder: (context) => CustomDialog(
+                  ate: pressAte,
                   image: meal.recipe.image,
                   title: meal.title,
                   description: meal.recipe.summary,
@@ -425,9 +446,10 @@ class _MealCard extends StatelessWidget {
 
 class CustomDialog extends StatelessWidget {
   final String title, description, buttonText, image, protein, carbs, fat;
-
+  final Function ate;
   CustomDialog(
       {this.title,
+      this.ate,
       this.description,
       this.buttonText,
       this.image,
@@ -511,7 +533,7 @@ class CustomDialog extends StatelessWidget {
                       RoundedButton(
                           color: EDlightBlueText,
                           text: "Ate it",
-                          press: () {},
+                          press: ate,
                           width: size.width * 0.4),
                       RoundedButton(
                           press: () {},
