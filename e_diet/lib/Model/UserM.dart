@@ -1,3 +1,4 @@
+import 'package:e_diet/Model/DietLogic/Nutrition.dart';
 import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
 
@@ -8,6 +9,7 @@ class UserModle {
   int _age;
   double _weight, _height;
   String _gender, _goal, photoUrl, name, email;
+  Nutrition nutrition;
   Map<String, dynamic> _info = new Map<String, dynamic>();
   MealPlan mealPlan;
   String _activityLevel;
@@ -58,7 +60,11 @@ class UserModle {
     this._weight = weight;
     this._height = height;
     this._gender = gender;
-    if (_goal != null) setInfo();
+    if (_goal != null) {
+      setInfo();
+      nutrition =
+          new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+    }
 
     await setUserHealthDB(uid, age, weight, height, gender)
         .then((value) => null)
@@ -95,9 +101,13 @@ class UserModle {
         break;
     }
     this._activityLevel = activityLevelString;
-
+    if (_goal != null) {
+      nutrition =
+          new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+    }
     await setUserActivityLevelDB(uid, activityLevelString);
     fetchUserInfo();
+
     setInfo();
   }
 
@@ -125,6 +135,9 @@ class UserModle {
         break;
     }
     this._goal = goalString;
+
+    nutrition =
+        new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
 
     await setUserGoalDB(uid, goalString);
     fetchUserInfo();
