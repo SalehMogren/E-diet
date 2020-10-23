@@ -1,8 +1,7 @@
-import 'package:e_diet/Model/ApiServices.dart';
+import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
-import 'package:e_diet/Model/meal_plan_model.dart';
-import 'package:e_diet/Model/routing_constants.dart';
-import 'package:e_diet/Model/screen.dart';
+import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
+import 'package:e_diet/Model/UI/routing_constants.dart';
 import 'package:e_diet/Pages/Widgets/Background.dart';
 import 'package:e_diet/Pages/Widgets/Buttons.dart';
 import 'package:e_diet/Pages/home.dart';
@@ -43,16 +42,8 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
                 // add method to sent user input to model
 
                 //here we generate the plan and send it to the mealscreen
-                MealPlan mealPlan = await ApiService.instance.generateMealPlan(
-                  targetCalories: 2000,
-                  diet: "None",
-                );
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => MealsScreen(mealPlan: mealPlan),
-                    ));
+                Navigator.pushNamed(context, AppHomePageRoute);
               },
               color: Colors.greenAccent[400],
             ),

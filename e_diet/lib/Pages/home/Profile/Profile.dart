@@ -1,5 +1,5 @@
-import 'package:e_diet/Model/Auth.dart';
-import 'package:e_diet/Model/routing_constants.dart';
+import 'package:e_diet/Model/Services/Auth.dart';
+import 'package:e_diet/Model/UI/routing_constants.dart';
 import 'package:e_diet/Pages/Widgets/Background.dart';
 
 import 'package:e_diet/Pages/home/Profile/ChangePass.dart';

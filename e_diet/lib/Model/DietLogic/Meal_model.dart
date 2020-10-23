@@ -1,6 +1,5 @@
-import 'package:e_diet/Model/ApiServices.dart';
-import 'package:e_diet/Model/recipe_model.dart';
-import 'package:flutter/services.dart';
+import 'package:e_diet/Model/Services/ApiServices.dart';
+import 'package:e_diet/Model/DietLogic/recipe_model.dart';
 
 class Meal {
   int id;
@@ -9,6 +8,7 @@ class Meal {
   int readyInMinutes;
   int servings;
   String sourceUrl;
+  String dishType;
   Recipe recipe;
 
   Meal(int id, String imageType, String title, int readyInMinutes, int servings,

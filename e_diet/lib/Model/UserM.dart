@@ -1,7 +1,7 @@
-import 'package:e_diet/Model/ApiServices.dart';
-import 'package:e_diet/Model/meal_plan_model.dart';
+import 'package:e_diet/Model/Services/ApiServices.dart';
+import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
 
-import 'DataBase.dart';
+import 'Services/DataBase.dart';
 
 class UserModle {
   final String uid;
@@ -9,7 +9,7 @@ class UserModle {
   double _weight, _height;
   String _gender, _goal, photoUrl, name, email;
   Map<String, dynamic> _info = new Map<String, dynamic>();
-
+  MealPlan mealPlan;
   String _activityLevel;
   UserModle({this.uid});
 
@@ -41,12 +41,16 @@ class UserModle {
     };
   }
 
-  Future<UserModle> fetchData() =>
-      Future.delayed(Duration(seconds: 0), () async {
-        if (name == null) await fetchUserInfo();
-        print('fetch data');
-        return this;
-      });
+  Future<UserModle> fetchData() async {
+    if (name == null) {
+      await Future.delayed(Duration(seconds: 0), await fetchUserInfo());
+    }
+    if (mealPlan == null)
+      await Future.delayed(Duration(seconds: 2), await fetchUserPlan());
+
+    print('fetch data');
+    return this;
+  }
 
   setUserHealth(
       String uid, int age, double weight, double height, String gender) async {
@@ -161,14 +165,6 @@ class UserModle {
             this._activityLevel = value;
         }
       });
-      // name = value[NameDB];
-      // email = value[EmailDB];
-      // _age = int.parse(value[AgeDB]);
-      // _weight = double.parse(value[WeightDB]);
-      // _height = double.parse(value[HeightDB]);
-      // _gender = value[GenderDB];
-      // _goal = value[GoalDB];
-      // photoUrl = value[PhotoUrlDB];
       print('User Date Has Been Fetched');
     }).catchError((onError) => print('Failed To Fetch $onError'));
   }
@@ -187,9 +183,14 @@ class UserModle {
     });
   }
 
-  Future<MealPlan> fetchUserPlan() async {
-    return ApiService.instance
-        .generateMealPlan(diet: 'None', targetCalories: 2000)
-        .then((value) => null);
+  fetchUserPlan() async {
+    if (this.mealPlan == null)
+      await ApiService.instance
+          .generateMealPlan(diet: 'None', targetCalories: 2000)
+          .then((value) {
+        this.mealPlan = value;
+        print('MealPlan Has Been Fetched');
+      }).catchError(
+              (onError) => print('Failed To Fetch User MealPlan $onError'));
   }
 }

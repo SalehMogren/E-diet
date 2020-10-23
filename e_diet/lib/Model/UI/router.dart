@@ -1,11 +1,11 @@
 import 'package:e_diet/Pages/AccountSetUp/MealPreferred.dart';
 import 'package:flutter/material.dart';
-import '../Pages/Welcome.dart';
-import '../Pages/AccountSetUp/HealthSetUp.dart';
-import '../Pages/AccountSetUp/goalSetup.dart';
+import '../../Pages/Welcome.dart';
+import '../../Pages/AccountSetUp/HealthSetUp.dart';
+import '../../Pages/AccountSetUp/goalSetup.dart';
 import 'routing_constants.dart';
-import '../Pages/home.dart';
-import '../Pages/AccountSetUp/activityLevel.dart';
+import '../../Pages/home.dart';
+import '../../Pages/AccountSetUp/activityLevel.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   // Here we'll handle all the routing

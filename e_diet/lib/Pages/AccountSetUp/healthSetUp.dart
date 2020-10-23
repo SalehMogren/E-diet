@@ -1,5 +1,5 @@
 import 'package:e_diet/Model/UserM.dart';
-import 'package:e_diet/Model/routing_constants.dart';
+import 'package:e_diet/Model/UI/routing_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/Background.dart';

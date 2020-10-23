@@ -1,10 +1,10 @@
-import 'package:e_diet/Model/Auth.dart';
+import 'package:e_diet/Model/Services/Auth.dart';
 import '../Widgets/loading.dart';
 import 'package:flutter/material.dart';
 import '../Widgets/Background.dart';
 import '../Widgets/Buttons.dart';
 import '../Widgets/InputFeiled.dart';
-import '../../Model/routing_constants.dart';
+import '../../Model/UI/routing_constants.dart';
 import '../../Model/UI/Colors.dart';
 
 class Login extends StatefulWidget {
