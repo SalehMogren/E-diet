@@ -1,6 +1,6 @@
+import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
 import 'package:e_diet/Model/UserM.dart';
-import 'package:e_diet/Pages/Widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +22,6 @@ class Diet extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Text('Loading...');
           if (snapshot.hasError) return Text('Error');
-
-          print(snapshot.data.mealPlan.meals[0].recipe.spoonacularSourceUrl);
           return Scaffold(
             backgroundColor: const Color(0xFFE9E9E9),
             body: Stack(
@@ -40,7 +38,7 @@ class Diet extends StatelessWidget {
                     child: Container(
                       color: Colors.white,
                       padding: const EdgeInsets.only(
-                          top: 40, left: 32, right: 16, bottom: 10),
+                          top: 40, left: 20, right: 16, bottom: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -69,13 +67,16 @@ class Diet extends StatelessWidget {
                           Row(
                             children: <Widget>[
                               _RadialProgress(
-                                calTxt: snapshot.data.nutrition.caloriesLeft
-                                    .toInt()
+                                calTxt: (snapshot.data.nutrition.calories
+                                            .toInt() -
+                                        snapshot.data.nutrition.caloriesEaten
+                                            .toInt())
                                     .toString(),
-                                width: width * 0.3,
-                                height: width * 0.28,
-                                progress: snapshot.data.nutrition.calories /
-                                    snapshot.data.nutrition.caloriesLeft,
+                                width: width * 0.28,
+                                height: width * 0.3,
+                                progress:
+                                    snapshot.data.nutrition.caloriesEaten /
+                                        snapshot.data.nutrition.calories,
                               ),
                               SizedBox(
                                 width: 30,
@@ -88,12 +89,14 @@ class Diet extends StatelessWidget {
                                 children: <Widget>[
                                   _IngredientProgress(
                                     ingredient: "Protein",
-                                    progress: snapshot.data.nutrition.protein /
-                                        snapshot.data.nutrition.proteinLeft,
+                                    progress:
+                                        snapshot.data.nutrition.proteinEaten /
+                                            snapshot.data.nutrition.protein,
                                     progressColor: Colors.green,
-                                    leftAmount: snapshot
-                                        .data.nutrition.proteinLeft
-                                        .toInt(),
+                                    leftAmount: snapshot.data.nutrition.protein
+                                            .toInt() -
+                                        snapshot.data.nutrition.proteinEaten
+                                            .toInt(),
                                     width: width * 0.28,
                                   ),
                                   SizedBox(
@@ -101,12 +104,14 @@ class Diet extends StatelessWidget {
                                   ),
                                   _IngredientProgress(
                                     ingredient: "Carbs",
-                                    progress: snapshot.data.nutrition.carbs /
-                                        snapshot.data.nutrition.carbsLeft,
+                                    progress:
+                                        snapshot.data.nutrition.carbsEaten /
+                                            snapshot.data.nutrition.carbs,
                                     progressColor: Colors.red,
-                                    leftAmount: snapshot
-                                        .data.nutrition.carbsLeft
-                                        .toInt(),
+                                    leftAmount:
+                                        snapshot.data.nutrition.carbs.toInt() -
+                                            snapshot.data.nutrition.carbsEaten
+                                                .toInt(),
                                     width: width * 0.28,
                                   ),
                                   SizedBox(
@@ -114,11 +119,13 @@ class Diet extends StatelessWidget {
                                   ),
                                   _IngredientProgress(
                                     ingredient: "Fat",
-                                    progress: snapshot.data.nutrition.fat /
-                                        snapshot.data.nutrition.fatLeft,
+                                    progress: snapshot.data.nutrition.fatEaten /
+                                        snapshot.data.nutrition.fat,
                                     progressColor: Colors.yellow,
                                     leftAmount:
-                                        snapshot.data.nutrition.fatLeft.toInt(),
+                                        snapshot.data.nutrition.fat.toInt() -
+                                            snapshot.data.nutrition.fatEaten
+                                                .toInt(),
                                     width: width * 0.28,
                                   ),
                                 ],
@@ -163,7 +170,7 @@ class Diet extends StatelessWidget {
                                     .map((e) => _MealCard(
                                           meal: e,
                                           pressAte: () {
-                                            snapshot.data.nutrition.ate(e);
+                                            snapshot.data.eat(e);
                                           },
                                         ))
                                     .toList(),
@@ -536,7 +543,9 @@ class CustomDialog extends StatelessWidget {
                           press: ate,
                           width: size.width * 0.4),
                       RoundedButton(
-                          press: () {},
+                          press: () {
+                            Navigator.pop(context);
+                          },
                           text: 'Don\'t Like it?',
                           color: EDpinkAcc,
                           width: size.width * 0.4),

@@ -6,10 +6,10 @@ class Nutrition {
       fat,
       protein,
       bmr,
-      caloriesLeft,
-      carbsLeft,
-      fatLeft,
-      proteinLeft;
+      caloriesEaten,
+      carbsEaten,
+      fatEaten,
+      proteinEaten;
 
   Nutrition(
     String gender,
@@ -66,16 +66,16 @@ class Nutrition {
     carbs = (0.5 * calories) / 4;
     protein = (0.25 * calories) / 4;
     fat = (0.25 * calories) / 9;
-    caloriesLeft = calories;
-    carbsLeft = carbs;
-    fatLeft = fat;
-    proteinLeft = protein;
+    caloriesEaten = 0;
+    carbsEaten = 0;
+    fatEaten = 0;
+    proteinEaten = 0;
   }
 
   ate(Meal meal) {
-    caloriesLeft -= meal.recipe.calories;
-    carbsLeft -= meal.recipe.carbs;
-    proteinLeft -= meal.recipe.protein;
-    fatLeft -= meal.recipe.fat;
+    caloriesEaten += meal.recipe.calories;
+    carbsEaten += meal.recipe.carbs;
+    proteinEaten += meal.recipe.protein;
+    fatEaten += meal.recipe.fat;
   }
 }

@@ -1,10 +1,7 @@
-import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
-import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
 import 'package:e_diet/Model/UI/routing_constants.dart';
 import 'package:e_diet/Pages/Widgets/Background.dart';
 import 'package:e_diet/Pages/Widgets/Buttons.dart';
-import 'package:e_diet/Pages/home.dart';
 import 'package:flutter/material.dart';
 
 class MealPreferredSetUp extends StatefulWidget {

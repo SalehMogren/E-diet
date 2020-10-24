@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:e_diet/Model/DietLogic/Nutrition.dart';
 import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
@@ -47,12 +50,12 @@ class UserModle {
     if (name == null) {
       await Future.delayed(Duration(seconds: 0), await fetchUserInfo());
     }
-    if (mealPlan == null)
-      await Future.delayed(Duration(seconds: 2), await fetchUserPlan());
-
     if (nutrition == null)
       nutrition =
           new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+
+    if (mealPlan == null)
+      await Future.delayed(Duration(seconds: 2), await fetchUserPlan());
 
     print('fetch data');
     return this;
@@ -203,11 +206,26 @@ class UserModle {
   fetchUserPlan() async {
     if (this.mealPlan == null)
       await ApiService.instance
-          .generateMealPlan(diet: 'None', targetCalories: 2000)
+          .generateMealPlan(
+              diet: 'None', targetCalories: this.nutrition.calories.toInt())
           .then((value) {
         this.mealPlan = value;
         print('MealPlan Has Been Fetched');
       }).catchError(
               (onError) => print('Failed To Fetch User MealPlan $onError'));
+  }
+
+  eat(Meal meal) {
+    this.nutrition.ate(meal);
+    controller.sink.add(this);
+  }
+
+  // ignore: close_sinks
+  final StreamController<UserModle> controller = StreamController<UserModle>();
+
+  Stream<UserModle> get stream {
+    Stream st = Stream.fromFuture(fetchData());
+    fetchData();
+    return controller.stream.asBroadcastStream();
   }
 }
