@@ -265,7 +265,7 @@ class _RadialProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: _RadialPainter(
-        progress: 0.7,
+        progress: progress,
       ),
       child: Container(
         height: height,
