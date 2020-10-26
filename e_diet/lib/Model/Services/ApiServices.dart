@@ -2,6 +2,7 @@
 //Spoonacular API
 import 'dart:convert';
 import 'dart:io';
+import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:http/http.dart' as http;
 import '../DietLogic/recipe_model.dart';
 import '../DietLogic/meal_plan_model.dart';
@@ -85,6 +86,31 @@ class ApiService {
       Map<String, dynamic> data = json.decode(response.body);
       Recipe recipe = Recipe.fromMap(data);
       return Future.value(recipe);
+    } catch (err) {
+      throw err.toString();
+    }
+  }
+
+  //use to get similar meal/s
+  Future<Meal> fetchSimilar(String id) async {
+    Map<String, String> parameters = {
+      'number': '1',
+      'limitLicense': 'true',
+      'apiKey': API_KEY,
+    };
+    Uri uri = Uri.https(
+      _baseURL,
+      '/recipes/$id/similar',
+      parameters,
+    );
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    try {
+      var response = await http.get(uri, headers: headers);
+      Map<String, dynamic> data = json.decode(response.body);
+      Meal meal = Meal.fromMap(data);
+      return Future.value(meal);
     } catch (err) {
       throw err.toString();
     }

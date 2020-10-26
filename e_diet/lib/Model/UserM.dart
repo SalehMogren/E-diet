@@ -11,12 +11,14 @@ class UserModle {
   final String uid;
   int _age;
   double _weight, _height;
-  String _gender, _goal, photoUrl, name, email;
+  String _gender, _goal, photoUrl, name, email, _diet;
   Nutrition nutrition;
   Map<String, dynamic> _info = new Map<String, dynamic>();
   MealPlan mealPlan;
   String _activityLevel;
   UserModle({this.uid});
+
+  String get diet => _diet;
 
   int get age => _age;
   // set age(int age) => _age = age;
@@ -45,6 +47,8 @@ class UserModle {
       PhotoUrlDB: this.photoUrl,
     };
   }
+
+  void setdiet(String diet) => _diet = diet;
 
   Future<UserModle> fetchData() async {
     if (name == null) {
@@ -207,7 +211,7 @@ class UserModle {
     if (this.mealPlan == null)
       await ApiService.instance
           .generateMealPlan(
-              diet: 'None', targetCalories: this.nutrition.calories.toInt())
+              diet: diet, targetCalories: this.nutrition.calories.toInt())
           .then((value) {
         this.mealPlan = value;
         print('MealPlan Has Been Fetched');
