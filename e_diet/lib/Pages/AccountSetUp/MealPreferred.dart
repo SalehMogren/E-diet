@@ -1,12 +1,10 @@
-import 'package:e_diet/Model/ApiServices.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
-import 'package:e_diet/Model/meal_plan_model.dart';
-import 'package:e_diet/Model/routing_constants.dart';
-import 'package:e_diet/Model/screen.dart';
+import 'package:e_diet/Model/UI/routing_constants.dart';
+import 'package:e_diet/Model/UserM.dart';
 import 'package:e_diet/Pages/Widgets/Background.dart';
 import 'package:e_diet/Pages/Widgets/Buttons.dart';
-import 'package:e_diet/Pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MealPreferredSetUp extends StatefulWidget {
   final bool edit;
@@ -30,8 +28,11 @@ class MealPreferredSetUp extends StatefulWidget {
 */
 
 class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
+  String diet;
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModle>(context);
     return Scaffold(
       body: Background(
         child: Stack(
@@ -42,55 +43,150 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
               press: () async {
                 // add method to sent user input to model
 
-                //here we generate the plan and send it to the mealscreen
-                MealPlan mealPlan = await ApiService.instance.generateMealPlan(
-                  targetCalories: 2000,
-                  diet: "None",
-                );
-
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => MealsScreen(mealPlan: mealPlan),
-                    ));
+                Navigator.pushNamed(context, AppHomePageRoute);
               },
               color: Colors.greenAccent[400],
             ),
             DismissableCard(
-                text: '1',
+                text: 'Gluten Free',
                 img:
                     "https://hips.hearstapps.com/delish/assets/17/31/1501791674-delish-chicken-curry-horizontal.jpg",
                 keyStr: 'card',
                 topS: 30,
-                func: (DismissDirection direction) {
+                func: (DismissDirection direction) async {
                   if (direction == DismissDirection.startToEnd) {
                     print('right');
+                    user.setdiet('Gluten Free');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
                   } else {
                     print('left');
                   }
                 }),
             DismissableCard(
-                text: '2',
+                text: 'Ketogenic',
                 img:
                     "https://www.expatica.com/app/uploads/sites/5/2020/03/Boeuf-bourguignon-1920x1080.jpg",
                 keyStr: 'card 1',
+                topS: 25,
+                func: (DismissDirection direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                    print('right');
+                    user.setdiet('Ketogenic');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
+                  } else {
+                    print('left');
+                  }
+                }),
+            DismissableCard(
+                text: 'Lacto-Vegetarian',
+                img:
+                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                keyStr: 'card 2',
                 topS: 20,
                 func: (DismissDirection direction) {
                   if (direction == DismissDirection.startToEnd) {
                     print('right');
+                    user.setdiet('Lacto-Vegetarian');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
                   } else {
                     print('left');
                   }
                 }),
             DismissableCard(
-                text: '3',
+                text: 'Ovo-Vegetarian',
                 img:
                     'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
-                keyStr: 'card 2',
+                keyStr: 'card 3',
+                topS: 15,
+                func: (DismissDirection direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                    print('right');
+                    user.setdiet('Ovo-Vegetarian');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
+                  } else {
+                    print('left');
+                  }
+                }),
+            DismissableCard(
+                text: 'Vegan',
+                img:
+                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                keyStr: 'card 4',
                 topS: 10,
                 func: (DismissDirection direction) {
                   if (direction == DismissDirection.startToEnd) {
                     print('right');
+                    user.setdiet('Vegan');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
+                  } else {
+                    print('left');
+                  }
+                }),
+            DismissableCard(
+                text: 'Pescetarian',
+                img:
+                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                keyStr: 'card 5',
+                topS: 5,
+                func: (DismissDirection direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                    print('right');
+                    user.setdiet('Pescetarian');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
+                  } else {
+                    print('left');
+                  }
+                }),
+            DismissableCard(
+                text: 'Paleo',
+                img:
+                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                keyStr: 'card 6',
+                topS: 0,
+                func: (DismissDirection direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                    print('right');
+                    user.setdiet('Paleo');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
+                  } else {
+                    print('left');
+                  }
+                }),
+            DismissableCard(
+                text: 'Primal',
+                img:
+                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                keyStr: 'card 7',
+                topS: 0,
+                func: (DismissDirection direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                    print('right');
+                    user.setdiet('Primal');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
+                  } else {
+                    print('left');
+                  }
+                }),
+            DismissableCard(
+                text: 'Whole30',
+                img:
+                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                keyStr: 'card 8',
+                topS: 0,
+                func: (DismissDirection direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                    print('right');
+                    user.setdiet('Whole30');
+                    print(user.diet.toString());
+                    Navigator.pushNamed(context, AppHomePageRoute);
                   } else {
                     print('left');
                   }

@@ -1,12 +1,10 @@
 import 'package:e_diet/Model/UserM.dart';
-import 'package:e_diet/Model/Auth.dart';
-import 'package:e_diet/Model/screen.dart';
-import 'package:e_diet/Pages/AccountSetUp/MealPreferred.dart';
+import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Model/router.dart' as router;
-import 'Model/routing_constants.dart';
+import 'Model/UI/router.dart' as router;
+import 'Model/UI/routing_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

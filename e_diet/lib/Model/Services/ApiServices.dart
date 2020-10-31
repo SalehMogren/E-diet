@@ -2,12 +2,10 @@
 //Spoonacular API
 import 'dart:convert';
 import 'dart:io';
+import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:http/http.dart' as http;
-import 'recipe_model.dart';
-import 'meal_plan_model.dart';
-import 'package:e_diet/Model/meal_plan_model.dart';
-
-import 'package:e_diet/Model/recipe_model.dart';
+import '../DietLogic/recipe_model.dart';
+import '../DietLogic/meal_plan_model.dart';
 
 class ApiService {
   //The API service will be a singleton, therefore create a private constructor
@@ -16,7 +14,7 @@ class ApiService {
   static final ApiService instance = ApiService._instantiate();
 //Add base URL for the spoonacular API, endpoint and API Key as a constant
   final String _baseURL = "api.spoonacular.com";
-  static const String API_KEY = "394fe268bdf140ab9dc669ccccb06b2c";
+  static const String API_KEY = "1f765519e6af4b5390323b9e6cb91802";
 //We create async function to generate meal plan which takes in
   //timeFrame, targetCalories, diet and apiKey
 //If diet is none, we set the diet into an empty string
@@ -88,6 +86,31 @@ class ApiService {
       Map<String, dynamic> data = json.decode(response.body);
       Recipe recipe = Recipe.fromMap(data);
       return Future.value(recipe);
+    } catch (err) {
+      throw err.toString();
+    }
+  }
+
+  //use to get similar meal/s
+  Future<Meal> fetchSimilar(String id) async {
+    Map<String, String> parameters = {
+      'number': '1',
+      'limitLicense': 'true',
+      'apiKey': API_KEY,
+    };
+    Uri uri = Uri.https(
+      _baseURL,
+      '/recipes/$id/similar',
+      parameters,
+    );
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    try {
+      var response = await http.get(uri, headers: headers);
+      Map<String, dynamic> data = json.decode(response.body);
+      Meal meal = Meal.fromMap(data);
+      return Future.value(meal);
     } catch (err) {
       throw err.toString();
     }

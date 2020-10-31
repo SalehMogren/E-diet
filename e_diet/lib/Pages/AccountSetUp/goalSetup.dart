@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/Background.dart';
 import '../Widgets/Buttons.dart';
-import '../../Model/routing_constants.dart';
+import '../../Model/UI/routing_constants.dart';
 import '../../Model/UI/Colors.dart';
 
 class GoalSetup extends StatefulWidget {

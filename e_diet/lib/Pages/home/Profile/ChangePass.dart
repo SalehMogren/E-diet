@@ -1,12 +1,12 @@
 import 'package:e_diet/Model/UI/Colors.dart';
-import 'package:e_diet/Model/routing_constants.dart';
-import 'package:e_diet/Model/validators.dart';
+import 'package:e_diet/Model/UI/routing_constants.dart';
+import 'package:e_diet/Model/UI/validators.dart';
 import 'package:e_diet/Pages/Widgets/Background.dart';
 import 'package:e_diet/Pages/Widgets/Buttons.dart';
 import 'package:e_diet/Pages/Widgets/InputFeiled.dart';
 import 'package:e_diet/Pages/Widgets/loading.dart';
 import 'package:flutter/material.dart';
-import '../../../Model/Auth.dart';
+import '../../../Model/Services/Auth.dart';
 
 class ChangePass extends StatefulWidget {
   @override

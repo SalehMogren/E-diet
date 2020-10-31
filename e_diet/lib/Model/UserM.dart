@@ -1,17 +1,24 @@
-import 'package:e_diet/Model/ApiServices.dart';
-import 'package:e_diet/Model/meal_plan_model.dart';
+import 'dart:async';
 
-import 'DataBase.dart';
+import 'package:e_diet/Model/DietLogic/Meal_model.dart';
+import 'package:e_diet/Model/DietLogic/Nutrition.dart';
+import 'package:e_diet/Model/Services/ApiServices.dart';
+import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
+
+import 'Services/DataBase.dart';
 
 class UserModle {
   final String uid;
   int _age;
   double _weight, _height;
-  String _gender, _goal, photoUrl, name, email;
+  String _gender, _goal, photoUrl, name, email, _diet;
+  Nutrition nutrition;
   Map<String, dynamic> _info = new Map<String, dynamic>();
-
+  MealPlan mealPlan;
   String _activityLevel;
   UserModle({this.uid});
+
+  String get diet => _diet;
 
   int get age => _age;
   // set age(int age) => _age = age;
@@ -41,12 +48,22 @@ class UserModle {
     };
   }
 
-  Future<UserModle> fetchData() =>
-      Future.delayed(Duration(seconds: 0), () async {
-        if (name == null) await fetchUserInfo();
-        print('fetch data');
-        return this;
-      });
+  void setdiet(String diet) => _diet = diet;
+
+  Future<UserModle> fetchData() async {
+    if (name == null) {
+      await Future.delayed(Duration(seconds: 0), await fetchUserInfo());
+    }
+    if (nutrition == null)
+      nutrition =
+          new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+
+    if (mealPlan == null)
+      await Future.delayed(Duration(seconds: 2), await fetchUserPlan());
+
+    print('fetch data');
+    return this;
+  }
 
   setUserHealth(
       String uid, int age, double weight, double height, String gender) async {
@@ -54,7 +71,11 @@ class UserModle {
     this._weight = weight;
     this._height = height;
     this._gender = gender;
-    if (_goal != null) setInfo();
+    if (_goal != null) {
+      setInfo();
+      nutrition =
+          new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+    }
 
     await setUserHealthDB(uid, age, weight, height, gender)
         .then((value) => null)
@@ -91,9 +112,13 @@ class UserModle {
         break;
     }
     this._activityLevel = activityLevelString;
-
+    if (_goal != null) {
+      nutrition =
+          new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+    }
     await setUserActivityLevelDB(uid, activityLevelString);
     fetchUserInfo();
+
     setInfo();
   }
 
@@ -121,6 +146,9 @@ class UserModle {
         break;
     }
     this._goal = goalString;
+
+    nutrition =
+        new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
 
     await setUserGoalDB(uid, goalString);
     fetchUserInfo();
@@ -161,14 +189,6 @@ class UserModle {
             this._activityLevel = value;
         }
       });
-      // name = value[NameDB];
-      // email = value[EmailDB];
-      // _age = int.parse(value[AgeDB]);
-      // _weight = double.parse(value[WeightDB]);
-      // _height = double.parse(value[HeightDB]);
-      // _gender = value[GenderDB];
-      // _goal = value[GoalDB];
-      // photoUrl = value[PhotoUrlDB];
       print('User Date Has Been Fetched');
     }).catchError((onError) => print('Failed To Fetch $onError'));
   }
@@ -187,9 +207,29 @@ class UserModle {
     });
   }
 
-  Future<MealPlan> fetchUserPlan() async {
-    return ApiService.instance
-        .generateMealPlan(diet: 'None', targetCalories: 2000)
-        .then((value) => null);
+  fetchUserPlan() async {
+    if (this.mealPlan == null)
+      await ApiService.instance
+          .generateMealPlan(
+              diet: diet, targetCalories: this.nutrition.calories.toInt())
+          .then((value) {
+        this.mealPlan = value;
+        print('MealPlan Has Been Fetched');
+      }).catchError(
+              (onError) => print('Failed To Fetch User MealPlan $onError'));
+  }
+
+  eat(Meal meal) {
+    this.nutrition.ate(meal);
+    controller.sink.add(this);
+  }
+
+  // ignore: close_sinks
+  final StreamController<UserModle> controller = StreamController<UserModle>();
+
+  Stream<UserModle> get stream {
+    Stream st = Stream.fromFuture(fetchData());
+    fetchData();
+    return controller.stream.asBroadcastStream();
   }
 }

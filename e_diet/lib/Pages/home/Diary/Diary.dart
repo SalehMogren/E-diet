@@ -1,4 +1,4 @@
-import 'package:e_diet/Model/Auth.dart';
+import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Widgets/Buttons.dart';
