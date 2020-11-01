@@ -15,7 +15,7 @@ class GoalSetup extends StatefulWidget {
 class _GoalSetupState extends State<GoalSetup> {
   List<Goal> _goals = [
     Goal("Gain Weight", "assets/gain_undraw.svg"),
-    Goal("Maintain Weight", "assets/maintain_undraw.svg"),
+    Goal("Maintain", "assets/maintain_undraw.svg"),
     Goal("Lose Weight", "assets/Lose_undraw.svg"),
   ];
   String error = '';
