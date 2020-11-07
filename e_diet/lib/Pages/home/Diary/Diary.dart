@@ -1,18 +1,26 @@
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
+import 'package:e_diet/Pages/Widgets/InputFeiled.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Widgets/Buttons.dart';
 
-class Diary extends StatelessWidget {
+class Diary extends StatefulWidget {
+  @override
+  _DiaryState createState() => _DiaryState();
+}
+
+class _DiaryState extends State<Diary> {
   final AuthService _auth = AuthService();
+
   List<MealTest> mealsBreakFast = [
     MealTest('Egg', 80, '2 eggs'),
     MealTest('bacon', 180, '1.5 oz'),
     MealTest('Milk', 40, '200 ml'),
     MealTest('Bread', 100, '2 oz'),
   ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -58,11 +66,16 @@ class Diary extends StatelessWidget {
   }
 }
 
-class DiaryHeader extends StatelessWidget {
+class DiaryHeader extends StatefulWidget {
   const DiaryHeader({
     Key key,
   }) : super(key: key);
 
+  @override
+  _DiaryHeaderState createState() => _DiaryHeaderState();
+}
+
+class _DiaryHeaderState extends State<DiaryHeader> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -149,19 +162,24 @@ class DiaryHeader extends StatelessWidget {
   }
 }
 
-class SectionMeals extends StatelessWidget {
+class SectionMeals extends StatefulWidget {
   @required
   final String title;
   final List<MealTest> meals;
   const SectionMeals({Key key, this.title, this.meals}) : super(key: key);
 
   @override
+  _SectionMealsState createState() => _SectionMealsState();
+}
+
+class _SectionMealsState extends State<SectionMeals> {
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
         padding: EdgeInsets.symmetric(vertical: 5),
         alignment: Alignment.center,
-        height: size.height / meals.length / .5,
+        height: size.height / widget.meals.length / .5,
         width: double.infinity,
         child: Card(
           color: EDwhite,
@@ -183,14 +201,14 @@ class SectionMeals extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      title,
+                      widget.title,
                       style: TextStyle(
                           fontSize: 20,
                           color: EDwhite,
                           fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      _calcTut(meals),
+                      _calcTut(widget.meals),
                       style: TextStyle(fontSize: 18, color: EDwhite),
                     )
                   ],
@@ -199,7 +217,8 @@ class SectionMeals extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(4),
                 child: Column(
-                  children: meals.map((e) => _mealTile(e)).toList(),
+                  children:
+                      widget.meals.map((e) => _mealTile(e, context)).toList(),
                 ),
               )
             ],
@@ -207,19 +226,91 @@ class SectionMeals extends StatelessWidget {
         ));
   }
 
-  Widget _mealTile(MealTest e) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _textAndText(e.title, Colors.black, e.serving),
-          Text(
-            e.cal.toString(),
-            style: TextStyle(
-                color: EDPurple0, fontSize: 18, fontWeight: FontWeight.w400),
-          )
-        ],
+  Widget _mealTile(MealTest e, BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) => Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                  child: Container(
+                    height: size.height * 0.6,
+                    width: size.width * 0.6,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(17),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10.0,
+                            offset: Offset(0.0, 10.0),
+                          )
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextFieldContainer(
+                          color: EDwhite,
+                          child: RoundedInputField(
+                            onChanged: (value) {
+                              setState(() {
+                                e.settitle(value);
+                              });
+                            },
+                            icon: Icons.text_fields,
+                            hintText: 'Title',
+                          ),
+                        ),
+                        TextFieldContainer(
+                          color: EDwhite,
+                          child: RoundedInputField(
+                            onChanged: (value) {
+                              setState(() {
+                                e.setcal(int.parse(value));
+                              });
+                            },
+                            hintText: 'Cal',
+                            icon: Icons.text_fields,
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                        TextFieldContainer(
+                          color: EDwhite,
+                          child: RoundedInputField(
+                            onChanged: (value) {
+                              setState(() {
+                                e.setserv(value);
+                              });
+                            },
+                            hintText: 'Servings',
+                            icon: Icons.text_fields,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ));
+        print('test');
+      },
+      child: Container(
+        padding: EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _textAndText(e.title, Colors.black, e.serving),
+            Text(
+              e.cal.toString(),
+              style: TextStyle(
+                  color: EDPurple0, fontSize: 18, fontWeight: FontWeight.w400),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -253,9 +344,21 @@ class SectionMeals extends StatelessWidget {
 }
 
 class MealTest {
-  final String title;
-  final int cal;
-  final String serving;
+  String title;
+  int cal;
+  String serving;
 
   MealTest(this.title, this.cal, this.serving);
+
+  settitle(String t) {
+    this.title = t;
+  }
+
+  setcal(int c) {
+    cal = c;
+  }
+
+  setserv(String s) {
+    serving = s;
+  }
 }
