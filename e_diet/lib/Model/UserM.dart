@@ -4,6 +4,8 @@ import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:e_diet/Model/DietLogic/Nutrition.dart';
 import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
+import 'package:e_diet/Model/Services/DataBase.dart';
+import 'package:e_diet/Model/Services/DataBase.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'Services/DataBase.dart';
@@ -15,6 +17,7 @@ class UserModle extends ChangeNotifier {
   String _gender, _goal, photoUrl, name, email, _diet;
   Nutrition nutrition;
   Map<String, dynamic> _info = new Map<String, dynamic>();
+  String s;
   MealPlan mealPlan;
   String _activityLevel;
   UserModle(String uid) {

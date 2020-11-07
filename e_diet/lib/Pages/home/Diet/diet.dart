@@ -441,6 +441,15 @@ class _MealCard extends StatelessWidget {
                               color: Colors.blueGrey,
                             ),
                           ),
+                          SizedBox(
+                            width: 9,
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.favorite_border,
+                                color: Colors.red,
+                              ),
+                              onPressed: null),
                         ],
                       ),
                       SizedBox(height: 16),
