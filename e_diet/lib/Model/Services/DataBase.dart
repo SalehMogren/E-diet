@@ -1,5 +1,9 @@
+import 'package:e_diet/Model/DietLogic/Meal_model.dart';
+import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // Import the firebase_core and cloud_firestore plugin
+import 'package:intl/intl.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Use Constant Variables That Will Be Used Store In DB
@@ -13,10 +17,10 @@ const String HeightDB = 'height';
 const String GoalDB = 'goal';
 const String ActivityLevelDB = 'activityLevel';
 const String GenderDB = 'gender';
-
+const String Diary = 'diary';
 final FirebaseFirestore _db = FirebaseFirestore.instance;
 final CollectionReference users = _db.collection('users');
-
+String today = "${DateFormat("M/d/y").format(DateTime.now())}";
 // Add User To DB by Creating a new Document with uid
 Future<void> addUser(User user, String name) async {
   String userNmae = user.displayName == null ? name : user.displayName;
@@ -110,4 +114,31 @@ Future<Map<String, dynamic>> fetchUserInfoDB(String uid) async {
 Stream<DocumentSnapshot> getUserDoc(String uid) {
   return users.doc(uid).snapshots().handleError(
       (onError) => print('Failed To Get User Doc From DB : $onError'));
+}
+
+// Add user's mealplan for the today's
+Future<void> addUserMealPlan(String uid, MealPlan mealPlan) {
+  return users
+      .doc(uid)
+      .collection('mealplan')
+      .doc("${DateFormat("M/d/y").format(DateTime.now())}")
+      .set({'mealPlan': mealPlan})
+      .then((value) => print('User Meal Plan has been added to DB'))
+      .catchError(
+          (onError) => print('Faild to add user mealplan to db $onError'));
+}
+
+// get user's mealplan for todays , check if its not exist call the api to add it \
+
+// Add user's eaten Meals to the database
+Future<void> addEatenMeal(String uid, Meal meal, String mealtype) {
+  return users
+      .doc(uid)
+      .collection(Diary)
+      .doc(today)
+      .update({
+        mealtype: meal.toJson(),
+      })
+      .then((value) => print('User Meal added to db'))
+      .catchError((onError) => print('Faild to add user meal to db $onError'));
 }

@@ -34,4 +34,15 @@ class Recipe {
       protein: map['nutrition']['nutrients'][8]['amount'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'spoonacularSourceUrl': this.spoonacularSourceUrl,
+        'image': this.image,
+        'sourceName': this.sourceName,
+        'summary': this.sourceName,
+        'calories': calories,
+        'fat': fat,
+        'protein': protein,
+        'carbs': carbs
+      };
 }
