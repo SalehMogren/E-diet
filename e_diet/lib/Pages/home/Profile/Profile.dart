@@ -17,7 +17,7 @@ class ProfilePageNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    UserModle testingUser = new UserModle(uid: 'testing');
+    UserModle testingUser = new UserModle('testing');
     testingUser.name = 'Test User';
     testingUser.photoUrl = 'null';
     final user = Provider.of<UserModle>(context);

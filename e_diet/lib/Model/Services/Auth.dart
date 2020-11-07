@@ -12,20 +12,17 @@ class AuthService {
   // create user obj based on firebaseuser(user)
 
   UserModle _userFromFireBaseUser(User user) {
-    return user != null ? UserModle(uid: user.uid) : null;
+    return user != null ? UserModle(user.uid) : null;
   }
 
   //auth change user stream
 
   Stream<UserModle> get user {
-    return _auth
-        .authStateChanges()
-        //.map((FirebaseUser user) => _userFromFirebaseUser(user));
-        .map(_userFromFireBaseUser);
+    return _auth.authStateChanges().map(_userFromFireBaseUser);
   }
 
   String userUid() {
-    return _userFromFireBaseUser(_auth.currentUser).uid;
+    return _auth.currentUser.uid;
   }
 //sign in anon
 
