@@ -441,6 +441,15 @@ class _MealCard extends StatelessWidget {
                               color: Colors.blueGrey,
                             ),
                           ),
+                          SizedBox(
+                            width: 9,
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.favorite_border,
+                                color: Colors.red,
+                              ),
+                              onPressed: null),
                         ],
                       ),
                       SizedBox(height: 16),
@@ -512,7 +521,7 @@ class CustomDialog extends StatelessWidget {
                 SizedBox(height: 24.0),
                 // TO:DO Fix Description
 
-                Flexible(
+                Expanded(
                     child: Text(
                   description,
                   style: TextStyle(fontSize: 16),
