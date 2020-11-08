@@ -24,8 +24,8 @@ class Diet extends StatelessWidget {
     return FutureBuilder<UserModle>(
         future: modle.fetchData(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Text('Loading...');
+          // if (snapshot.connectionState == ConnectionState.waiting)
+          //   return Text('Loading...');
           if (snapshot.hasError) return Text('Error');
           return Consumer<UserModle>(
             builder: (context, value, child) => Scaffold(
@@ -167,7 +167,7 @@ class Diet extends StatelessWidget {
                                 padding: const EdgeInsets.all(14.0),
                                 child: Row(
                                   children: value.mealPlan.meals
-                                      .map((e) => _MealCard(
+                                      .map((e) => MealCard(
                                             meal: e,
                                             pressAte: () {
                                               value.eat(
@@ -337,131 +337,147 @@ class _RadialPainter extends CustomPainter {
   }
 }
 
-class _MealCard extends StatelessWidget {
+class MealCard extends StatefulWidget {
   final Function pressAte;
   final Meal meal;
 
-  const _MealCard({Key key, @required this.meal, this.pressAte})
+  const MealCard({Key key, @required this.meal, this.pressAte})
       : super(key: key);
 
   @override
+  _MealCardState createState() => _MealCardState();
+}
+
+class _MealCardState extends State<MealCard> {
+  bool favPressed = false;
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) => CustomDialog(
-                  ate: pressAte,
-                  image: meal.recipe.image,
-                  title: meal.title,
-                  description: meal.recipe.summary,
-                  protein: meal.recipe.protein.toString(),
-                  carbs: meal.recipe.carbs.toString(),
-                  fat: meal.recipe.fat.toString(),
-                ));
-      },
-      child: Container(
-        margin: const EdgeInsets.only(
-          right: 20,
-          bottom: 10,
-        ),
-        child: Material(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          elevation: 4,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Flexible(
+    return Container(
+      margin: const EdgeInsets.only(
+        right: 20,
+        bottom: 10,
+      ),
+      child: Material(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        elevation: 4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => CustomDialog(
+                          ate: widget.pressAte,
+                          image: widget.meal.recipe.image,
+                          title: widget.meal.title,
+                          description: widget.meal.recipe.summary,
+                          protein: widget.meal.recipe.protein.toString(),
+                          carbs: widget.meal.recipe.carbs.toString(),
+                          fat: widget.meal.recipe.fat.toString(),
+                        ));
+              },
+              child: Flexible(
                 fit: FlexFit.tight,
                 child: ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   child: Image.network(
-                    meal.recipe.image,
+                    widget.meal.recipe.image,
                     width: 150,
                     fit: BoxFit.fill,
                   ),
                 ),
               ),
-              Flexible(
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(height: 5),
-                      Container(
-                        constraints: BoxConstraints(maxWidth: 150),
-                        child: Text(
-                          meal.dishType,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        constraints: BoxConstraints(maxWidth: 120),
-                        child: Text(meal.title,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            softWrap: true,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                              color: Colors.black,
-                            )),
-                      ),
-                      Text(
-                        "${meal.recipe.calories} kcal",
+            ),
+            Flexible(
+              fit: FlexFit.tight,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(height: 5),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 150),
+                      child: Text(
+                        widget.meal.dishType,
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                           color: Colors.blueGrey,
                         ),
                       ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.access_time,
-                            size: 15,
-                            color: Colors.black12,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            "${meal.readyInMinutes} min",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: Colors.blueGrey,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 9,
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.favorite_border,
-                                color: Colors.red,
-                              ),
-                              onPressed: null),
-                        ],
+                    ),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 120),
+                      child: Text(widget.meal.title,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          softWrap: true,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                            color: Colors.black,
+                          )),
+                    ),
+                    Text(
+                      "${widget.meal.recipe.calories} kcal",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Colors.blueGrey,
                       ),
-                      SizedBox(height: 16),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.access_time,
+                          size: 15,
+                          color: Colors.black12,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "${widget.meal.readyInMinutes} min",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 9,
+                        ),
+                        IconButton(
+                            icon: Icon(
+                              favPressed
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              toggleFav();
+                            }),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  void toggleFav() {
+    setState(() {
+      favPressed = !favPressed;
+    });
   }
 }
 

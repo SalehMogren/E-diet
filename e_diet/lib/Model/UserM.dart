@@ -5,7 +5,6 @@ import 'package:e_diet/Model/DietLogic/Nutrition.dart';
 import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
 import 'package:e_diet/Model/Services/DataBase.dart';
-import 'package:e_diet/Model/Services/DataBase.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'Services/DataBase.dart';
@@ -19,6 +18,7 @@ class UserModle extends ChangeNotifier {
   Map<String, dynamic> _info = new Map<String, dynamic>();
   String s;
   MealPlan mealPlan;
+  List<Meal> favMeals = new List();
   String _activityLevel;
   UserModle(String uid) {
     this.uid = uid;
@@ -244,5 +244,19 @@ class UserModle extends ChangeNotifier {
     this.nutrition.ate(meal);
     notifyListeners();
     addEatenMeal(this.uid, meal, mealtype);
+  }
+
+  addFavMeal(Meal meal) {
+    if (favMeals.indexOf(meal) == -1) favMeals.add(meal);
+
+    //add to db
+
+    notifyListeners();
+  }
+
+  removeFavMeal(Meal meal) {
+    if (favMeals.indexOf(meal) != -1) favMeals.remove(meal);
+    // remove from db
+    notifyListeners();
   }
 }
