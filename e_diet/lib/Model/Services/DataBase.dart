@@ -20,7 +20,7 @@ const String GenderDB = 'gender';
 const String Diary = 'diary';
 final FirebaseFirestore _db = FirebaseFirestore.instance;
 final CollectionReference users = _db.collection('users');
-String today = "${DateFormat("M/d/y").format(DateTime.now())}";
+String today = "${DateFormat("M-d-y").format(DateTime.now())}";
 // Add User To DB by Creating a new Document with uid
 Future<void> addUser(User user, String name) async {
   String userNmae = user.displayName == null ? name : user.displayName;
@@ -132,13 +132,48 @@ Future<void> addUserMealPlan(String uid, MealPlan mealPlan) {
 
 // Add user's eaten Meals to the database
 Future<void> addEatenMeal(String uid, Meal meal, String mealtype) {
-  return users
-      .doc(uid)
-      .collection(Diary)
-      .doc(today)
-      .update({
-        mealtype: meal.toJson(),
-      })
-      .then((value) => print('User Meal added to db'))
-      .catchError((onError) => print('Faild to add user meal to db $onError'));
+  // if doc is not created
+  return getUserEatenMeals(uid, today).then((value) {
+    if (!value)
+      users
+          .doc(uid)
+          .collection(Diary)
+          .doc(today)
+          .set({
+            mealtype: meal.toJson(),
+          })
+          .then((value) => print('User Meal added to db'))
+          .catchError(
+              (onError) => print('Faild to add user meal to db $onError'));
+    else
+      return users
+          .doc(uid)
+          .collection(Diary)
+          .doc(today)
+          .update({
+            mealtype: meal.toJson(),
+          })
+          .then((value) => print('User Meal added to db'))
+          .catchError(
+              (onError) => print('Faild to add user meal to db $onError'));
+  }).catchError(
+      (onError) => print('Faild To excute addMeal to db Method $onError'));
+}
+
+// get User's eaten Meals docs for today
+Future<bool> getUserEatenMeals(String uid, String date) {
+  return users.doc(uid).collection(Diary).doc(date).get().then((value) {
+    if (value.data().isNotEmpty) {
+      print('User Meals Doc found');
+
+      return true;
+    } else {
+      print('User Meals Doc NOT found');
+
+      return false;
+    }
+  }).catchError((onError) {
+    print('Failed to find user eaten meals');
+    return false;
+  });
 }
