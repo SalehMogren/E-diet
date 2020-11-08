@@ -216,6 +216,8 @@ class UserModle extends ChangeNotifier {
 
   fetchUserPlan() async {
     if (this.mealPlan == null)
+      // getUserMealPlan(uid, diet, this.nutrition.calories.toInt())
+      //     .then((value) => mealPlan = value);
       await ApiService.instance
           .generateMealPlan(
               diet: diet, targetCalories: this.nutrition.calories.toInt())
