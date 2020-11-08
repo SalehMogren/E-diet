@@ -1,4 +1,6 @@
 //import meal_model.dart
+import 'dart:convert';
+
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 
 class MealPlan {
@@ -37,5 +39,21 @@ Then, we return MealPlan object with all the information
       fat: map['nutrients']['fat'],
       protein: map['nutrients']['protein'],
     );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'calories': calories,
+        'carbs': carbs,
+        'fat': fat,
+        'protein': protein,
+        'meals': mealsToJson(),
+      };
+
+  Map<String, dynamic> mealsToJson() {
+    Map<String, dynamic> jMeals;
+    meals.forEach((element) {
+      jMeals.update(element.dishType, (value) => value);
+    });
+    return jMeals;
   }
 }
