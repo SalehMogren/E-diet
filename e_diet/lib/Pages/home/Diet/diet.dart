@@ -521,7 +521,7 @@ class CustomDialog extends StatelessWidget {
                 SizedBox(height: 24.0),
                 // TO:DO Fix Description
 
-                Flexible(
+                Expanded(
                     child: Text(
                   description,
                   style: TextStyle(fontSize: 16),
