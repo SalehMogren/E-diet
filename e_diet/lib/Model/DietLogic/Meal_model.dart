@@ -36,4 +36,14 @@ class Meal {
 
     return meal;
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': this.id,
+        'imageType': this.imageType,
+        'readyInMinutes': this.readyInMinutes,
+        'servings': this.servings,
+        'sourceUrl': this.sourceUrl,
+        'dishType': this.dishType,
+        'recipe': this.recipe.toJson(),
+      };
 }

@@ -24,5 +24,21 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
       ),
     );
+
+    // return StreamProvider<UserModle>.value(
+    //   value: AuthService().user,
+    //   child: MaterialApp(
+    //     onGenerateRoute: router.generateRoute,
+    //     initialRoute: WelcomeViewRoute,
+    //     debugShowCheckedModeBanner: false,
+    //   ),
+    // );
+  }
+}
+
+class Ediet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

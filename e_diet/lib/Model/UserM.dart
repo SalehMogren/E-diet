@@ -4,19 +4,26 @@ import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:e_diet/Model/DietLogic/Nutrition.dart';
 import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
+import 'package:e_diet/Model/Services/DataBase.dart';
+import 'package:e_diet/Model/Services/DataBase.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'Services/DataBase.dart';
 
-class UserModle {
-  final String uid;
+class UserModle extends ChangeNotifier {
+  String uid;
   int _age;
   double _weight, _height;
   String _gender, _goal, photoUrl, name, email, _diet;
   Nutrition nutrition;
   Map<String, dynamic> _info = new Map<String, dynamic>();
+  String s;
   MealPlan mealPlan;
   String _activityLevel;
-  UserModle({this.uid});
+  UserModle(String uid) {
+    this.uid = uid;
+    if (uid != 'null') fetchData();
+  }
 
   String get diet => _diet;
 
@@ -209,6 +216,8 @@ class UserModle {
 
   fetchUserPlan() async {
     if (this.mealPlan == null)
+      // getUserMealPlan(uid, diet, this.nutrition.calories.toInt())
+      //     .then((value) => mealPlan = value);
       await ApiService.instance
           .generateMealPlan(
               diet: diet, targetCalories: this.nutrition.calories.toInt())
@@ -219,17 +228,21 @@ class UserModle {
               (onError) => print('Failed To Fetch User MealPlan $onError'));
   }
 
-  eat(Meal meal) {
+  eat(Meal meal, int mealType) {
+    String mealtype;
+    switch (mealType) {
+      case 0:
+        mealtype = 'Breakfast';
+        break;
+      case 1:
+        mealtype = 'Lunch';
+        break;
+      case 2:
+        mealtype = 'Dinner';
+        break;
+    }
     this.nutrition.ate(meal);
-    controller.sink.add(this);
-  }
-
-  // ignore: close_sinks
-  final StreamController<UserModle> controller = StreamController<UserModle>();
-
-  Stream<UserModle> get stream {
-    Stream st = Stream.fromFuture(fetchData());
-    fetchData();
-    return controller.stream.asBroadcastStream();
+    notifyListeners();
+    addEatenMeal(this.uid, meal, mealtype);
   }
 }

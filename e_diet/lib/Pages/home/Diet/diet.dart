@@ -1,4 +1,3 @@
-import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
 import 'package:e_diet/Model/UserM.dart';
 import 'package:flutter/material.dart';
@@ -14,178 +13,184 @@ class Diet extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final today = DateTime.now();
-    final user = Provider.of<UserModle>(context);
+    var modle = Provider.of<UserModle>(context);
+    double _progressNum(double n1, double n2) {
+      if (n1 / n2 > 1)
+        return 1;
+      else
+        return n1 / n2;
+    }
 
     return FutureBuilder<UserModle>(
-        future: user.fetchData(),
+        future: modle.fetchData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Text('Loading...');
           if (snapshot.hasError) return Text('Error');
-          return Scaffold(
-            backgroundColor: const Color(0xFFE9E9E9),
-            body: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: 0,
-                  height: height * 0.37,
-                  left: 0,
-                  right: 0,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      bottom: const Radius.circular(40),
+          return Consumer<UserModle>(
+            builder: (context, value, child) => Scaffold(
+              backgroundColor: const Color(0xFFE9E9E9),
+              body: Stack(
+                children: <Widget>[
+                  Positioned(
+                    top: 0,
+                    height: height * 0.37,
+                    left: 0,
+                    right: 0,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: const Radius.circular(40),
+                      ),
+                      child: Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.only(
+                            top: 40, left: 20, right: 16, bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(
+                                "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "Hello," + value.name,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 26,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              // trailing: ClipOval(
+                              //     child: Image.network(snapshot.data.photoUrl)),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                _RadialProgress(
+                                  calTxt: (value.nutrition.calories.toInt() -
+                                          value.nutrition.caloriesEaten.toInt())
+                                      .toString(),
+                                  width: width * 0.28,
+                                  height: width * 0.20,
+                                  progress: value.nutrition.caloriesEaten /
+                                      value.nutrition.calories,
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    _IngredientProgress(
+                                      ingredient: "Protein",
+                                      progress: _progressNum(
+                                          value.nutrition.proteinEaten,
+                                          value.nutrition.protein),
+                                      progressColor: Colors.green,
+                                      leftAmount: value.nutrition.protein
+                                              .toInt() -
+                                          value.nutrition.proteinEaten.toInt(),
+                                      width: width * 0.28,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    _IngredientProgress(
+                                      ingredient: "Carbs",
+                                      progress: _progressNum(
+                                          value.nutrition.carbsEaten,
+                                          value.nutrition.carbs),
+                                      progressColor: Colors.red,
+                                      leftAmount: value.nutrition.carbs
+                                              .toInt() -
+                                          value.nutrition.carbsEaten.toInt(),
+                                      width: width * 0.28,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    _IngredientProgress(
+                                      ingredient: "Fat",
+                                      progress: _progressNum(
+                                          value.nutrition.fatEaten,
+                                          value.nutrition.fat),
+                                      progressColor: Colors.yellow,
+                                      leftAmount: value.nutrition.fat.toInt() -
+                                          value.nutrition.fatEaten.toInt(),
+                                      width: width * 0.28,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+                  ),
+                  Positioned(
+                    top: height * 0.39,
+                    left: 0,
+                    right: 0,
                     child: Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          top: 40, left: 20, right: 16, bottom: 10),
+                      height: height * 0.50,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 18,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 8,
+                              left: 32,
+                              right: 16,
+                            ),
+                            child: Text(
+                              "MEALS FOR TODAY",
+                              style: const TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: Row(
+                                  children: value.mealPlan.meals
+                                      .map((e) => _MealCard(
+                                            meal: e,
+                                            pressAte: () {
+                                              value.eat(
+                                                  e,
+                                                  value.mealPlan.meals
+                                                      .indexOf(e));
+                                              Navigator.pop(context);
+                                            },
+                                          ))
+                                      .toList(),
+                                ),
                               ),
                             ),
-                            subtitle: Text(
-                              "Hello," + snapshot.data.name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 26,
-                                color: Colors.black,
-                              ),
-                            ),
-                            // trailing: ClipOval(
-                            //     child: Image.network(snapshot.data.photoUrl)),
                           ),
                           SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              _RadialProgress(
-                                calTxt: (snapshot.data.nutrition.calories
-                                            .toInt() -
-                                        snapshot.data.nutrition.caloriesEaten
-                                            .toInt())
-                                    .toString(),
-                                width: width * 0.28,
-                                height: width * 0.3,
-                                progress:
-                                    snapshot.data.nutrition.caloriesEaten /
-                                        snapshot.data.nutrition.calories,
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  _IngredientProgress(
-                                    ingredient: "Protein",
-                                    progress:
-                                        snapshot.data.nutrition.proteinEaten /
-                                            snapshot.data.nutrition.protein,
-                                    progressColor: Colors.green,
-                                    leftAmount: snapshot.data.nutrition.protein
-                                            .toInt() -
-                                        snapshot.data.nutrition.proteinEaten
-                                            .toInt(),
-                                    width: width * 0.28,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  _IngredientProgress(
-                                    ingredient: "Carbs",
-                                    progress:
-                                        snapshot.data.nutrition.carbsEaten /
-                                            snapshot.data.nutrition.carbs,
-                                    progressColor: Colors.red,
-                                    leftAmount:
-                                        snapshot.data.nutrition.carbs.toInt() -
-                                            snapshot.data.nutrition.carbsEaten
-                                                .toInt(),
-                                    width: width * 0.28,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  _IngredientProgress(
-                                    ingredient: "Fat",
-                                    progress: snapshot.data.nutrition.fatEaten /
-                                        snapshot.data.nutrition.fat,
-                                    progressColor: Colors.yellow,
-                                    leftAmount:
-                                        snapshot.data.nutrition.fat.toInt() -
-                                            snapshot.data.nutrition.fatEaten
-                                                .toInt(),
-                                    width: width * 0.28,
-                                  ),
-                                ],
-                              )
-                            ],
+                            height: 20,
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: height * 0.39,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: height * 0.50,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 8,
-                            left: 32,
-                            right: 16,
-                          ),
-                          child: Text(
-                            "MEALS FOR TODAY",
-                            style: const TextStyle(
-                                color: Colors.blueGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Row(
-                                children: snapshot.data.mealPlan.meals
-                                    .map((e) => _MealCard(
-                                          meal: e,
-                                          pressAte: () {
-                                            snapshot.data.eat(e);
-                                          },
-                                        ))
-                                    .toList(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });
@@ -436,6 +441,15 @@ class _MealCard extends StatelessWidget {
                               color: Colors.blueGrey,
                             ),
                           ),
+                          SizedBox(
+                            width: 9,
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.favorite_border,
+                                color: Colors.red,
+                              ),
+                              onPressed: null),
                         ],
                       ),
                       SizedBox(height: 16),
