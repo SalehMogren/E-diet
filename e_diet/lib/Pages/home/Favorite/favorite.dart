@@ -1,10 +1,10 @@
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
-import 'package:e_diet/Pages/Widgets/InputFeiled.dart';
+import 'package:e_diet/Model/UserM.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../Widgets/Buttons.dart';
+import 'package:provider/provider.dart';
 
 class Favorite extends StatefulWidget {
   @override
@@ -31,9 +31,9 @@ class _FavoriteState extends State<Favorite> {
         title: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Text(
-            'Diary',
+            'Favorite',
             textAlign: TextAlign.center,
-            style: TextStyle(color: EDPurple0),
+            style: TextStyle(color: EDpinkAcc),
           ),
         ),
         centerTitle: true,
@@ -42,13 +42,95 @@ class _FavoriteState extends State<Favorite> {
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(14),
-          child: Column(
-            children: <Widget>[],
+          padding: EdgeInsets.all(8),
+          child: Consumer<UserModle>(
+            builder: (context, value, child) => Column(
+              children: value.mealPlan.meals
+                  .map((e) => FavMealCard(
+                        meal: e,
+                      ))
+                  .toList(),
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+class FavMealCard extends StatelessWidget {
+  final Meal meal;
+  const FavMealCard({Key key, this.meal}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+        height: size.height * 0.2,
+        width: double.infinity,
+        padding: EdgeInsets.all(10),
+        child: Container(
+          decoration: BoxDecoration(
+              color: EDwhite, borderRadius: BorderRadius.circular(20)),
+          padding: EdgeInsets.only(right: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Meal Image
+              Container(
+                height: size.height * 0.2,
+                width: size.width * 0.4,
+                child: Flexible(
+                  fit: FlexFit.loose,
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.horizontal(left: Radius.circular(20)),
+                    child: Image.network(
+                      meal.recipe.image,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: size.width * 0.05,
+              ),
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                // Meal Title
+
+                Container(
+                  padding: EdgeInsets.only(top: 10),
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: 120),
+                    child: Text(meal.title,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        softWrap: false,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          color: Colors.black,
+                        )),
+                  ),
+                ),
+                // Meal summary
+                Container(
+                  constraints: BoxConstraints(maxWidth: 120),
+                  child: Text(meal.title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      softWrap: false,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                      )),
+                ),
+              ]),
+            ],
+          ),
+        ));
   }
 }
 
