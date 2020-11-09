@@ -24,173 +24,189 @@ class Diet extends StatelessWidget {
     return FutureBuilder<UserModle>(
         future: modle.fetchData(),
         builder: (context, snapshot) {
-          // if (snapshot.connectionState == ConnectionState.waiting)
-          //   return Text('Loading...');
           if (snapshot.hasError) return Text('Error');
-          return Consumer<UserModle>(
-            builder: (context, value, child) => Scaffold(
-              backgroundColor: const Color(0xFFE9E9E9),
-              body: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: 0,
-                    height: height * 0.37,
-                    left: 0,
-                    right: 0,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: const Radius.circular(40),
-                      ),
-                      child: Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.only(
-                            top: 40, left: 20, right: 16, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            ListTile(
-                              title: Text(
-                                "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "Hello," + value.name,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 26,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              // trailing: ClipOval(
-                              //     child: Image.network(snapshot.data.photoUrl)),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                _RadialProgress(
-                                  calTxt: (value.nutrition.calories.toInt() -
-                                          value.nutrition.caloriesEaten.toInt())
-                                      .toString(),
-                                  width: width * 0.28,
-                                  height: width * 0.20,
-                                  progress: value.nutrition.caloriesEaten /
-                                      value.nutrition.calories,
-                                ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    _IngredientProgress(
-                                      ingredient: "Protein",
-                                      progress: _progressNum(
-                                          value.nutrition.proteinEaten,
-                                          value.nutrition.protein),
-                                      progressColor: Colors.green,
-                                      leftAmount: value.nutrition.protein
-                                              .toInt() -
-                                          value.nutrition.proteinEaten.toInt(),
-                                      width: width * 0.28,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    _IngredientProgress(
-                                      ingredient: "Carbs",
-                                      progress: _progressNum(
-                                          value.nutrition.carbsEaten,
-                                          value.nutrition.carbs),
-                                      progressColor: Colors.red,
-                                      leftAmount: value.nutrition.carbs
-                                              .toInt() -
-                                          value.nutrition.carbsEaten.toInt(),
-                                      width: width * 0.28,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    _IngredientProgress(
-                                      ingredient: "Fat",
-                                      progress: _progressNum(
-                                          value.nutrition.fatEaten,
-                                          value.nutrition.fat),
-                                      progressColor: Colors.yellow,
-                                      leftAmount: value.nutrition.fat.toInt() -
-                                          value.nutrition.fatEaten.toInt(),
-                                      width: width * 0.28,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+          if (snapshot.data == null ||
+              snapshot.connectionState == ConnectionState.waiting)
+            return Text('Loading...');
+          return Scaffold(
+            backgroundColor: const Color(0xFFE9E9E9),
+            body: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  height: height * 0.37,
+                  left: 0,
+                  right: 0,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: const Radius.circular(40),
                     ),
-                  ),
-                  Positioned(
-                    top: height * 0.39,
-                    left: 0,
-                    right: 0,
                     child: Container(
-                      height: height * 0.50,
+                      color: Colors.white,
+                      padding: const EdgeInsets.only(
+                          top: 40, left: 20, right: 16, bottom: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 8,
-                              left: 32,
-                              right: 16,
-                            ),
-                            child: Text(
-                              "MEALS FOR TODAY",
-                              style: const TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Row(
-                                  children: value.mealPlan.meals
-                                      .map((e) => MealCard(
-                                            meal: e,
-                                            pressAte: () {
-                                              value.eat(
-                                                  e,
-                                                  value.mealPlan.meals
-                                                      .indexOf(e));
-                                              Navigator.pop(context);
-                                            },
-                                          ))
-                                      .toList(),
-                                ),
+                          ListTile(
+                            title: Text(
+                              "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
                               ),
                             ),
+                            subtitle: Text(
+                              "Hello," + snapshot.data.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 26,
+                                color: Colors.black,
+                              ),
+                            ),
+                            // trailing: ClipOval(
+                            //     child: Image.network(snapshot.data.photoUrl)),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Consumer<UserModle>(
+                                  builder: (context, value, child) =>
+                                      _RadialProgress(
+                                        calTxt: (value.nutrition.calories
+                                                    .toInt() -
+                                                value.nutrition.caloriesEaten
+                                                    .toInt())
+                                            .toString(),
+                                        width: width * 0.28,
+                                        height: width * 0.20,
+                                        progress:
+                                            value.nutrition.caloriesEaten /
+                                                value.nutrition.calories,
+                                      )),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Consumer<UserModle>(
+                                      builder: (context, value, child) =>
+                                          _IngredientProgress(
+                                            ingredient: "Protein",
+                                            progress: _progressNum(
+                                                value.nutrition.proteinEaten,
+                                                value.nutrition.protein),
+                                            progressColor: Colors.green,
+                                            leftAmount: value.nutrition.protein
+                                                    .toInt() -
+                                                value.nutrition.proteinEaten
+                                                    .toInt(),
+                                            width: width * 0.28,
+                                          )),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Consumer<UserModle>(
+                                      builder: (context, value, child) =>
+                                          _IngredientProgress(
+                                            ingredient: "Carbs",
+                                            progress: _progressNum(
+                                                value.nutrition.carbsEaten,
+                                                value.nutrition.carbs),
+                                            progressColor: Colors.red,
+                                            leftAmount:
+                                                value.nutrition.carbs.toInt() -
+                                                    value.nutrition.carbsEaten
+                                                        .toInt(),
+                                            width: width * 0.28,
+                                          )),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Consumer<UserModle>(
+                                      builder: (context, value, child) =>
+                                          _IngredientProgress(
+                                            ingredient: "Fat",
+                                            progress: _progressNum(
+                                                value.nutrition.fatEaten,
+                                                value.nutrition.fat),
+                                            progressColor: Colors.yellow,
+                                            leftAmount:
+                                                value.nutrition.fat.toInt() -
+                                                    value.nutrition.fatEaten
+                                                        .toInt(),
+                                            width: width * 0.28,
+                                          )),
+                                ],
+                              )
+                            ],
                           ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                Positioned(
+                  top: height * 0.39,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: height * 0.50,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 8,
+                            left: 32,
+                            right: 16,
+                          ),
+                          child: Text(
+                            "MEALS FOR TODAY",
+                            style: const TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Row(
+                                children: snapshot.data.mealPlan == null
+                                    ? null
+                                    : snapshot.data.mealPlan.meals
+                                        .map((e) => MealCard(
+                                              meal: e,
+                                              pressAte: () {
+                                                snapshot.data.eat(
+                                                    e,
+                                                    snapshot.data.mealPlan.meals
+                                                        .indexOf(e));
+                                                Navigator.pop(context);
+                                              },
+                                            ))
+                                        .toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         });
