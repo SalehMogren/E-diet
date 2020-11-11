@@ -182,7 +182,11 @@ class Diet extends StatelessWidget {
                               padding: const EdgeInsets.all(14.0),
                               child: Row(
                                 children: snapshot.data.mealPlan == null
-                                    ? null
+                                    ? [
+                                        Center(
+                                            child: Text(
+                                                'API Points Finished Come back later'))
+                                      ]
                                     : snapshot.data.mealPlan.meals
                                         .map((e) => MealCard(
                                               meal: e,
@@ -467,16 +471,16 @@ class _MealCardState extends State<MealCard> {
                         SizedBox(
                           width: 9,
                         ),
-                        IconButton(
-                            icon: Icon(
-                              favPressed
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: Colors.red,
-                            ),
-                            onPressed: () {
-                              toggleFav();
-                            }),
+                        // IconButton(
+                        //     icon: Icon(
+                        //       favPressed
+                        //           ? Icons.favorite
+                        //           : Icons.favorite_border,
+                        //       color: Colors.red,
+                        //     ),
+                        //     onPressed: () {
+                        //       toggleFav();
+                        //     }),
                       ],
                     ),
                     SizedBox(height: 16),

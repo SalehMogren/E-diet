@@ -21,7 +21,7 @@ class _AppHomeState extends State<AppHome> {
   static List<Widget> _widgetOptions = <Widget>[
     Diet(),
     Diary(),
-    Favorite(),
+    // Favorite(),
     ProfilePageNew(),
   ];
 
@@ -70,11 +70,11 @@ class _AppHomeState extends State<AppHome> {
                   icon: LineIcons.book,
                   text: 'Diary',
                 ),
-                GButton(
-                  backgroundColor: EDpinkAcc,
-                  icon: LineIcons.heart_o,
-                  text: 'Favorite',
-                ),
+                // GButton(
+                //   backgroundColor: EDpinkAcc,
+                //   icon: LineIcons.heart_o,
+                //   text: 'Favorite',
+                // ),
                 GButton(
                   backgroundColor: EDdarkPurple,
                   icon: LineIcons.user,

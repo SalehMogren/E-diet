@@ -16,7 +16,7 @@ class _DiaryState extends State<Diary> {
 
   List<MealTest> mealsBreakFast = [
     MealTest('Egg', 80, '2 eggs'),
-    MealTest('bacon', 180, '1.5 oz'),
+    // MealTest('bacon', 180, '1.5 oz'),
     MealTest('Milk', 40, '200 ml'),
     MealTest('Bread', 100, '2 oz'),
   ];
@@ -179,7 +179,9 @@ class _SectionMealsState extends State<SectionMeals> {
     return Container(
         padding: EdgeInsets.symmetric(vertical: 5),
         alignment: Alignment.center,
-        height: size.height / widget.meals.length / .5,
+        height: (size.height *
+            1.2 /
+            (widget.meals.length == 0 ? size.height : widget.meals.length)),
         width: double.infinity,
         child: Card(
           color: EDwhite,
