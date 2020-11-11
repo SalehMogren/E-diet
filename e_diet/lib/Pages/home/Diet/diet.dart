@@ -182,7 +182,11 @@ class Diet extends StatelessWidget {
                               padding: const EdgeInsets.all(14.0),
                               child: Row(
                                 children: snapshot.data.mealPlan == null
-                                    ? null
+                                    ? [
+                                        Center(
+                                            child: Text(
+                                                'API Points Finished Come back later'))
+                                      ]
                                     : snapshot.data.mealPlan.meals
                                         .map((e) => MealCard(
                                               meal: e,
