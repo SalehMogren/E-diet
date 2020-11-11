@@ -227,89 +227,148 @@ class _SectionMealsState extends State<SectionMeals> {
   }
 
   Widget _mealTile(MealTest e, BuildContext context) {
+    String title = e.title;
+    int cal = e.cal;
+    String serving = e.serving;
     Size size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) => Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  child: Container(
-                    height: size.height * 0.6,
-                    width: size.width * 0.6,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(17),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10.0,
-                            offset: Offset(0.0, 10.0),
-                          )
-                        ]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextFieldContainer(
-                          color: EDwhite,
-                          child: RoundedInputField(
-                            onChanged: (value) {
-                              setState(() {
-                                e.settitle(value);
-                              });
-                            },
-                            icon: Icons.text_fields,
-                            hintText: 'Title',
-                          ),
-                        ),
-                        TextFieldContainer(
-                          color: EDwhite,
-                          child: RoundedInputField(
-                            onChanged: (value) {
-                              setState(() {
-                                e.setcal(int.parse(value));
-                              });
-                            },
-                            hintText: 'Cal',
-                            icon: Icons.text_fields,
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                        TextFieldContainer(
-                          color: EDwhite,
-                          child: RoundedInputField(
-                            onChanged: (value) {
-                              setState(() {
-                                e.setserv(value);
-                              });
-                            },
-                            hintText: 'Servings',
-                            icon: Icons.text_fields,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ));
-        print('test');
+    return Dismissible(
+      key: UniqueKey(),
+      background: Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 20.0),
+        color: Colors.redAccent,
+        child: Icon(Icons.delete, color: Colors.white),
+      ),
+      direction: DismissDirection.startToEnd,
+      onDismissed: (direction) {
+        if (direction == DismissDirection.startToEnd) {
+          print('right');
+          setState(() {
+            widget.meals.remove(e);
+          });
+        }
       },
-      child: Container(
-        padding: EdgeInsets.all(8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _textAndText(e.title, Colors.black, e.serving),
-            Text(
-              e.cal.toString(),
-              style: TextStyle(
-                  color: EDPurple0, fontSize: 18, fontWeight: FontWeight.w400),
-            )
-          ],
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    child: Container(
+                      height: size.height * 0.6,
+                      width: size.width * 0.6,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(17),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10.0,
+                              offset: Offset(0.0, 10.0),
+                            )
+                          ]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // TextFieldContainer(
+                          //   color: EDwhite,
+                          //   child: RoundedInputField(
+                          //     onChanged: (value) {
+                          //       setState(() {
+                          //         e.settitle(value);
+                          //       });
+                          //     },
+                          //     icon: Icons.text_fields,
+                          //     hintText: 'Title',
+                          //   ),
+                          // ),
+                          // TextFieldContainer(
+                          //   color: EDwhite,
+                          //   child: RoundedInputField(
+                          //     onChanged: (value) {
+                          //       setState(() {
+                          //         e.setcal(int.parse(value));
+                          //       });
+                          //     },
+                          //     hintText: 'Cal',
+                          //     icon: Icons.text_fields,
+                          //     keyboardType: TextInputType.number,
+                          //   ),
+                          // ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 40, top: 10),
+                            child: Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 30.0),
+
+                          Text(
+                            "Calories:$cal",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            "Servings:$serving",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+
+                          TextFieldContainer(
+                            color: EDwhite,
+                            child: RoundedInputField(
+                              onChanged: (value) {
+                                setState(() {
+                                  e.setserv(value);
+                                });
+                              },
+                              hintText: 'Servings',
+                              icon: Icons.text_fields,
+                            ),
+                          ),
+
+                          RoundedButton(
+                              color: EDlightBlueText,
+                              text: "Done",
+                              press: () {
+                                Navigator.pop(context);
+                              },
+                              width: size.width * 0.4),
+                        ],
+                      ),
+                    ),
+                  ));
+          print('test');
+        },
+        child: Container(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _textAndText(e.title, Colors.black, e.serving),
+              Text(
+                e.cal.toString(),
+                style: TextStyle(
+                    color: EDPurple0,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400),
+              )
+            ],
+          ),
         ),
       ),
     );
