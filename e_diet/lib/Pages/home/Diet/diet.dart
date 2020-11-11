@@ -380,24 +380,24 @@ class _MealCardState extends State<MealCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => CustomDialog(
-                          ate: widget.pressAte,
-                          image: widget.meal.recipe.image,
-                          title: widget.meal.title,
-                          description: widget.meal.recipe.summary,
-                          protein: widget.meal.recipe.protein.toString(),
-                          carbs: widget.meal.recipe.carbs.toString(),
-                          fat: widget.meal.recipe.fat.toString(),
-                        ));
-              },
-              child: Flexible(
-                fit: FlexFit.tight,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            Flexible(
+              fit: FlexFit.tight,
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => CustomDialog(
+                              ate: widget.pressAte,
+                              image: widget.meal.recipe.image,
+                              title: widget.meal.title,
+                              description: widget.meal.recipe.summary,
+                              protein: widget.meal.recipe.protein.toString(),
+                              carbs: widget.meal.recipe.carbs.toString(),
+                              fat: widget.meal.recipe.fat.toString(),
+                            ));
+                  },
                   child: Image.network(
                     widget.meal.recipe.image,
                     width: 150,

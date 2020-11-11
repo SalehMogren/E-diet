@@ -23,6 +23,8 @@ class _FavoriteState extends State<Favorite> {
 
   @override
   Widget build(BuildContext context) {
+    var modle = Provider.of<UserModle>(context);
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -42,17 +44,24 @@ class _FavoriteState extends State<Favorite> {
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(8),
-          child: Consumer<UserModle>(
-            builder: (context, value, child) => Column(
-              children: value.mealPlan.meals
-                  .map((e) => FavMealCard(
-                        meal: e,
-                      ))
-                  .toList(),
-            ),
-          ),
-        ),
+            padding: EdgeInsets.all(8),
+            child: FutureBuilder<UserModle>(
+              future: modle.fetchData(),
+              builder: (BuildContext context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Text('Loading..');
+                if (snapshot.hasError)
+                  return Text('Error');
+                else
+                  return Column(
+                    children: snapshot.data.mealPlan.meals
+                        .map((e) => FavMealCard(
+                              meal: e,
+                            ))
+                        .toList(),
+                  );
+              },
+            )),
       ),
     );
   }
@@ -81,17 +90,19 @@ class FavMealCard extends StatelessWidget {
               Container(
                 height: size.height * 0.2,
                 width: size.width * 0.4,
-                child: Flexible(
-                  fit: FlexFit.loose,
-                  child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.horizontal(left: Radius.circular(20)),
-                    child: Image.network(
-                      meal.recipe.image,
-                      fit: BoxFit.fill,
+                child: Flex(direction: Axis.horizontal, children: [
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.horizontal(left: Radius.circular(20)),
+                      child: Image.network(
+                        meal.recipe.image,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
+                ]),
               ),
               SizedBox(
                 width: size.width * 0.05,
