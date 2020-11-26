@@ -380,116 +380,130 @@ class _MealCardState extends State<MealCard> {
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         elevation: 4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Flexible(
-              fit: FlexFit.tight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                child: GestureDetector(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => CustomDialog(
-                              ate: widget.pressAte,
-                              image: widget.meal.recipe.image,
-                              title: widget.meal.title,
-                              description: widget.meal.recipe.summary,
-                              protein: widget.meal.recipe.protein.toString(),
-                              carbs: widget.meal.recipe.carbs.toString(),
-                              fat: widget.meal.recipe.fat.toString(),
-                            ));
-                  },
-                  child: Image.network(
-                    widget.meal.recipe.image,
-                    width: 150,
-                    fit: BoxFit.fill,
+        child: widget.meal.eaten
+            ? Container(
+                alignment: Alignment.topCenter,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.grey.withOpacity(.9)),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                      child: GestureDetector(
+                        onTap: widget.meal.eaten
+                            ? () {}
+                            : () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomDialog(
+                                          ate: widget.pressAte,
+                                          image: widget.meal.recipe.image,
+                                          title: widget.meal.title,
+                                          description:
+                                              widget.meal.recipe.summary,
+                                          protein: widget.meal.recipe.protein
+                                              .toString(),
+                                          carbs: widget.meal.recipe.carbs
+                                              .toString(),
+                                          fat:
+                                              widget.meal.recipe.fat.toString(),
+                                        ));
+                              },
+                        child: Image.network(
+                          widget.meal.recipe.image,
+                          width: 150,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Flexible(
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(height: 5),
-                    Container(
-                      constraints: BoxConstraints(maxWidth: 150),
-                      child: Text(
-                        widget.meal.dishType,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      constraints: BoxConstraints(maxWidth: 120),
-                      child: Text(widget.meal.title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          softWrap: true,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: Colors.black,
-                          )),
-                    ),
-                    Text(
-                      "${widget.meal.recipe.calories} kcal",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.access_time,
-                          size: 15,
-                          color: Colors.black12,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "${widget.meal.readyInMinutes} min",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Colors.blueGrey,
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(height: 5),
+                          Container(
+                            constraints: BoxConstraints(maxWidth: 150),
+                            child: Text(
+                              widget.meal.dishType,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 9,
-                        ),
-                        // IconButton(
-                        //     icon: Icon(
-                        //       favPressed
-                        //           ? Icons.favorite
-                        //           : Icons.favorite_border,
-                        //       color: Colors.red,
-                        //     ),
-                        //     onPressed: () {
-                        //       toggleFav();
-                        //     }),
-                      ],
+                          Container(
+                            constraints: BoxConstraints(maxWidth: 120),
+                            child: Text(widget.meal.title,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                softWrap: true,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                )),
+                          ),
+                          Text(
+                            "${widget.meal.recipe.calories} kcal",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.access_time,
+                                size: 15,
+                                color: Colors.black12,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                "${widget.meal.readyInMinutes} min",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: Colors.blueGrey,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 9,
+                              ),
+                              // IconButton(
+                              //     icon: Icon(
+                              //       favPressed
+                              //           ? Icons.favorite
+                              //           : Icons.favorite_border,
+                              //       color: Colors.red,
+                              //     ),
+                              //     onPressed: () {
+                              //       toggleFav();
+                              //     }),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 16),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -10,7 +10,7 @@ class Meal {
   String sourceUrl;
   String dishType;
   Recipe recipe;
-
+  bool eaten = false;
   Meal(int id, String imageType, String title, int readyInMinutes, int servings,
       String sourceUrl) {
     this.id = id;
@@ -40,10 +40,27 @@ class Meal {
   Map<String, dynamic> toJson() => {
         'id': this.id,
         'imageType': this.imageType,
+        'title': this.title,
         'readyInMinutes': this.readyInMinutes,
         'servings': this.servings,
         'sourceUrl': this.sourceUrl,
         'dishType': this.dishType,
         'recipe': this.recipe.toJson(),
+        'eaten': this.eaten
       };
+
+  factory Meal.fromDB(Map<String, dynamic> map) {
+    Meal meal = Meal(
+      map['id'],
+      map['imageType'],
+      map['title'],
+      map['readyInMinutes'],
+      map['servings'],
+      map['sourceUrl'],
+    );
+    meal.recipe = Recipe.fromDB(map['recipe']);
+    meal.dishType = map['dishType'];
+    if (map.containsKey('eaten')) meal.eaten = map['eaten'];
+    return meal;
+  }
 }

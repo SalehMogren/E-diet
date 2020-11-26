@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
+import 'package:e_diet/Model/Services/DataBase.dart';
 import 'package:http/http.dart' as http;
 import '../DietLogic/recipe_model.dart';
 import '../DietLogic/meal_plan_model.dart';
@@ -15,14 +16,15 @@ class ApiService {
 //Add base URL for the spoonacular API, endpoint and API Key as a constant
   final String _baseURL = "api.spoonacular.com";
 
-  static const String API_KEY = "3dacd045ad5b4b119870bd9c3f7b956b";
+  static const String API_KEY = "92cceb71d9b34043bb7d13a4d00fe986";
 
 //We create async function to generate meal plan which takes in
   //timeFrame, targetCalories, diet and apiKey
 //If diet is none, we set the diet into an empty string
 //timeFrame parameter sets our meals into 3 meals, which are daily meals.
   //that's why it's set to day
-  Future<MealPlan> generateMealPlan({int targetCalories, String diet}) async {
+  Future<MealPlan> generateMealPlan(
+      {int targetCalories, String diet, String uid}) async {
     //check if diet is null
     if (diet == 'None') diet = '';
     Map<String, String> parameters = {
@@ -56,6 +58,10 @@ class ApiService {
       //convert the map into a MealPlan Object using the factory constructor,
       //MealPlan.fromMap
       MealPlan mealPlan = MealPlan.fromMap(data);
+      print('MP Been Fetched');
+      if (mealPlan.meals.isNotEmpty)
+        await Future.delayed(
+            Duration(seconds: 4), () => addUserMealPlan(uid, mealPlan));
       return mealPlan;
     } catch (err) {
       //If our response has error, we throw an error message
@@ -112,6 +118,7 @@ class ApiService {
       var response = await http.get(uri, headers: headers);
       Map<String, dynamic> data = json.decode(response.body);
       Meal meal = Meal.fromMap(data);
+
       return Future.value(meal);
     } catch (err) {
       throw err.toString();
