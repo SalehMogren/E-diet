@@ -33,15 +33,17 @@ class Diet extends StatelessWidget {
               children: <Widget>[
                 Positioned(
                   top: 0,
-                  height: height * 0.37,
+                  height: height * 0.4,
                   left: 0,
                   right: 0,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      bottom: const Radius.circular(40),
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: const Radius.circular(40),
+                      ),
                     ),
                     child: Container(
-                      color: EDwhite,
                       padding: const EdgeInsets.only(
                           top: 40, left: 20, right: 16, bottom: 10),
                       child: Column(
@@ -152,7 +154,7 @@ class Diet extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: height * 0.39,
+                  top: height * 0.42,
                   left: 0,
                   right: 0,
                   child: Container(
