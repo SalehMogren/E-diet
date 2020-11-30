@@ -5,6 +5,7 @@ import 'package:e_diet/Model/DietLogic/Nutrition.dart';
 import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
 import 'package:e_diet/Model/Services/DataBase.dart';
+import 'package:e_diet/Pages/home/Favorite/favorite.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'Services/DataBase.dart';
@@ -23,9 +24,8 @@ class UserModle extends ChangeNotifier {
   Map<String, Map<String, Meal>> _diary = new Map();
   UserModle(String uid) {
     this.uid = uid;
-    if (uid != 'null') fetchData();
   }
-
+  bool isNuteUpdated = false;
   String get diet => _diet;
 
   int get age => _age;
@@ -79,11 +79,14 @@ class UserModle extends ChangeNotifier {
     if (_nutrition == null)
       _nutrition =
           new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
-
     if (mealPlan == null) {
       await Future.delayed(Duration(seconds: 2), await fetchUserPlan());
     }
-    if (_diary.isEmpty) _diary = await getUserDiary(this.uid);
+    if (_diary.isEmpty) {
+      _diary = await getUserDiary(this.uid);
+    }
+    updateNutretion();
+
     // print('fetch data');
     return this;
   }
@@ -282,6 +285,7 @@ class UserModle extends ChangeNotifier {
     this.nutrition.ate(meal);
     meal.eaten = true;
     addMealToDiary(meal, mealtype);
+    editMealPlanDB(this.uid, meal, mealtype);
     notifyListeners();
   }
 
@@ -299,8 +303,28 @@ class UserModle extends ChangeNotifier {
     notifyListeners();
   }
 
-  removeMealFromDiary(Meal meal, String date, mealType) {
+  removeMealFromDiary(Meal meal, String date, String mealType) async {
     print('Deleting the meal..');
+    _diary[date][mealType].eaten = false;
+    if (date == today) {
+      int ind;
+      switch (mealType) {
+        case 'Breakfast':
+          ind = 0;
+          break;
+        case 'Lunch':
+          ind = 1;
+          break;
+        case 'Dinner':
+          ind = 2;
+          break;
+      }
+      ;
+      mealPlan.meals[ind].eaten = false;
+      await editMealPlanDB(uid, meal, mealType);
+      isNuteUpdated = false;
+      updateNutretion();
+    }
     _diary[date].remove(mealType);
     removeMealFromDiaryDB(this.uid, date, mealType);
     notifyListeners();
@@ -316,5 +340,69 @@ class UserModle extends ChangeNotifier {
       _diary[today] = {mealtype: meal};
     notifyListeners();
     addEatenMeal(this.uid, meal, mealtype);
+  }
+
+  editMealServing(Meal meal, String date, int value, String mealType) async {
+    _diary[date][mealType].servings = value;
+    await editMealDB(this.uid, diary[date][mealType], date, mealType);
+    notifyListeners();
+  }
+
+  void updateNutretion() {
+    if (mealPlan.meals.isNotEmpty) if (!isNuteUpdated) {
+      _nutrition.caloriesEaten = 0;
+      _nutrition.carbsEaten = 0;
+      _nutrition.fatEaten = 0;
+      _nutrition.proteinEaten = 0;
+      mealPlan.meals.forEach((element) {
+        if (element.eaten) {
+          _nutrition.caloriesEaten += element.recipe.calories;
+          _nutrition.carbsEaten += element.recipe.carbs;
+          _nutrition.fatEaten += element.recipe.fat;
+          _nutrition.proteinEaten += element.recipe.protein;
+          isNuteUpdated = true;
+        }
+      });
+    }
+    // if (mealPlan.meals.any((element) {
+    //   return element.eaten ? true : false;
+    // })) {
+    //   _diary[today].values.map((e) {
+    //     _nutrition.caloriesEaten += e.recipe.calories;
+    //     _nutrition.caloriesEaten += e.recipe.carbs;
+    //     _nutrition.fatEaten += e.recipe.fat;
+    //     _nutrition.proteinEaten += e.recipe.protein;
+    //     print('${_diary[today].values.length}');
+    //   });
+    // }
+  }
+
+  suggestAnotherMeal(int id, String mealtype) async {
+    int mealtypeIndex;
+    switch (mealtype) {
+      case 'Breakfast':
+        mealtypeIndex = 0;
+        break;
+      case 'Lunch':
+        mealtypeIndex = 1;
+        break;
+      case 'Dinner':
+        mealtypeIndex = 2;
+        break;
+    }
+    Meal newMeal;
+    await ApiService.instance
+        .fetchSimilar(id)
+        .then((value) => newMeal = value)
+        .catchError((onError) => print('Failed to fetch new Meal $onError'));
+    await Future.delayed(const Duration(seconds: 10), () {
+      if (newMeal != null && newMeal.recipe != null) {
+        mealPlan.meals[mealtypeIndex] = newMeal;
+        newMeal.dishType = mealtype;
+        editMealDB(this.uid, newMeal, today, mealtype);
+      }
+    });
+
+    notifyListeners();
   }
 }

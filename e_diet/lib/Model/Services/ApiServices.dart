@@ -16,7 +16,7 @@ class ApiService {
 //Add base URL for the spoonacular API, endpoint and API Key as a constant
   final String _baseURL = "api.spoonacular.com";
 
-  static const String API_KEY = "92cceb71d9b34043bb7d13a4d00fe986";
+  static const String API_KEY = "394fe268bdf140ab9dc669ccccb06b2c";
 
 //We create async function to generate meal plan which takes in
   //timeFrame, targetCalories, diet and apiKey
@@ -59,9 +59,10 @@ class ApiService {
       //MealPlan.fromMap
       MealPlan mealPlan = MealPlan.fromMap(data);
       print('MP Been Fetched');
-      if (mealPlan.meals.isNotEmpty)
-        await Future.delayed(
-            Duration(seconds: 4), () => addUserMealPlan(uid, mealPlan));
+      if (mealPlan.meals != null)
+        Future.delayed(
+            Duration(seconds: 6), () => addUserMealPlan(uid, mealPlan));
+      Future.delayed(const Duration(seconds: 10));
       return mealPlan;
     } catch (err) {
       //If our response has error, we throw an error message
@@ -93,6 +94,7 @@ class ApiService {
       var response = await http.get(uri, headers: headers);
       Map<String, dynamic> data = json.decode(response.body);
       Recipe recipe = Recipe.fromMap(data);
+      print('Recipe id ${recipe.calories}');
       return Future.value(recipe);
     } catch (err) {
       throw err.toString();
@@ -100,10 +102,10 @@ class ApiService {
   }
 
   //use to get similar meal/s
-  Future<Meal> fetchSimilar(String id) async {
+  Future<Meal> fetchSimilar(int id) async {
     Map<String, String> parameters = {
-      'number': '1',
-      'limitLicense': 'true',
+      'number': '10',
+      'limitLicense': 'false',
       'apiKey': API_KEY,
     };
     Uri uri = Uri.https(
@@ -116,9 +118,9 @@ class ApiService {
     };
     try {
       var response = await http.get(uri, headers: headers);
-      Map<String, dynamic> data = json.decode(response.body);
-      Meal meal = Meal.fromMap(data);
-
+      List<dynamic> data = json.decode(response.body);
+      Meal meal = Meal.fromMap(data.last);
+      print('meal id ${meal.id}');
       return Future.value(meal);
     } catch (err) {
       throw err.toString();

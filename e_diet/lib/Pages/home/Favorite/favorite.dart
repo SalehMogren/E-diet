@@ -1,5 +1,5 @@
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
-import 'package:e_diet/Model/Services/Auth.dart';
+// import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
 import 'package:e_diet/Model/UserM.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +12,7 @@ class Favorite extends StatefulWidget {
 }
 
 class _FavoriteState extends State<Favorite> {
-  final AuthService _auth = AuthService();
+  // final AuthService _auth = AuthService();
 
   List<MealTest> mealsBreakFast = [
     MealTest('Egg', 80, '2 eggs'),
@@ -25,7 +25,7 @@ class _FavoriteState extends State<Favorite> {
   Widget build(BuildContext context) {
     var modle = Provider.of<UserModle>(context);
 
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

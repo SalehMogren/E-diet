@@ -29,7 +29,6 @@ class Diet extends StatelessWidget {
               snapshot.connectionState == ConnectionState.waiting)
             return Text('Loading...');
           return Scaffold(
-            backgroundColor: const Color(0xFFE9E9E9),
             body: Stack(
               children: <Widget>[
                 Positioned(
@@ -42,7 +41,7 @@ class Diet extends StatelessWidget {
                       bottom: const Radius.circular(40),
                     ),
                     child: Container(
-                      color: Colors.white,
+                      color: EDwhite,
                       padding: const EdgeInsets.only(
                           top: 40, left: 20, right: 16, bottom: 10),
                       child: Column(
@@ -189,6 +188,13 @@ class Diet extends StatelessWidget {
                                       ]
                                     : snapshot.data.mealPlan.meals
                                         .map((e) => MealCard(
+                                              suggestAnother: () async {
+                                                await snapshot.data
+                                                    .suggestAnotherMeal(
+                                                        e.id, e.dishType);
+                                                print('Loading... New Meal');
+                                                Navigator.pop(context);
+                                              },
                                               meal: e,
                                               pressAte: () {
                                                 snapshot.data.eat(
@@ -358,10 +364,11 @@ class _RadialPainter extends CustomPainter {
 }
 
 class MealCard extends StatefulWidget {
-  final Function pressAte;
+  final Function pressAte, suggestAnother;
   final Meal meal;
 
-  const MealCard({Key key, @required this.meal, this.pressAte})
+  const MealCard(
+      {Key key, @required this.meal, this.pressAte, this.suggestAnother})
       : super(key: key);
 
   @override
@@ -403,6 +410,7 @@ class _MealCardState extends State<MealCard> {
                                 showDialog(
                                     context: context,
                                     builder: (context) => CustomDialog(
+                                          suggestAnother: widget.suggestAnother,
                                           ate: widget.pressAte,
                                           image: widget.meal.recipe.image,
                                           title: widget.meal.title,
@@ -517,7 +525,7 @@ class _MealCardState extends State<MealCard> {
 
 class CustomDialog extends StatelessWidget {
   final String title, description, buttonText, image, protein, carbs, fat;
-  final Function ate;
+  final Function ate, suggestAnother;
   CustomDialog(
       {this.title,
       this.ate,
@@ -526,7 +534,8 @@ class CustomDialog extends StatelessWidget {
       this.image,
       this.carbs,
       this.fat,
-      this.protein});
+      this.protein,
+      this.suggestAnother});
 
   @override
   Widget build(BuildContext context) {
@@ -545,6 +554,7 @@ class CustomDialog extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
+            width: size.width * .85,
             padding: EdgeInsets.only(top: 160, bottom: 50, left: 30, right: 30),
             margin: EdgeInsets.only(top: 10),
             decoration: BoxDecoration(
@@ -598,6 +608,8 @@ class CustomDialog extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
+                SizedBox(height: 24.0),
+
                 Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -607,9 +619,7 @@ class CustomDialog extends StatelessWidget {
                           press: ate,
                           width: size.width * 0.4),
                       RoundedButton(
-                          press: () {
-                            Navigator.pop(context);
-                          },
+                          press: suggestAnother,
                           text: 'Don\'t Like it?',
                           color: EDpinkAcc,
                           width: size.width * 0.4),

@@ -130,13 +130,17 @@ class SectionMeals extends StatefulWidget {
   final String title;
   final Meal meal;
   final bool mealExist;
-  final Function delete;
+  final DismissDirectionCallback delete;
+  final Function edit;
+  final Function addMeal;
   const SectionMeals(
       {Key key,
       @required this.title,
       @required this.meal,
       @required this.mealExist,
-      this.delete})
+      this.delete,
+      this.edit,
+      this.addMeal})
       : super(key: key);
 
   @override
@@ -194,7 +198,7 @@ class _SectionMealsState extends State<SectionMeals> {
                           ? [_mealTile(widget.meal, context)]
                           : [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: widget.addMeal,
                                 child: Container(
                                   padding: EdgeInsets.only(top: 24),
                                   child: Row(
@@ -226,7 +230,7 @@ class _SectionMealsState extends State<SectionMeals> {
   Widget _mealTile(Meal e, BuildContext context) {
     String title = e.title;
     int cal = e.recipe.calories.toInt();
-    String serving = e.servings.toString();
+    String newServing = e.servings.toString();
     Size size = MediaQuery.of(context).size;
     return Dismissible(
       key: UniqueKey(),
@@ -237,12 +241,7 @@ class _SectionMealsState extends State<SectionMeals> {
         child: Icon(Icons.delete, color: Colors.white),
       ),
       direction: DismissDirection.startToEnd,
-      onDismissed: (direction) {
-        if (direction == DismissDirection.startToEnd) {
-          // ignore: unnecessary_statements
-          widget.delete;
-        }
-      },
+      onDismissed: widget.delete,
       child: GestureDetector(
         onTap: () {
           showDialog(
@@ -316,7 +315,7 @@ class _SectionMealsState extends State<SectionMeals> {
                           ),
                           SizedBox(height: 10.0),
                           Text(
-                            "Servings:$serving",
+                            "Servings:${e.servings}",
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.w700,
@@ -326,9 +325,10 @@ class _SectionMealsState extends State<SectionMeals> {
                           TextFieldContainer(
                             color: EDwhite,
                             child: RoundedInputField(
+                              keyboardType: TextInputType.number,
                               onChanged: (value) {
                                 setState(() {
-                                  e.servings = int.parse(value);
+                                  newServing = value;
                                 });
                               },
                               hintText: 'Servings',
@@ -340,6 +340,7 @@ class _SectionMealsState extends State<SectionMeals> {
                               color: EDlightBlueText,
                               text: "Done",
                               press: () {
+                                widget.edit(int.parse(newServing));
                                 Navigator.pop(context);
                               },
                               width: size.width * 0.4),

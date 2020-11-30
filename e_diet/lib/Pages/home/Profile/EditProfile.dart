@@ -1,3 +1,4 @@
+import 'package:e_diet/Model/UI/validators.dart';
 import 'package:e_diet/Model/UserM.dart';
 import 'package:e_diet/Pages/Widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class _EditProfileState extends State<EditProfile> {
                 // color4: Colors.transparent,
                 child: SingleChildScrollView(
                   child: Container(
-                    height: size.height * .9,
+                    height: size.height * .95,
                     width: size.width * .85,
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -57,21 +58,18 @@ class _EditProfileState extends State<EditProfile> {
                             Text(
                               "Caution ! Changing Your Info Will Result On Diet Changes As Well",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Colors.red,
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
+                            // SizedBox(
+                            //   height: 15,
+                            // ),
                             // age
                             TextFieldContainer(
                               color: EDwhite,
                               child: RoundedInputField(
-                                validator: (value) =>
-                                    value.length < 1 || int.parse(value) < 4
-                                        ? 'Enter Valid Age '
-                                        : null,
+                                validator: AgeValidator.validate,
                                 onChanged: (value) {
                                   setState(() => age = int.parse(value));
                                 },
@@ -84,10 +82,7 @@ class _EditProfileState extends State<EditProfile> {
 
                             TextFieldContainer(
                               child: RoundedInputField(
-                                validator: (value) =>
-                                    value.length < 1 || double.parse(value) < 4
-                                        ? 'Enter Valid Weight '
-                                        : null,
+                                validator: WeightValidator.validate,
                                 onChanged: (value) {
                                   setState(() => weight = double.parse(value));
                                 },
@@ -103,10 +98,7 @@ class _EditProfileState extends State<EditProfile> {
                               child: RoundedInputField(
                                 hintText:
                                     snapshot.data.height.toString() + 'cm',
-                                validator: (value) =>
-                                    value.length < 1 || double.parse(value) < 4
-                                        ? 'Enter Valid Height '
-                                        : null,
+                                validator: HeightValidator.validate,
                                 onChanged: (value) {
                                   setState(() => height = double.parse(value));
                                 },
@@ -141,7 +133,7 @@ class _EditProfileState extends State<EditProfile> {
                                       ],
                                     )),
                                 Container(
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(5),
                                     child: Row(
                                       children: <Widget>[
                                         Radio(

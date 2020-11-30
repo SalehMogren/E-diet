@@ -1,5 +1,4 @@
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
-import 'package:e_diet/Model/Services/DataBase.dart';
 import 'package:e_diet/Model/UI/Colors.dart';
 import 'package:e_diet/Model/UserM.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +16,7 @@ class _DiaryState extends State<Diary> {
   DateTime date = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     var modle = Provider.of<UserModle>(context);
     return Scaffold(
       appBar: AppBar(
@@ -35,13 +34,13 @@ class _DiaryState extends State<Diary> {
         leading: null,
       ),
       backgroundColor: Colors.transparent,
-      body: FutureBuilder(
+      body: FutureBuilder<UserModle>(
           future: modle.fetchData(),
           builder: (context, snapshot) {
             // if (snapshot.connectionState == ConnectionState.waiting)
             //   return Text('Loading..');
             if (snapshot.hasError) return Text('Error Happend');
-
+            // date = DateTime.parse(snapshot.data.diary.keys.last);
             return SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.all(14),
@@ -67,14 +66,27 @@ class _DiaryState extends State<Diary> {
                     //Section Widgets
                     Consumer<UserModle>(
                       builder: (context, value, child) => SectionMeals(
-                        delete: () {
-                          if (value.diary[dateFormater(date)] != null)
-                            value.removeMealFromDiary(
-                                value.diary[dateFormater(date)]['Breakfast'],
-                                dateFormater(date),
-                                'Breakfast');
+                        addMeal: () {
+                          value.eat(value.mealPlan.meals[0], 0);
                         },
-                        mealExist: value.diary[dateFormater(date)] == null
+                        edit: (input) {
+                          value.editMealServing(
+                              value.diary[dateFormater(date)]['Breakfast'],
+                              dateFormater(date),
+                              input,
+                              'Breakfast');
+                        },
+                        delete: (DismissDirection direction) {
+                          // if (value.diary[dateFormater(date)] != null)
+                          (direction == DismissDirection.startToEnd)
+                              ? value.removeMealFromDiary(
+                                  value.diary[dateFormater(date)]['Breakfast'],
+                                  dateFormater(date),
+                                  'Breakfast')
+                              : print("wrong Delete swipe");
+                        },
+                        mealExist: (value.diary[dateFormater(date)] == null ||
+                                value.diary[dateFormater(date)].isEmpty)
                             ? false
                             : value.diary[dateFormater(date)]
                                 .containsKey('Breakfast'),
@@ -86,6 +98,18 @@ class _DiaryState extends State<Diary> {
                     ),
                     Consumer<UserModle>(
                       builder: (context, value, child) => SectionMeals(
+                        addMeal: () {
+                          value.eat(value.mealPlan.meals[1], 1);
+                        },
+                        delete: (DismissDirection direction) {
+                          // if (value.diary[dateFormater(date)] != null)
+                          (direction == DismissDirection.startToEnd)
+                              ? value.removeMealFromDiary(
+                                  value.diary[dateFormater(date)]['Lunch'],
+                                  dateFormater(date),
+                                  'Lunch')
+                              : print("wrong Delete swipe");
+                        },
                         mealExist: value.diary[dateFormater(date)] == null
                             ? false
                             : value.diary[dateFormater(date)]
@@ -98,6 +122,18 @@ class _DiaryState extends State<Diary> {
                     ),
                     Consumer<UserModle>(
                       builder: (context, value, child) => SectionMeals(
+                        addMeal: () {
+                          value.eat(value.mealPlan.meals[2], 2);
+                        },
+                        delete: (DismissDirection direction) {
+                          // if (value.diary[dateFormater(date)] != null)
+                          (direction == DismissDirection.startToEnd)
+                              ? value.removeMealFromDiary(
+                                  value.diary[dateFormater(date)]['Dinner'],
+                                  dateFormater(date),
+                                  'Dinner')
+                              : print("wrong Delete swipe");
+                        },
                         mealExist: value.diary[dateFormater(date)] == null
                             ? false
                             : value.diary[dateFormater(date)]
@@ -131,21 +167,22 @@ class _DiaryState extends State<Diary> {
   }
 
   void moveDate(String dierction, UserModle value) {
-    DateTime temp = date;
+    // DateTime temp = date;
 
     if (dierction == 'forward') {
+      // String after =  value.diary.entries.toList().
       // print('temp date ${dateFormater(temp.add(Duration(days: 2)))}');
-      if (value.diary.containsKey(dateFormater(temp.add(Duration(days: 1)))))
-        setState(() {
-          date = date.add(Duration(days: 1));
-        });
+      // if (value.diary.containsKey(dateFormater(temp.add(Duration(days: 1)))))
+      setState(() {
+        date = date.add(Duration(days: 1));
+      });
     }
     if (dierction == 'backward') {
-      if (value.diary
-          .containsKey(dateFormater(temp.subtract(Duration(days: 1)))))
-        setState(() {
-          date = date.subtract(Duration(days: 1));
-        });
+      // if (value.diary
+      //     .containsKey(dateFormater(temp.subtract(Duration(days: 1)))))
+      setState(() {
+        date = date.subtract(Duration(days: 1));
+      });
     }
   }
 }

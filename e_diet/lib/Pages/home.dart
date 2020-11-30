@@ -2,7 +2,7 @@ import 'package:e_diet/Model/Services/Auth.dart';
 import 'package:e_diet/Model/UserM.dart';
 import 'package:e_diet/Pages/home/Diary/Diary.dart';
 import 'package:e_diet/Pages/home/Diet/diet.dart';
-import 'package:e_diet/Pages/home/Favorite/favorite.dart';
+// import 'package:e_diet/Pages/home/Favorite/favorite.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -51,12 +51,12 @@ class _AppHomeState extends State<AppHome> {
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
           child: GNav(
-              gap: 4,
+              gap: 10,
               activeColor: Colors.white,
               iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
               duration: Duration(milliseconds: 800),
               tabBackgroundColor: Colors.grey[800],
               tabs: [

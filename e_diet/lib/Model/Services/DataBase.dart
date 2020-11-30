@@ -1,6 +1,5 @@
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
-import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // Import the firebase_core and cloud_firestore plugin
 import 'package:intl/intl.dart';
@@ -240,4 +239,26 @@ Future<void> removeMealFromDiaryDB(String uid, String date, String mealType) {
       .update({mealType: FieldValue.delete()})
       .then((value) => print('Meal removed from DB'))
       .catchError((onError) => print('Failed to remove meal from DB'));
+}
+
+Future<void> editMealDB(String uid, Meal meal, String date, String mealType) {
+  return users
+      .doc(uid)
+      .collection(DiaryDB)
+      .doc(date)
+      .update({
+        mealType: meal.toJson(),
+      })
+      .then((value) => print('Meal been updated on DB'))
+      .catchError((onError) => print('Failed to update meal on db'));
+}
+
+Future<void> editMealPlanDB(String uid, Meal meal, String mealType) {
+  return users
+      .doc(uid)
+      .collection(MealPlanDB)
+      .doc(today)
+      .update({'mealplan.meals.$mealType': meal.toJson()})
+      .then((value) => print('meal in MP has been updated'))
+      .catchError((onError) => print('failed to update mp in db'));
 }
