@@ -50,7 +50,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Gluten Free',
                 img:
-                    "https://hips.hearstapps.com/delish/assets/17/31/1501791674-delish-chicken-curry-horizontal.jpg",
+                    "https://cdn-a.william-reed.com/var/wrbm_gb_food_pharma/storage/images/publications/food-beverage-nutrition/foodnavigator-asia.com/article/2020/05/05/contamination-risk-gluten-free-grain-based-foods-in-india-found-to-contain-up-to-90-times-permissible-levels/10921453-1-eng-GB/Contamination-risk-Gluten-free-grain-based-foods-in-India-found-to-contain-up-to-90-times-permissible-levels_wrbm_large.jpg",
                 keyStr: 'card',
                 topS: 30,
                 func: (DismissDirection direction) async {
@@ -66,7 +66,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Ketogenic',
                 img:
-                    "https://www.expatica.com/app/uploads/sites/5/2020/03/Boeuf-bourguignon-1920x1080.jpg",
+                    "https://res.cloudinary.com/grohealth/image/upload/v1583764734/DCUK/Content/Ketogenic-Diet.png",
                 keyStr: 'card 1',
                 topS: 25,
                 func: (DismissDirection direction) {
@@ -82,7 +82,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Lacto-Vegetarian',
                 img:
-                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                    'https://image.shutterstock.com/image-photo/closeup-signboard-text-ovolacto-vegetarian-260nw-344951654.jpg',
                 keyStr: 'card 2',
                 topS: 20,
                 func: (DismissDirection direction) {
@@ -98,7 +98,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Ovo-Vegetarian',
                 img:
-                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                    'https://miro.medium.com/max/1000/1*dicP0hFwfr1w-0-3Qcuz0Q.jpeg',
                 keyStr: 'card 3',
                 topS: 15,
                 func: (DismissDirection direction) {
@@ -114,7 +114,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Vegan',
                 img:
-                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                    'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/healhty-vegan-lunch-bowl-avocado-quinoa-sweet-royalty-free-image-893716434-1562014604.jpg',
                 keyStr: 'card 4',
                 topS: 10,
                 func: (DismissDirection direction) {
@@ -130,7 +130,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Pescetarian',
                 img:
-                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                    'https://universityhealthnews.com/media/dreamstime_s_2605363.jpg',
                 keyStr: 'card 5',
                 topS: 5,
                 func: (DismissDirection direction) {
@@ -146,7 +146,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Paleo',
                 img:
-                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                    'https://i0.wp.com/post.healthline.com/wp-content/uploads/2019/11/chicken-burger-salad-fruit-1296x728-header-1296x728.jpg?w=1155&h=1528',
                 keyStr: 'card 6',
                 topS: 0,
                 func: (DismissDirection direction) {
@@ -162,7 +162,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Primal',
                 img:
-                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                    'https://i0.wp.com/cdn-prod.medicalnewstoday.com/content/images/articles/320/320516/primal-diet.jpg?w=1155&h=1541',
                 keyStr: 'card 7',
                 topS: 0,
                 func: (DismissDirection direction) {
@@ -178,7 +178,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
             DismissableCard(
                 text: 'Whole30',
                 img:
-                    'https://thumbor.thedailymeal.com/8snKtQlPGA9m6x6BVEfr6RAahf4=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/2414/2222795/spinach_lasagna.jpg',
+                    'https://cdn.chiroeco.com/wp-content/uploads/2018/05/whole30.jpg',
                 keyStr: 'card 8',
                 topS: 0,
                 func: (DismissDirection direction) {
@@ -197,7 +197,7 @@ class _MealPreferredSetUpState extends State<MealPreferredSetUp> {
               child: Text(
                 widget.edit
                     ? 'Update your meal prefrence '
-                    : 'Swipe Right If You Prefer This Meal, Left Otherwise',
+                    : 'Swipe Right If You Prefer This Diet, Left Otherwise',
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
