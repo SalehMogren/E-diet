@@ -1,5 +1,4 @@
 //import meal_model.dart
-import 'dart:convert';
 
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 
@@ -8,6 +7,21 @@ class MealPlan {
   final List<Meal> meals;
   final double calories, carbs, fat, protein;
   MealPlan({this.meals, this.calories, this.carbs, this.fat, this.protein});
+
+  factory MealPlan.fromDB(Map<String, dynamic> map) {
+    List<Meal> meals = [];
+    meals.add(Meal.fromDB(map['meals']['Breakfast']));
+    meals.add(Meal.fromDB(map['meals']['Lunch']));
+    meals.add(Meal.fromDB(map['meals']['Dinner']));
+
+    return MealPlan(
+      meals: meals,
+      calories: map['calories'],
+      carbs: map['carbs'],
+      fat: map['fat'],
+      protein: map['protein'],
+    );
+  }
 /*
 The factory constructor iterates over the list of meals and our decoded mealplan
 data and creates a list of meals.
@@ -41,19 +55,25 @@ Then, we return MealPlan object with all the information
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson1() => {
         'calories': calories,
         'carbs': carbs,
         'fat': fat,
         'protein': protein,
-        'meals': mealsToJson(),
+        'meals': _mealsToJson(),
       };
 
-  Map<String, dynamic> mealsToJson() {
-    Map<String, dynamic> jMeals;
-    meals.forEach((element) {
-      jMeals.update(element.dishType, (value) => value);
-    });
+  Map<String, dynamic> _mealsToJson() {
+    // Map<String, dynamic> jMeals = Map.fromIterable(
+    //   this.meals,
+    //   key: (element) => element.dishType,
+    //   value: (element) => element.toJson(),
+    // );
+    Map<String, dynamic> jMeals = new Map();
+    if (this.meals.isNotEmpty)
+      this.meals.forEach((element) {
+        if (element != null) jMeals[element.dishType] = element.toJson();
+      });
     return jMeals;
   }
 }

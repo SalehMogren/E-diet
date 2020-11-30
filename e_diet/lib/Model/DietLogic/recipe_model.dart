@@ -45,4 +45,16 @@ class Recipe {
         'protein': protein,
         'carbs': carbs
       };
+  factory Recipe.fromDB(Map<String, dynamic> map) {
+    return Recipe(
+      spoonacularSourceUrl: map['spoonacularSourceUrl'],
+      image: map['image'],
+      sourceName: map['sourceName'],
+      summary: map['summary'],
+      calories: map['calories'],
+      carbs: map['carbs'],
+      fat: map['fat'],
+      protein: map['protein'],
+    );
+  }
 }

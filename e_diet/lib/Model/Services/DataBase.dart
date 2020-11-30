@@ -1,6 +1,5 @@
 import 'package:e_diet/Model/DietLogic/Meal_model.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
-import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // Import the firebase_core and cloud_firestore plugin
 import 'package:intl/intl.dart';
@@ -20,6 +19,7 @@ const String ActivityLevelDB = 'activityLevel';
 const String GenderDB = 'gender';
 const String DiaryDB = 'diary';
 const String MealPlanDB = 'mealplan';
+const String NutretionsDB = 'nutretion';
 final FirebaseFirestore _db = FirebaseFirestore.instance;
 final CollectionReference users = _db.collection('users');
 String today = "${DateFormat("M-d-y").format(DateTime.now())}";
@@ -106,7 +106,7 @@ Future<Map<String, dynamic>> fetchUserInfoDB(String uid) async {
       PhotoUrlDB: value[PhotoUrlDB],
       ActivityLevelDB: value[ActivityLevelDB],
     });
-    print('User Data Has Been Fetched To Model');
+    // print('User Data Has Been Fetched To Model');
   }).catchError(
       (onError) => print('Failed to Fetch User Data to model $onError'));
 
@@ -120,50 +120,42 @@ Stream<DocumentSnapshot> getUserDoc(String uid) {
 
 // Add user's mealplan for the today's
 Future<void> addUserMealPlan(String uid, MealPlan mealPlan) {
-  return users
-      .doc(uid)
-      .collection(MealPlanDB)
-      .doc(today)
-      .set({MealPlanDB: mealPlan.toJson()})
-      .then((value) => print('User Meal Plan has been added to DB'))
-      .catchError(
-          (onError) => print('Faild to add user mealplan to db $onError'));
-}
-
-// get user's mealplan for todays , check if its not exist call the api to add it \
-Future<MealPlan> getUserMealPlan(String uid, String diet, int calories) async {
   return checkUserMealPlan(uid).then((value) {
-    // if not found call api to create the mealplan
     if (!value)
-      ApiService.instance
-          .generateMealPlan(diet: diet, targetCalories: calories)
-          .then((value) {
-        print('MealPlan Has Been Created');
-        addUserMealPlan(uid, value);
-        return value;
-      }).catchError(
-              (onError) => print('Failed To Create User MealPlan $onError'));
-    else
       return users
           .doc(uid)
           .collection(MealPlanDB)
           .doc(today)
-          .get()
-          .then((value) => MealPlan.fromMap(value.data()));
+          .set({MealPlanDB: mealPlan.toJson1()})
+          .then((value) => print('User Meal Plan has been added to DB'))
+          .catchError(
+              (onError) => print('Faild to add user mealplan to db $onError'));
   });
+}
+
+// get user's mealplan for todays , check if its not exist call the api to add it \
+Future<MealPlan> getUserMealPlan(String uid, String diet, int calories) async {
+  return users
+      .doc(uid)
+      .collection(MealPlanDB)
+      .doc(today)
+      .get()
+      .then((value) => MealPlan.fromDB(value.data()[MealPlanDB]));
 }
 
 Future<bool> checkUserMealPlan(String uid) {
   return users.doc(uid).collection(MealPlanDB).doc(today).get().then((value) {
-    if (value.data().isNotEmpty) {
-      print('User MealPlan Doc found');
+    if (value.exists) {
+      print('User Mealplan Doc found');
+
       return true;
     } else {
-      print('User MealPlan Doc NOT found');
+      print('User Mealplan Doc NOT found');
+
       return false;
     }
   }).catchError((onError) {
-    print('Failed to find user mealplan');
+    print('Failed to find user meal $onError');
     return false;
   });
 }
@@ -214,4 +206,59 @@ Future<bool> getUserEatenMeals(String uid, String date) {
     print('Failed to find user eaten meals');
     return false;
   });
+}
+
+// get User's Diary from DB
+Future<Map<String, Map<String, Meal>>> getUserDiary(String uid) {
+  Map<String, Map<String, Meal>> diary = new Map();
+  //1st accesss the user db
+  //2nd store in Map<"date",List<Meal>>
+  //3rd return the data to user model
+  return users.doc(uid).collection(DiaryDB).get().then((value) {
+    value.docs.forEach((e) {
+      // print('Docs Are accessed');
+      // loop through a doc and take the meals and store it in the dayMeals var
+      Map<String, Meal> dayMeals = new Map();
+      e.data().forEach((key, value) {
+        dayMeals[key] = Meal.fromDB(value);
+        // print("Meal ${dayMeals.keys.first}");
+      });
+      diary[e.id] = dayMeals;
+    });
+    // print("User diary has been fetched");
+    // print("Diary Contains : ${diary.length}");
+    return diary;
+  }).catchError((onError) => print('Failed to fetch User Diary $onError'));
+}
+
+Future<void> removeMealFromDiaryDB(String uid, String date, String mealType) {
+  return users
+      .doc(uid)
+      .collection(DiaryDB)
+      .doc(date)
+      .update({mealType: FieldValue.delete()})
+      .then((value) => print('Meal removed from DB'))
+      .catchError((onError) => print('Failed to remove meal from DB'));
+}
+
+Future<void> editMealDB(String uid, Meal meal, String date, String mealType) {
+  return users
+      .doc(uid)
+      .collection(DiaryDB)
+      .doc(date)
+      .update({
+        mealType: meal.toJson(),
+      })
+      .then((value) => print('Meal been updated on DB'))
+      .catchError((onError) => print('Failed to update meal on db'));
+}
+
+Future<void> editMealPlanDB(String uid, Meal meal, String mealType) {
+  return users
+      .doc(uid)
+      .collection(MealPlanDB)
+      .doc(today)
+      .update({'mealplan.meals.$mealType': meal.toJson()})
+      .then((value) => print('meal in MP has been updated'))
+      .catchError((onError) => print('failed to update mp in db'));
 }

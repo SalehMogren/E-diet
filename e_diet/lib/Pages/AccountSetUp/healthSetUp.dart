@@ -1,3 +1,4 @@
+import 'package:e_diet/Model/UI/validators.dart';
 import 'package:e_diet/Model/UserM.dart';
 import 'package:e_diet/Model/UI/routing_constants.dart';
 import 'package:flutter/material.dart';
@@ -58,10 +59,7 @@ class _HealthSetUpState extends State<HealthSetUp> {
                     // age
                     TextFieldContainer(
                       child: RoundedInputField(
-                        validator: (value) =>
-                            value.length < 1 || int.parse(value) < 4
-                                ? 'Enter Valid Age '
-                                : null,
+                        validator: AgeValidator.validate,
                         onChanged: (value) {
                           setState(() => age = int.parse(value));
                         },
@@ -74,10 +72,7 @@ class _HealthSetUpState extends State<HealthSetUp> {
 
                     TextFieldContainer(
                       child: RoundedInputField(
-                        validator: (value) =>
-                            value.length < 1 || double.parse(value) < 4
-                                ? 'Enter Valid Weight '
-                                : null,
+                        validator: WeightValidator.validate,
                         onChanged: (value) {
                           setState(() => weight = double.parse(value));
                         },
@@ -91,10 +86,7 @@ class _HealthSetUpState extends State<HealthSetUp> {
                     TextFieldContainer(
                       child: RoundedInputField(
                         hintText: "Height in CM",
-                        validator: (value) =>
-                            value.length < 1 || double.parse(value) < 4
-                                ? 'Enter Valid Height '
-                                : null,
+                        validator: HeightValidator.validate,
                         onChanged: (value) {
                           setState(() => height = double.parse(value));
                         },

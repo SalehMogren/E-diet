@@ -24,173 +24,199 @@ class Diet extends StatelessWidget {
     return FutureBuilder<UserModle>(
         future: modle.fetchData(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Text('Loading...');
           if (snapshot.hasError) return Text('Error');
-          return Consumer<UserModle>(
-            builder: (context, value, child) => Scaffold(
-              backgroundColor: const Color(0xFFE9E9E9),
-              body: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: 0,
-                    height: height * 0.37,
-                    left: 0,
-                    right: 0,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: const Radius.circular(40),
-                      ),
-                      child: Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.only(
-                            top: 40, left: 20, right: 16, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            ListTile(
-                              title: Text(
-                                "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "Hello," + value.name,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 26,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              // trailing: ClipOval(
-                              //     child: Image.network(snapshot.data.photoUrl)),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                _RadialProgress(
-                                  calTxt: (value.nutrition.calories.toInt() -
-                                          value.nutrition.caloriesEaten.toInt())
-                                      .toString(),
-                                  width: width * 0.28,
-                                  height: width * 0.20,
-                                  progress: value.nutrition.caloriesEaten /
-                                      value.nutrition.calories,
-                                ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    _IngredientProgress(
-                                      ingredient: "Protein",
-                                      progress: _progressNum(
-                                          value.nutrition.proteinEaten,
-                                          value.nutrition.protein),
-                                      progressColor: Colors.green,
-                                      leftAmount: value.nutrition.protein
-                                              .toInt() -
-                                          value.nutrition.proteinEaten.toInt(),
-                                      width: width * 0.28,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    _IngredientProgress(
-                                      ingredient: "Carbs",
-                                      progress: _progressNum(
-                                          value.nutrition.carbsEaten,
-                                          value.nutrition.carbs),
-                                      progressColor: Colors.red,
-                                      leftAmount: value.nutrition.carbs
-                                              .toInt() -
-                                          value.nutrition.carbsEaten.toInt(),
-                                      width: width * 0.28,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    _IngredientProgress(
-                                      ingredient: "Fat",
-                                      progress: _progressNum(
-                                          value.nutrition.fatEaten,
-                                          value.nutrition.fat),
-                                      progressColor: Colors.yellow,
-                                      leftAmount: value.nutrition.fat.toInt() -
-                                          value.nutrition.fatEaten.toInt(),
-                                      width: width * 0.28,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+          if (snapshot.data == null ||
+              snapshot.connectionState == ConnectionState.waiting)
+            return Text('Loading...');
+          return Scaffold(
+            body: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  height: height * 0.37,
+                  left: 0,
+                  right: 0,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: const Radius.circular(40),
                     ),
-                  ),
-                  Positioned(
-                    top: height * 0.39,
-                    left: 0,
-                    right: 0,
                     child: Container(
-                      height: height * 0.50,
+                      color: EDwhite,
+                      padding: const EdgeInsets.only(
+                          top: 40, left: 20, right: 16, bottom: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 8,
-                              left: 32,
-                              right: 16,
-                            ),
-                            child: Text(
-                              "MEALS FOR TODAY",
-                              style: const TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Row(
-                                  children: value.mealPlan.meals
-                                      .map((e) => _MealCard(
-                                            meal: e,
-                                            pressAte: () {
-                                              value.eat(
-                                                  e,
-                                                  value.mealPlan.meals
-                                                      .indexOf(e));
-                                              Navigator.pop(context);
-                                            },
-                                          ))
-                                      .toList(),
-                                ),
+                          ListTile(
+                            title: Text(
+                              "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
                               ),
                             ),
+                            subtitle: Text(
+                              "Hello," + snapshot.data.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 26,
+                                color: Colors.black,
+                              ),
+                            ),
+                            // trailing: ClipOval(
+                            //     child: Image.network(snapshot.data.photoUrl)),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Consumer<UserModle>(
+                                  builder: (context, value, child) =>
+                                      _RadialProgress(
+                                        calTxt: (value.nutrition.calories
+                                                    .toInt() -
+                                                value.nutrition.caloriesEaten
+                                                    .toInt())
+                                            .toString(),
+                                        width: width * 0.28,
+                                        height: width * 0.20,
+                                        progress:
+                                            value.nutrition.caloriesEaten /
+                                                value.nutrition.calories,
+                                      )),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Consumer<UserModle>(
+                                      builder: (context, value, child) =>
+                                          _IngredientProgress(
+                                            ingredient: "Protein",
+                                            progress: _progressNum(
+                                                value.nutrition.proteinEaten,
+                                                value.nutrition.protein),
+                                            progressColor: Colors.green,
+                                            leftAmount: value.nutrition.protein
+                                                    .toInt() -
+                                                value.nutrition.proteinEaten
+                                                    .toInt(),
+                                            width: width * 0.28,
+                                          )),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Consumer<UserModle>(
+                                      builder: (context, value, child) =>
+                                          _IngredientProgress(
+                                            ingredient: "Carbs",
+                                            progress: _progressNum(
+                                                value.nutrition.carbsEaten,
+                                                value.nutrition.carbs),
+                                            progressColor: Colors.red,
+                                            leftAmount:
+                                                value.nutrition.carbs.toInt() -
+                                                    value.nutrition.carbsEaten
+                                                        .toInt(),
+                                            width: width * 0.28,
+                                          )),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Consumer<UserModle>(
+                                      builder: (context, value, child) =>
+                                          _IngredientProgress(
+                                            ingredient: "Fat",
+                                            progress: _progressNum(
+                                                value.nutrition.fatEaten,
+                                                value.nutrition.fat),
+                                            progressColor: Colors.yellow,
+                                            leftAmount:
+                                                value.nutrition.fat.toInt() -
+                                                    value.nutrition.fatEaten
+                                                        .toInt(),
+                                            width: width * 0.28,
+                                          )),
+                                ],
+                              )
+                            ],
                           ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                Positioned(
+                  top: height * 0.39,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: height * 0.50,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 8,
+                            left: 32,
+                            right: 16,
+                          ),
+                          child: Text(
+                            "MEALS FOR TODAY",
+                            style: const TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Row(
+                                children: snapshot.data.mealPlan == null
+                                    ? [
+                                        Center(
+                                            child: Text(
+                                                'API Points Finished Come back later'))
+                                      ]
+                                    : snapshot.data.mealPlan.meals
+                                        .map((e) => MealCard(
+                                              suggestAnother: () async {
+                                                await snapshot.data
+                                                    .suggestAnotherMeal(
+                                                        e.id, e.dishType);
+                                                print('Loading... New Meal');
+                                                Navigator.pop(context);
+                                              },
+                                              meal: e,
+                                              pressAte: () {
+                                                snapshot.data.eat(
+                                                    e,
+                                                    snapshot.data.mealPlan.meals
+                                                        .indexOf(e));
+                                                Navigator.pop(context);
+                                              },
+                                            ))
+                                        .toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         });
@@ -337,137 +363,169 @@ class _RadialPainter extends CustomPainter {
   }
 }
 
-class _MealCard extends StatelessWidget {
-  final Function pressAte;
+class MealCard extends StatefulWidget {
+  final Function pressAte, suggestAnother;
   final Meal meal;
 
-  const _MealCard({Key key, @required this.meal, this.pressAte})
+  const MealCard(
+      {Key key, @required this.meal, this.pressAte, this.suggestAnother})
       : super(key: key);
 
   @override
+  _MealCardState createState() => _MealCardState();
+}
+
+class _MealCardState extends State<MealCard> {
+  bool favPressed = false;
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) => CustomDialog(
-                  ate: pressAte,
-                  image: meal.recipe.image,
-                  title: meal.title,
-                  description: meal.recipe.summary,
-                  protein: meal.recipe.protein.toString(),
-                  carbs: meal.recipe.carbs.toString(),
-                  fat: meal.recipe.fat.toString(),
-                ));
-      },
-      child: Container(
-        margin: const EdgeInsets.only(
-          right: 20,
-          bottom: 10,
-        ),
-        child: Material(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          elevation: 4,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Flexible(
-                fit: FlexFit.tight,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                  child: Image.network(
-                    meal.recipe.image,
-                    width: 150,
-                    fit: BoxFit.fill,
+    return Container(
+      margin: const EdgeInsets.only(
+        right: 20,
+        bottom: 10,
+      ),
+      child: Material(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        elevation: 4,
+        child: widget.meal.eaten
+            ? Container(
+                alignment: Alignment.topCenter,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.grey.withOpacity(.9)),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                      child: GestureDetector(
+                        onTap: widget.meal.eaten
+                            ? () {}
+                            : () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomDialog(
+                                          suggestAnother: widget.suggestAnother,
+                                          ate: widget.pressAte,
+                                          image: widget.meal.recipe.image,
+                                          title: widget.meal.title,
+                                          description:
+                                              widget.meal.recipe.summary,
+                                          protein: widget.meal.recipe.protein
+                                              .toString(),
+                                          carbs: widget.meal.recipe.carbs
+                                              .toString(),
+                                          fat:
+                                              widget.meal.recipe.fat.toString(),
+                                        ));
+                              },
+                        child: Image.network(
+                          widget.meal.recipe.image,
+                          width: 150,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Flexible(
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(height: 5),
-                      Container(
-                        constraints: BoxConstraints(maxWidth: 150),
-                        child: Text(
-                          meal.dishType,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Colors.blueGrey,
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(height: 5),
+                          Container(
+                            constraints: BoxConstraints(maxWidth: 150),
+                            child: Text(
+                              widget.meal.dishType,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        constraints: BoxConstraints(maxWidth: 120),
-                        child: Text(meal.title,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            softWrap: true,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                              color: Colors.black,
-                            )),
-                      ),
-                      Text(
-                        "${meal.recipe.calories} kcal",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.access_time,
-                            size: 15,
-                            color: Colors.black12,
-                          ),
-                          SizedBox(
-                            width: 4,
+                          Container(
+                            constraints: BoxConstraints(maxWidth: 120),
+                            child: Text(widget.meal.title,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                softWrap: true,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                )),
                           ),
                           Text(
-                            "${meal.readyInMinutes} min",
+                            "${widget.meal.recipe.calories} kcal",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
                               color: Colors.blueGrey,
                             ),
                           ),
-                          SizedBox(
-                            width: 9,
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.favorite_border,
-                                color: Colors.red,
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.access_time,
+                                size: 15,
+                                color: Colors.black12,
                               ),
-                              onPressed: null),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                "${widget.meal.readyInMinutes} min",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: Colors.blueGrey,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 9,
+                              ),
+                              // IconButton(
+                              //     icon: Icon(
+                              //       favPressed
+                              //           ? Icons.favorite
+                              //           : Icons.favorite_border,
+                              //       color: Colors.red,
+                              //     ),
+                              //     onPressed: () {
+                              //       toggleFav();
+                              //     }),
+                            ],
+                          ),
+                          SizedBox(height: 16),
                         ],
                       ),
-                      SizedBox(height: 16),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
       ),
     );
+  }
+
+  void toggleFav() {
+    setState(() {
+      favPressed = !favPressed;
+    });
   }
 }
 
 class CustomDialog extends StatelessWidget {
   final String title, description, buttonText, image, protein, carbs, fat;
-  final Function ate;
+  final Function ate, suggestAnother;
   CustomDialog(
       {this.title,
       this.ate,
@@ -476,7 +534,8 @@ class CustomDialog extends StatelessWidget {
       this.image,
       this.carbs,
       this.fat,
-      this.protein});
+      this.protein,
+      this.suggestAnother});
 
   @override
   Widget build(BuildContext context) {
@@ -495,6 +554,7 @@ class CustomDialog extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
+            width: size.width * .85,
             padding: EdgeInsets.only(top: 160, bottom: 50, left: 30, right: 30),
             margin: EdgeInsets.only(top: 10),
             decoration: BoxDecoration(
@@ -548,6 +608,8 @@ class CustomDialog extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
+                SizedBox(height: 24.0),
+
                 Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -557,9 +619,7 @@ class CustomDialog extends StatelessWidget {
                           press: ate,
                           width: size.width * 0.4),
                       RoundedButton(
-                          press: () {
-                            Navigator.pop(context);
-                          },
+                          press: suggestAnother,
                           text: 'Don\'t Like it?',
                           color: EDpinkAcc,
                           width: size.width * 0.4),
