@@ -5,7 +5,7 @@ import 'package:e_diet/Model/DietLogic/Nutrition.dart';
 import 'package:e_diet/Model/Services/ApiServices.dart';
 import 'package:e_diet/Model/DietLogic/meal_plan_model.dart';
 import 'package:e_diet/Model/Services/DataBase.dart';
-import 'package:e_diet/Pages/home/Favorite/favorite.dart';
+// import 'package:e_diet/Pages/home/Favorite/favorite.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'Services/DataBase.dart';
@@ -101,6 +101,7 @@ class UserModle extends ChangeNotifier {
       setInfo();
       _nutrition =
           new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+      notifyListeners();
     }
 
     await setUserHealthDB(uid, age, weight, height, gender)
@@ -141,6 +142,7 @@ class UserModle extends ChangeNotifier {
     if (_goal != null) {
       _nutrition =
           new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+      notifyListeners();
     }
     await setUserActivityLevelDB(uid, activityLevelString);
     fetchUserInfo();
@@ -175,6 +177,7 @@ class UserModle extends ChangeNotifier {
 
     _nutrition =
         new Nutrition(_gender, _height, _weight, _age, _activityLevel, _goal);
+    notifyListeners();
 
     await setUserGoalDB(uid, goalString);
     fetchUserInfo();
@@ -319,7 +322,7 @@ class UserModle extends ChangeNotifier {
           ind = 2;
           break;
       }
-      ;
+
       mealPlan.meals[ind].eaten = false;
       await editMealPlanDB(uid, meal, mealType);
       isNuteUpdated = false;
@@ -395,7 +398,7 @@ class UserModle extends ChangeNotifier {
         .fetchSimilar(id)
         .then((value) => newMeal = value)
         .catchError((onError) => print('Failed to fetch new Meal $onError'));
-    await Future.delayed(const Duration(seconds: 10), () {
+    await Future.delayed(const Duration(seconds: 2), () {
       if (newMeal != null && newMeal.recipe != null) {
         mealPlan.meals[mealtypeIndex] = newMeal;
         newMeal.dishType = mealtype;

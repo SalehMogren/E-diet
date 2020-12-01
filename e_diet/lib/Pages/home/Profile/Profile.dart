@@ -171,13 +171,18 @@ class ProfilePageNew extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(
-                                        snapshot.data.name,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            color: EDwhite,
-                                            fontSize: 26,
-                                            fontWeight: FontWeight.w500),
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: size.width * .5),
+                                        child: Text(
+                                          snapshot.data.name,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: EDwhite,
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                       ),
                                     ]),
                               ),

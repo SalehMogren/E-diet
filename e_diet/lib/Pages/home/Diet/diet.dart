@@ -575,6 +575,8 @@ class CustomDialog extends StatelessWidget {
               children: <Widget>[
                 Text(
                   title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.w700,
