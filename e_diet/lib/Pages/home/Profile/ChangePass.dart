@@ -86,6 +86,7 @@ class _ChangePassState extends State<ChangePass> {
                         press: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
+
                             dynamic result = await _auth.changePass(password);
                             if (result == null) {
                               setState(() {
@@ -103,7 +104,9 @@ class _ChangePassState extends State<ChangePass> {
                         text: 'Cancel',
                         color: EDpinkAcc,
                         width: size.width * 0.5,
-                        press: () => Navigator.pop(context),
+                        press: () {
+                          Navigator.pop(context);
+                        },
                       ),
                       SizedBox(height: 12.0),
                     ],

@@ -123,8 +123,10 @@ class _SignUpContactInfoState extends State<SignUpContactInfo> {
                                 _autoValidate = true;
                               });
                             } else
-                              Navigator.pushReplacementNamed(
-                                  context, HealthSetUpRoute);
+                              print('Email Is $email');
+                            _auth.welcomeEmail(email);
+                            Navigator.pushReplacementNamed(
+                                context, HealthSetUpRoute);
                           }
                         },
                       ),

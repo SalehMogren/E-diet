@@ -150,14 +150,14 @@ class _LoginState extends State<Login> {
                           SizedBox(
                             height: 20.0,
                           ),
-                          Center(
-                            child: Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                color: Colors.pink[200],
-                              ),
-                            ),
-                          ),
+                          // Center(
+                          //   child: Text(
+                          //     "Forgot Password?",
+                          //     style: TextStyle(
+                          //       color: Colors.pink[200],
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     )

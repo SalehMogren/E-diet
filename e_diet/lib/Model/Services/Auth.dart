@@ -21,6 +21,10 @@ class AuthService {
     return _auth.authStateChanges().map(_userFromFireBaseUser);
   }
 
+  get currentUser {
+    return _userFromFireBaseUser(_auth.currentUser);
+  }
+
   String userUid() {
     return _auth.currentUser.uid;
   }
@@ -101,6 +105,11 @@ class AuthService {
       print(e.toString());
       return null;
     }
+  }
+
+  Future welcomeEmail(String e) {
+    print('Called wel email');
+    return _auth.sendPasswordResetEmail(email: e);
   }
 
   Future changePass(String pass) async {
