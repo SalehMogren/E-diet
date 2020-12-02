@@ -62,7 +62,7 @@ class ApiService {
       if (mealPlan.meals != null)
         Future.delayed(
             Duration(seconds: 6), () => addUserMealPlan(uid, mealPlan));
-      Future.delayed(const Duration(seconds: 10));
+      Future.delayed(const Duration(seconds: 20));
       return mealPlan;
     } catch (err) {
       //If our response has error, we throw an error message
