@@ -1,6 +1,6 @@
 # E-Diet
 
-![Logo](e_diet\assets\appLogo\ediet_App_iOS.png)
+![Logo](https://github.com/SZ4M/E-diet/blob/master/e_diet/assets/appLogo/ediet_App_iOS.png?raw=true)
 
 ## **E-Diet is an android application that manages human diets**
 
@@ -16,48 +16,48 @@ a user will be able to track his progress of his daily consumption and write his
 
 ### 7.1 Welcome page
 
-![WelcomPage](/Screenshots/WelcomePage.png "Welcome Page")
+![WelcomPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/WelcomePage.png?raw=true "Welcome Page")
 
 ### 7.2 Sign Up
 
-![SignUpPage](/Screenshots/SignupPage.png "SignUp Page")
+![SignUpPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/SignupPage.png?raw=true "SignUp Page")
 
 ### 7.3 Login
 
-![LoginPage](/Screenshots/LoginPage.png "Login Page")
+![LoginPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/LoginPage.png?raw=true "Login Page")
 
 ### 7.4 User Health Info
 
-![UserHealthInfoPage](ScreenShots\UserHealthInfoPage.png "User Health Info Page")
+![UserHealthInfoPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/UserHealthInfoPage.png?raw=true "User Health Info Page")
 
 ### 7.5 User Goal
 
-![UserGoalPage](ScreenShots\UserGoal.png "User Goal Page")
+![UserGoalPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/UserGoal.png?raw=true "User Goal Page")
 
 ### 7.6 User Activity Level
 
-![UserActivityLevelPage](ScreenShots\UserActivityLevel.png "User Activity Level Page")
+![UserActivityLevelPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/UserActivityLevel.png?raw=true "User Activity Level Page")
 
 ### 7.7 Profile
 
-![ProfilePage](ScreenShots\Proifle.png "Profile Page")
+![ProfilePage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/Proifle.png?raw=true "Profile Page")
 
 ### 7.8 Diary
 
-![DiaryPage](ScreenShots\Diary.png "Diary Page")
+![DiaryPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/Diary.png?raw=true "Diary Page")
 
 ### 7.9 Home
 
-![HomePage](ScreenShots\HomePage.png "Home Page")
+![HomePage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/HomePage.png?raw=true "Home Page")
 
 ### 7.10 Meal card
 
-![MealCardPage](ScreenShots\MealCard.png "Meal Card Page")
+![MealCardPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/MealCard.png?raw=true "Meal Card Page")
 
 ### 7.11 Diet prefer
 
-![DietPreferPage](ScreenShots\DietPrefer.png "Diet Prefer Page")
+![DietPreferPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/MealCard.png?raw=true "Diet Prefer Page")
 
 ### 7.12 Change password
 
-![ChangePassPage](ScreenShots\ChangePass.png "Change Pass Page")
+![ChangePassPage](https://github.com/SZ4M/E-diet/blob/master/ScreenShots/ChangePass.png?raw=true "Change Pass Page")
